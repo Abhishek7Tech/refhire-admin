@@ -15,8 +15,8 @@ function SubmitButton() {
           <Image
             className="mx-auto"
             src={LoadingSvg}
-            height={24}
-            width={24}
+            height={28}
+            width={28}
             alt="loading-spinner"
           ></Image>
         ) : (

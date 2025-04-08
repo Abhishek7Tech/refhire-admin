@@ -1,4 +1,5 @@
 import React from "react";
+import AdminMenu from "../ui/admin-menu/menu";
 
 export default function VerifyLayout({
   children,
@@ -6,7 +7,8 @@ export default function VerifyLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex min-h-screen w-full flex-col justify-center bg-gradient-to-t from-cyan-100 to-emerald-200 items-center">
+    <main className="flex min-h-screen w-full justify-between bg-gradient-to-t from-cyan-100 to-emerald-200 items-start">
+      <AdminMenu />
       {children}
     </main>
   );
