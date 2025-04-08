@@ -2,10 +2,24 @@
 
 import { Input } from "@/app/components/input/input";
 import { cn } from "@/app/utils/utils";
+import Experience from "../add-experience/experience";
+import { useState } from "react";
+
+interface ExperienceInterface {
+  id: number;
+  role: string;
+  from: string;
+  to: string;
+  work: string[];
+}
 
 function Resume() {
+  const [experience, setExperience] = useState<ExperienceInterface[]>([
+    { id: 1, role: "", from: "", to: "", work: [] },
+  ]);
+
   return (
-    <section className="mx-auto w-full max-w-md bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl my-12">
+    <section className="mx-auto w-full max-w-max bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl my-12">
       <h2 className="text-2xl font-mukta font-medium text-slate-700">
         Add a Resume.
       </h2>
@@ -47,10 +61,25 @@ function Resume() {
 
           <LabelInputContainer>
             <label
+              htmlFor="profession"
+              className="text-slate-700 font-mukta font-medium text-base"
+            >
+              Profession
+            </label>
+            <Input
+              name="profession"
+              placeholder="Frontend Engineer"
+              type="text"
+              required
+            ></Input>
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <label
               htmlFor="country"
               className="text-slate-700 font-mukta font-medium text-base"
             >
-              Country of Residence.
+              Country of Residence
             </label>
             <Input
               name="country"
@@ -80,8 +109,8 @@ function Resume() {
               <legend className="text-slate-700 font-mukta font-medium text-base">
                 Job Preference:
               </legend>
-              <div className="flex justify-around bg-gray-50 py-1 rounded-md">
-                <div className="flex space-x-2 items-center">
+              <div className="flex justify-start space-x-6">
+                <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
                     name="remote"
                     type="checkbox"
@@ -95,7 +124,7 @@ function Resume() {
                   </label>
                 </div>
 
-                <div className="flex space-x-2 items-center">
+                <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
                     name="hybrid"
                     type="checkbox"
@@ -109,7 +138,7 @@ function Resume() {
                   </label>
                 </div>
 
-                <div className="flex space-x-2 items-center">
+                <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
                     name="onSite"
                     type="checkbox"
@@ -131,8 +160,8 @@ function Resume() {
                 Open to Relocation:
               </legend>
 
-              <div className="flex justify-around bg-gray-50 py-1 rounded-md">
-                <div className="flex space-x-2 items-center">
+              <div className="flex justify-start space-x-6">
+                <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
                     name="state"
                     type="checkbox"
@@ -146,7 +175,7 @@ function Resume() {
                   </label>
                 </div>
 
-                <div className="flex space-x-2 items-center">
+                <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
                     name="country"
                     type="checkbox"
@@ -161,6 +190,31 @@ function Resume() {
                 </div>
               </div>
             </fieldset>
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <label
+              htmlFor="salary"
+              className="text-slate-700 font-mukta font-medium text-base"
+            >
+              Salary Expectations
+            </label>
+            <Input
+              name="salary"
+              placeholder="$60,000"
+              type="text"
+              required
+            ></Input>
+          </LabelInputContainer>
+
+          <LabelInputContainer>
+            <label
+              htmlFor="experience"
+              className="text-slate-700 font-mukta font-medium text-base"
+            >
+              Experience
+            </label>
+           {experience.map((ex) => <Experience  id={ex.id}/> )}
           </LabelInputContainer>
         </div>
       </form>

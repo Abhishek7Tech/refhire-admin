@@ -47,7 +47,7 @@ export function AdminMenu() {
     <div
       className={cn(
         " flex w-fit flex-col overflow-hidden rounded-md bg-white/25 border border-white/30 shadow-lg backdrop-blur-md md:flex-row",
-        "h-[99vh] z-10 absolute" // for your use case, use `h-screen` instead of `h-[60vh]`
+        "h-full z-10 absolute" // for your use case, use `h-screen` instead of `h-[60vh]`
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
