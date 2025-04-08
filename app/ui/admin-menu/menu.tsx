@@ -18,7 +18,7 @@ import { useState } from "react";
 export function AdminMenu() {
   const menuItems = [
     {
-      label: "Add Talent",
+      label: "Add Resume",
       href: "#",
       icon: <IconUserPlus className="h-5 w-5 shrink-0 text-slate-700 " />,
     },
@@ -47,7 +47,7 @@ export function AdminMenu() {
     <div
       className={cn(
         " flex w-fit flex-col overflow-hidden rounded-md bg-white/25 border border-white/30 shadow-lg backdrop-blur-md md:flex-row",
-        "h-[99vh]" // for your use case, use `h-screen` instead of `h-[60vh]`
+        "h-[99vh] z-10 absolute" // for your use case, use `h-screen` instead of `h-[60vh]`
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>

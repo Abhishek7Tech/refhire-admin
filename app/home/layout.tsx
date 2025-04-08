@@ -7,7 +7,7 @@ export default function VerifyLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex min-h-screen w-full justify-between bg-gradient-to-t from-cyan-100 to-emerald-200 items-start">
+    <main className="flex relative min-h-screen w-full justify-between bg-gradient-to-t from-cyan-100 to-emerald-200 items-start space-x-8">
       <AdminMenu />
       {children}
     </main>
