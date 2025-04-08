@@ -19,7 +19,7 @@ export function AdminMenu() {
   const menuItems = [
     {
       label: "Add Resume",
-      href: "#",
+      href: "home/resume",
       icon: <IconUserPlus className="h-5 w-5 shrink-0 text-slate-700 " />,
     },
     {
