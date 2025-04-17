@@ -5,8 +5,8 @@ export default async function allowToLogin(request: NextRequest) {
   const supabase = await createClient();
   const session = await supabase.auth.getUser();
   const userId = await session.data.user?.id;
-  if (userId) {
-    return NextResponse.redirect(new URL("/home", request.url));
+  if (!userId) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
   return NextResponse.next();
 }

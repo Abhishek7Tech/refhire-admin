@@ -3,9 +3,9 @@ import { updateSession } from "@/app/utils/supabase/middleware";
 import allowToLogin from "./app/utils/middlewares/signIn/middleware";
 
 export default async function middleWare(request: NextRequest) {
-  // if (request.url.includes("/")) {
-  //   return await allowToLogin(request);
-  // }
+  if (request.url.includes("/home")) {
+    return await allowToLogin(request);
+  }
 
   if (request.url.includes("/verify")) {
     return await allowToLogin(request);
