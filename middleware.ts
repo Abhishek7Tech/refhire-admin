@@ -1,6 +1,7 @@
 import { type NextRequest } from "next/server";
 import { updateSession } from "@/app/utils/supabase/middleware";
 import allowToLogin from "./app/utils/middlewares/signIn/middleware";
+import allowToVerify from "./app/verify/middleware";
 
 export default async function middleWare(request: NextRequest) {
   if (request.url.includes("/home")) {
@@ -8,12 +9,12 @@ export default async function middleWare(request: NextRequest) {
   }
 
   if (request.url.includes("/verify")) {
-    return await allowToLogin(request);
+    return await allowToVerify(request);
   }
   return await updateSession(request);
 }
 
-export const config = {
+export const config = { 
   matcher: [
     /*
      * Match all request paths except for the ones starting with:

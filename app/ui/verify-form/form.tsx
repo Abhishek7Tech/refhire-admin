@@ -27,13 +27,17 @@ function Verify() {
     return;
   }
 
-  const resendOtpHanlder = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setPending(true);
-    if (!userContext?.email) return;
-    await resendOtp(userContext.email);
-    setPending(false);
-  }, [userContext.email]);
+  const resendOtpHanlder = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      setPending(true);
+      if (!userContext?.email) return;
+      console.log("Email", userContext.email);
+      await resendOtp(userContext.email);
+      setPending(false);
+    },
+    [userContext.email]
+  );
   return (
     <section className="mx-auto w-full max-w-md bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl my-12">
       <h2 className="text-2xl font-mukta font-medium text-slate-700 leading-loose">

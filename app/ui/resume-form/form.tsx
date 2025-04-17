@@ -6,18 +6,62 @@ import Experience from "../add-experience/experience";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
+interface WorkInterface {
+  id: number;
+  work: string;
+}
 interface ExperienceInterface {
   id: number;
   role: string;
   from: string;
   to: string;
-  work: string[];
+  work: WorkInterface[] | [];
 }
 
 function Resume() {
   const [experience, setExperience] = useState<ExperienceInterface[]>([
-    { id: 1, role: "", from: "", to: "", work: [] },
+    { id: 1, role: "", from: "", to: "", work: [{ id: 1, work: "" }] },
   ]);
+
+  const increaseExpHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    console.log("EX", experience.length);
+    const id = experience.length + 1;
+    const addExperience = {
+      id,
+      role: "",
+      from: "",
+      to: "",
+      work: [{ id: 1, work: "" }],
+    };
+    const updateExperience = [...experience, addExperience];
+    setExperience(updateExperience);
+  };
+
+  const increaseWorkHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.currentTarget.parentElement?.id;
+    
+  };
+
+  const decreaseWorkHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {};
+
+  const decreaseExpHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (experience.length === 1) {
+      return;
+    }
+    const id = +e.currentTarget.id;
+    const updateExperience = experience.filter((ex) => ex.id !== id);
+    setExperience(updateExperience);
+  };
 
   return (
     <section className="mx-auto w-full max-w-max bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl my-12">
@@ -218,12 +262,51 @@ function Resume() {
             {experience.map((ex) => (
               <div key={ex.id}>
                 <Experience id={ex.id} />
+                {ex.work.map((work) => (
+                  <div
+                    className="my-4 flex space-x-2 items-center"
+                    key={work.id.toString()}
+                  >
+                    <Input
+                      name="work"
+                      placeholder="Developed dynamic dashboards using Next.js."
+                      type="text"
+                      required
+                    ></Input>
+
+                    <div className="w-fit flex items-center space-x-2 justify-center">
+                      <motion.button
+                        whileHover={{
+                          scaleY: 1.1,
+                        }}
+                        type="button"
+                        id={work.id.toString()}
+                        onClick={(e) => increaseWorkHandler(e)}
+                        className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                      >
+                        &#43;
+                      </motion.button>
+                      <motion.button
+                        whileHover={{
+                          scaleY: 1.1,
+                        }}
+                        type="button"
+                        id={ex.id.toString()}
+                        className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                        onClick={(e) => decreaseWorkHandler(e)}
+                      >
+                        &minus;
+                      </motion.button>
+                    </div>
+                  </div>
+                ))}
                 <div className="w-full flex items-center space-x-2 justify-center mb-2 mt-4">
                   <motion.button
                     whileHover={{
                       scaleY: 1.1,
                     }}
                     type="button"
+                    onClick={(e) => increaseExpHandler(e)}
                     className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
                   >
                     &#43;
@@ -233,7 +316,9 @@ function Resume() {
                       scaleY: 1.1,
                     }}
                     type="button"
+                    id={ex.id.toString()}
                     className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                    onClick={(e) => decreaseExpHandler(e)}
                   >
                     &minus;
                   </motion.button>
