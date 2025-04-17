@@ -5,7 +5,7 @@ import { cn } from "@/app/utils/utils";
 import Experience from "../add-experience/experience";
 import { useState } from "react";
 import { motion } from "framer-motion";
-
+import { v4 as uuid } from "uuid";
 interface WorkInterface {
   id: number;
   work: string;
@@ -43,13 +43,39 @@ function Resume() {
   const increaseWorkHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    e.currentTarget.parentElement?.id;
-    
+    const experienceId = e.currentTarget.parentElement?.id;
+    if (!experienceId) {
+      return;
+    }
+    const updateWork = experience.map((ex) =>
+      ex.id === +experienceId
+        ? { ...ex, work: [...ex.work, { id: ex.work.length + 1, work: "" }] }
+        : ex
+    );
+
+    console.log("Work-increase", updateWork);
+
+    setExperience(updateWork);
   };
 
   const decreaseWorkHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {};
+  ) => {
+    const experienceId = e.currentTarget.parentElement?.id;
+    if (!experienceId) {
+      return;
+    }
+
+    console.log("EX", experience);
+    const workId = +e.currentTarget.id;
+    console.log("WORKID", workId);
+    const updateWork = experience.map((ex) =>
+      ex.id === +experienceId && ex.work.length > 1
+        ? { ...ex, work: ex.work.filter((work) => work.id !== workId) }
+        : ex
+    );
+    setExperience(updateWork);
+  };
 
   const decreaseExpHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -260,12 +286,13 @@ function Resume() {
               Experience
             </label>
             {experience.map((ex) => (
-              <div key={ex.id}>
-                <Experience id={ex.id} />
+              <div key={ex.id} className="border-2 border-dashed border-green-300 p-4 rounded-md mb-3">
+                <Experience id={ex.id.toString()} />
                 {ex.work.map((work) => (
                   <div
-                    className="my-4 flex space-x-2 items-center"
+                    className="my-4 flex space-x-2 items-center "
                     key={work.id.toString()}
+                    id={ex.id.toString()}
                   >
                     <Input
                       name="work"
@@ -274,30 +301,28 @@ function Resume() {
                       required
                     ></Input>
 
-                    <div className="w-fit flex items-center space-x-2 justify-center">
-                      <motion.button
-                        whileHover={{
-                          scaleY: 1.1,
-                        }}
-                        type="button"
-                        id={work.id.toString()}
-                        onClick={(e) => increaseWorkHandler(e)}
-                        className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
-                      >
-                        &#43;
-                      </motion.button>
-                      <motion.button
-                        whileHover={{
-                          scaleY: 1.1,
-                        }}
-                        type="button"
-                        id={ex.id.toString()}
-                        className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
-                        onClick={(e) => decreaseWorkHandler(e)}
-                      >
-                        &minus;
-                      </motion.button>
-                    </div>
+                    <motion.button
+                      whileHover={{
+                        scaleY: 1.1,
+                      }}
+                      type="button"
+                      id={work.id.toString()}
+                      onClick={(e) => increaseWorkHandler(e)}
+                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                    >
+                      &#43;
+                    </motion.button>
+                    <motion.button
+                      whileHover={{
+                        scaleY: 1.1,
+                      }}
+                      type="button"
+                      id={work.id.toString()}
+                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                      onClick={(e) => decreaseWorkHandler(e)}
+                    >
+                      &minus;
+                    </motion.button>
                   </div>
                 ))}
                 <div className="w-full flex items-center space-x-2 justify-center mb-2 mt-4">

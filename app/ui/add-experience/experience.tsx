@@ -1,5 +1,5 @@
 import { Input } from "@/app/components/input/input";
-function Experience({ id }: { id: number }) {
+function Experience({ id }: { id: string }) {
   return (
     <div className="flex space-x-2 w-full">
       <Input name="role" type="text" placeholder="Frontend Engineer"></Input>
