@@ -51,7 +51,7 @@ export const getVerifyData = async (previousState: any, formData: FormData) => {
       },
     };
   }
-
+  console.log("Error", data);
   revalidatePath("/");
   redirect("/home");
 

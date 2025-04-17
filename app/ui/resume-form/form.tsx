@@ -4,6 +4,7 @@ import { Input } from "@/app/components/input/input";
 import { cn } from "@/app/utils/utils";
 import Experience from "../add-experience/experience";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 interface ExperienceInterface {
   id: number;
@@ -105,7 +106,7 @@ function Resume() {
           </LabelInputContainer>
 
           <LabelInputContainer>
-            <fieldset className=" border-2 border-green-300 p-4 rounded-md">
+            <fieldset className=" border-2 border-dashed border-green-300 p-4 rounded-md">
               <legend className="text-slate-700 font-mukta font-medium text-base">
                 Job Preference:
               </legend>
@@ -155,7 +156,7 @@ function Resume() {
             </fieldset>
           </LabelInputContainer>
           <LabelInputContainer>
-            <fieldset className=" border-2 border-green-300 p-4 rounded-md ">
+            <fieldset className=" border-2 border-dashed border-green-300 p-4 rounded-md ">
               <legend className="text-slate-700 font-mukta font-medium text-base">
                 Open to Relocation:
               </legend>
@@ -214,7 +215,31 @@ function Resume() {
             >
               Experience
             </label>
-           {experience.map((ex) => <Experience  id={ex.id}/> )}
+            {experience.map((ex) => (
+              <div key={ex.id}>
+                <Experience id={ex.id} />
+                <div className="w-full flex items-center space-x-2 justify-center mb-2 mt-4">
+                  <motion.button
+                    whileHover={{
+                      scaleY: 1.1,
+                    }}
+                    type="button"
+                    className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                  >
+                    &#43;
+                  </motion.button>
+                  <motion.button
+                    whileHover={{
+                      scaleY: 1.1,
+                    }}
+                    type="button"
+                    className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                  >
+                    &minus;
+                  </motion.button>
+                </div>
+              </div>
+            ))}
           </LabelInputContainer>
         </div>
       </form>
