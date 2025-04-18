@@ -3,10 +3,12 @@
 import { Input } from "@/app/components/input/input";
 import { cn } from "@/app/utils/utils";
 import Experience from "../add-experience/experience";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { motion } from "framer-motion";
 import { v4 as uuid } from "uuid";
 import { formatMonth } from "@/app/utils/format-date/date";
+import SubmitButton from "@/app/components/buttons/resume";
+import { getResumeData } from "@/app/home/resume/actions";
 interface WorkInterface {
   id: number;
   work: string;
@@ -19,7 +21,25 @@ interface ExperienceInterface {
   work: WorkInterface[] | [];
 }
 
+const initialFormState = {
+  name: "",
+  email: "",
+  profession: "",
+  country: "",
+  location: "",
+  preference: [],
+  relocation: [],
+  salary: "",
+  experience: [],
+  message: "",
+};
+
 function Resume() {
+  const [inputState, setInputState] = useActionState(
+    getResumeData,
+    initialFormState
+  );
+
   const [experience, setExperience] = useState<ExperienceInterface[]>([
     { id: 1, role: "", from: "", to: "", work: [{ id: 1, work: "" }] },
   ]);
@@ -144,12 +164,11 @@ function Resume() {
         Add a Resume.
       </h2>
       <div className="mt-4 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <form className="my-2" action={() => {}}>
+      <form className="my-2" action={setInputState}>
         <div className="mb-4 flex flex-col space-y-3">
-          {/* <LabelInputContainer
+          <LabelInputContainer
             className={inputState.errors?.name ? "mb-0" : "mb-4"}
-          > */}
-          <LabelInputContainer>
+          >
             <label
               htmlFor="name"
               className="text-slate-700 font-mukta font-medium text-base"
@@ -158,13 +177,15 @@ function Resume() {
             </label>
             <Input name="name" placeholder="Tyler" type="text" required></Input>
           </LabelInputContainer>
-          {/* {inputState.errors?.name && (
+          {inputState.errors?.name && (
             <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
               {inputState.errors.name}
             </p>
-          )} */}
+          )}
 
-          <LabelInputContainer>
+          <LabelInputContainer
+            className={inputState.errors?.email ? "mb-0" : "mb-4"}
+          >
             <label
               htmlFor="email"
               className="text-slate-700 font-mukta font-medium text-base"
@@ -178,8 +199,14 @@ function Resume() {
               required
             ></Input>
           </LabelInputContainer>
-
-          <LabelInputContainer>
+          {inputState.errors?.email && (
+            <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+              {inputState.errors.email}
+            </p>
+          )}
+          <LabelInputContainer
+            className={inputState.errors?.profession ? "mb-0" : "mb-4"}
+          >
             <label
               htmlFor="profession"
               className="text-slate-700 font-mukta font-medium text-base"
@@ -193,8 +220,14 @@ function Resume() {
               required
             ></Input>
           </LabelInputContainer>
-
-          <LabelInputContainer>
+          {inputState.errors?.profession && (
+            <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+              {inputState.errors.profession}
+            </p>
+          )}
+          <LabelInputContainer
+            className={inputState.errors?.country ? "mb-0" : "mb-4"}
+          >
             <label
               htmlFor="country"
               className="text-slate-700 font-mukta font-medium text-base"
@@ -208,8 +241,15 @@ function Resume() {
               required
             ></Input>
           </LabelInputContainer>
+          {inputState.errors?.country && (
+            <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+              {inputState.errors.country}
+            </p>
+          )}
 
-          <LabelInputContainer>
+          <LabelInputContainer
+            className={inputState.errors?.location ? "mb-0" : "mb-4"}
+          >
             <label
               htmlFor="location"
               className="text-slate-700 font-mukta font-medium text-base"
@@ -223,8 +263,14 @@ function Resume() {
               required
             ></Input>
           </LabelInputContainer>
-
-          <LabelInputContainer>
+          {inputState.errors?.location && (
+            <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+              {inputState.errors.location}
+            </p>
+          )}
+          <LabelInputContainer
+            className={inputState.errors?.preference ? "mb-0" : "mb-4"}
+          >
             <fieldset className=" border-2 border-dashed border-green-300 p-4 rounded-md">
               <legend className="text-slate-700 font-mukta font-medium text-base">
                 Job Preference:
@@ -232,12 +278,12 @@ function Resume() {
               <div className="flex justify-start space-x-6">
                 <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
-                    name="remote"
+                    name="preference"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
                   ></Input>
                   <label
-                    htmlFor="remote"
+                    htmlFor="preference"
                     className="text-slate-700 font-mukta font-medium text-base"
                   >
                     Remote
@@ -246,12 +292,12 @@ function Resume() {
 
                 <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
-                    name="hybrid"
+                    name="preference"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
                   ></Input>
                   <label
-                    htmlFor="hybrid"
+                    htmlFor="preference"
                     className="text-slate-700 font-mukta font-medium text-base"
                   >
                     Hybrid
@@ -260,21 +306,28 @@ function Resume() {
 
                 <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
-                    name="onSite"
+                    name="preference"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
                   ></Input>
                   <label
-                    htmlFor="onSite"
+                    htmlFor="preference"
                     className="text-slate-700 font-mukta font-medium text-base"
                   >
                     On-site
                   </label>
                 </div>
               </div>
+              {inputState.errors?.preference && (
+                <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+                  {inputState.errors.preference}
+                </p>
+              )}
             </fieldset>
           </LabelInputContainer>
-          <LabelInputContainer>
+          <LabelInputContainer
+            className={inputState.errors?.relocation ? "mb-0" : "mb-4"}
+          >
             <fieldset className=" border-2 border-dashed border-green-300 p-4 rounded-md ">
               <legend className="text-slate-700 font-mukta font-medium text-base">
                 Open to Relocation:
@@ -283,12 +336,12 @@ function Resume() {
               <div className="flex justify-start space-x-6">
                 <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
-                    name="state"
+                    name="relocation"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
                   ></Input>
                   <label
-                    htmlFor="state"
+                    htmlFor="relocation"
                     className="text-slate-700 font-mukta font-medium text-base"
                   >
                     Another State
@@ -297,22 +350,29 @@ function Resume() {
 
                 <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
-                    name="country"
+                    name="relocation"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
                   ></Input>
                   <label
-                    htmlFor="country"
+                    htmlFor="relocation"
                     className="text-slate-700 font-mukta font-medium text-base"
                   >
                     Another Country
                   </label>
                 </div>
               </div>
+              {inputState.errors?.relocation && (
+                <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+                  {inputState.errors.relocation}
+                </p>
+              )}
             </fieldset>
           </LabelInputContainer>
 
-          <LabelInputContainer>
+          <LabelInputContainer
+            className={inputState.errors?.salary ? "mb-0" : "mb-4"}
+          >
             <label
               htmlFor="salary"
               className="text-slate-700 font-mukta font-medium text-base"
@@ -326,8 +386,14 @@ function Resume() {
               required
             ></Input>
           </LabelInputContainer>
-
-          <LabelInputContainer>
+          {inputState.errors?.salary && (
+            <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+              {inputState.errors.salary}
+            </p>
+          )}
+          <LabelInputContainer
+            className={inputState.errors?.experience ? "mb-0" : "mb-4"}
+          >
             <label
               htmlFor="experience"
               className="text-slate-700 font-mukta font-medium text-base"
@@ -408,6 +474,26 @@ function Resume() {
               </div>
             ))}
           </LabelInputContainer>
+          {experience && (
+            <input
+              type="hidden"
+              name="experience"
+              value={JSON.stringify(experience)}
+            ></input>
+          )}
+          {inputState.errors?.experience && (
+            <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+              {inputState.errors.experience}
+            </p>
+          )}
+
+          {inputState?.message && (
+            <p className="text-green-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+              {inputState.message}
+            </p>
+          )}
+          <SubmitButton />
+          <div className="mt-4 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
         </div>
       </form>
     </section>
