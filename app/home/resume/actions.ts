@@ -1,6 +1,8 @@
 "use server";
+import { createClient } from "@/app/utils/supabase/server";
 import { error } from "console";
-import { number, z } from "zod";
+import { pre } from "motion/react-client";
+import { boolean, number, string, z } from "zod";
 
 const ResumeSchema = z.object({
   name: z
@@ -23,9 +25,9 @@ const ResumeSchema = z.object({
     .string()
     .trim()
     .min(2, { message: "Location should be longer than 2 characters." }),
-  remote: z.string(),
-  hybrid: z.string(),
-  onsite: z.string(),
+  remote: z.string().optional(),
+  hybrid: z.string().optional(),
+  onsite: z.string().optional(),
   preference: z.undefined(),
   anotherState: z.string().optional(),
   anotherCountry: z.string().optional(),
@@ -54,15 +56,21 @@ const ResumeSchema = z.object({
       ),
     })
   ),
+  admin: z.string().trim().min(5, { message: "Please add your name." }),
 });
 
 export const getResumeData = async (previousState: any, formData: FormData) => {
   const resumeData = Object.fromEntries(formData);
+  const supabase = await createClient();
+  const userSession = await supabase.auth.getUser();
+  const userId = await userSession.data.user?.id;
+
   if (typeof resumeData.experience === "string") {
+    console.log("Inside", typeof resumeData.experience === "string");
     resumeData.experience = JSON.parse(resumeData.experience);
   }
   const validateResumeData = ResumeSchema.safeParse(resumeData);
-
+  console.log("Validating");
   if (!resumeData?.onSite && !resumeData?.hybrid && !resumeData.remote) {
     return {
       errors: {
@@ -70,10 +78,11 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
       },
     };
   }
+  console.log("Validating-2");
 
-  console.log("RESUME", resumeData);
   if (!validateResumeData.success) {
     const formErrors = validateResumeData.error.flatten().fieldErrors;
+    console.log("Errors", formErrors);
     return {
       errors: {
         name: formErrors?.name,
@@ -85,11 +94,70 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
         relocation: formErrors?.relocation,
         salary: formErrors?.salary,
         experience: formErrors?.experience,
+        admin: formErrors?.admin,
+      },
+    };
+  }
+  console.log("Validation Success");
+
+  const name = resumeData.name;
+  const email = resumeData.email;
+  const profession = resumeData.profession;
+  const country = resumeData.country;
+  const location = resumeData.location;
+  const remote = resumeData?.remote;
+  const hybrid = resumeData?.hybrid;
+  const onsite = resumeData?.onsite;
+  const preference: { remote: boolean; hybrid: boolean; onsite: boolean }[] =
+    [];
+
+  preference.push({
+    remote: remote ? true : false,
+    hybrid: hybrid ? true : false,
+    onsite: onsite ? true : false,
+  });
+  const anotherState = resumeData?.anotherState;
+  const anotherCountry = resumeData?.anotherCountry;
+  const relocation: { anotherState: boolean; anotherCountry: boolean }[] = [];
+
+  relocation.push({
+    anotherState: anotherState ? true : false,
+    anotherCountry: anotherCountry ? true : false,
+  });
+  const salary = resumeData.salary;
+  const experience = resumeData.experience;
+  const admin = resumeData.admin;
+  const isHired = false;
+
+  const { data, error, status } = await supabase.from("resume").insert({
+    name,
+    email,
+    profession,
+    country,
+    location,
+    preference: JSON.stringify(preference),
+    relocation: JSON.stringify(relocation),
+    salary,
+    experience: JSON.stringify(experience),
+    admin,
+    admin_id: userId,
+    is_hired: isHired,
+  });
+  console.log("Error", error, "data", data, "status", status);
+  if (error) {
+    return {
+      errors: {
+        admin: "Failed to submit resume.",
       },
     };
   }
 
-  console.log("RESUME DATA", resumeData);
+  if (status === 201) {
+    return {
+      message: "Resume submitted successfully.",
+    };
+  }
+
   return {
     message: "Resume submitted.",
   };

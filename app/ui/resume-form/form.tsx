@@ -31,6 +31,7 @@ const initialFormState = {
   relocation: [],
   salary: "",
   experience: [],
+  admin: "",
   message: "",
 };
 
@@ -150,6 +151,7 @@ function Resume() {
     const workId = e.currentTarget.id;
     const value = e.currentTarget.value;
     const experienceId = e.currentTarget.parentElement?.id;
+
     if (!experienceId) {
       return;
     }
@@ -440,10 +442,11 @@ function Resume() {
                   >
                     <Input
                       onChange={(e) => workInputHandler(e)}
-                      id={ex.id.toString()}
+                      id={work.id.toString()}
                       placeholder="Developed dynamic dashboards using Next.js."
                       type="text"
                       required
+                      autoComplete="off"
                     ></Input>
 
                     <motion.button
@@ -509,8 +512,29 @@ function Resume() {
             </p>
           )}
 
+          <LabelInputContainer
+            className={inputState.errors?.admin ? "mb-0" : "mb-4"}
+          >
+            <label
+              htmlFor="admin"
+              className="text-slate-700 font-mukta font-medium text-base"
+            >
+              Submitted by
+            </label>
+            <Input
+              name="admin"
+              placeholder="Abhishek"
+              type="text"
+              required
+            ></Input>
+          </LabelInputContainer>
+          {inputState.errors?.admin && (
+            <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+              {inputState.errors.admin}
+            </p>
+          )}
           {inputState.message && (
-            <p className="text-green-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+            <p className="text-green-600 px-3 text-center text-sm mb-4 mt-1 font-medium">
               {inputState.message}
             </p>
           )}

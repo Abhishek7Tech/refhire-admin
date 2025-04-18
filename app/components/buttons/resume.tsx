@@ -3,15 +3,9 @@ import Image from "next/image";
 import { useActionState, useContext, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import LoadingSvg from "../../../public/loading.gif";
-import { UserContext } from "@/app/contexts/userContext";
 function SubmitButton() {
   const { data, pending } = useFormStatus();
-  const userContext = useContext(UserContext);
-  useEffect(() => {
-    if (data) {
-      userContext?.emailHandler(data?.get("email") as string);
-    }
-  }, [data]);
+
   useEffect(() => {
     console.log("PENDING...", pending);
   }, [pending]);
