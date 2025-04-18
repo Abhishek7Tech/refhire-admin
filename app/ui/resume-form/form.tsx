@@ -6,6 +6,7 @@ import Experience from "../add-experience/experience";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { v4 as uuid } from "uuid";
+import { formatMonth } from "@/app/utils/format-date/date";
 interface WorkInterface {
   id: number;
   work: string;
@@ -37,6 +38,54 @@ function Resume() {
       work: [{ id: 1, work: "" }],
     };
     const updateExperience = [...experience, addExperience];
+    setExperience(updateExperience);
+  };
+
+  const addExperienceHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const inputId = e.currentTarget.id;
+    const value = e.currentTarget.value;
+    if (!inputId || value.length < 3) {
+      return;
+    }
+
+    const updateExperince = experience.map((ex) =>
+      ex.id === +inputId ? { ...ex, role: value } : ex
+    );
+    setExperience(updateExperince);
+  };
+
+  const fromDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const value = e.currentTarget.value;
+    const inputId = e.currentTarget.id;
+    if (!value) {
+      return;
+    }
+    const month = formatMonth(value);
+    if (!month) {
+      return;
+    }
+    const updateExperience = experience.map((ex) =>
+      ex.id === +inputId ? { ...ex, from: month } : ex
+    );
+    setExperience(updateExperience);
+  };
+
+  const toDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const value = e.currentTarget.value;
+    const inputId = e.currentTarget.id;
+    if (!value) {
+      return;
+    }
+    const month = formatMonth(value);
+    if (!month) {
+      return;
+    }
+    const updateExperience = experience.map((ex) =>
+      ex.id === +inputId ? { ...ex, to: month } : ex
+    );
     setExperience(updateExperience);
   };
 
@@ -286,8 +335,16 @@ function Resume() {
               Experience
             </label>
             {experience.map((ex) => (
-              <div key={ex.id} className="border-2 border-dashed border-green-300 p-4 rounded-md mb-3">
-                <Experience id={ex.id.toString()} />
+              <div
+                key={ex.id}
+                className="border-2 border-dashed border-green-300 p-4 rounded-md mb-3"
+              >
+                <Experience
+                  fromDateHandler={fromDateHandler}
+                  experienceHandler={addExperienceHandler}
+                  toDateHandler={toDateHandler}
+                  id={ex.id.toString()}
+                />
                 {ex.work.map((work) => (
                   <div
                     className="my-4 flex space-x-2 items-center "
