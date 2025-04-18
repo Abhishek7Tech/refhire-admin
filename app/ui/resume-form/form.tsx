@@ -146,6 +146,27 @@ function Resume() {
     setExperience(updateWork);
   };
 
+  const workInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const workId = e.currentTarget.id;
+    const value = e.currentTarget.value;
+    const experienceId = e.currentTarget.parentElement?.id;
+    if (!experienceId) {
+      return;
+    }
+
+    const updateWork = experience.map((ex) =>
+      ex.id === +experienceId
+        ? {
+            ...ex,
+            work: ex.work.map((work) =>
+              work.id === +workId ? { ...work, work: value } : work
+            ),
+          }
+        : ex
+    );
+    setExperience(updateWork);
+  };
+
   const decreaseExpHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -278,12 +299,12 @@ function Resume() {
               <div className="flex justify-start space-x-6">
                 <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
-                    name="preference"
+                    name="remote"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
                   ></Input>
                   <label
-                    htmlFor="preference"
+                    htmlFor="remote"
                     className="text-slate-700 font-mukta font-medium text-base"
                   >
                     Remote
@@ -292,12 +313,12 @@ function Resume() {
 
                 <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
-                    name="preference"
+                    name="hybrid"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
                   ></Input>
                   <label
-                    htmlFor="preference"
+                    htmlFor="hybrid"
                     className="text-slate-700 font-mukta font-medium text-base"
                   >
                     Hybrid
@@ -306,12 +327,12 @@ function Resume() {
 
                 <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
-                    name="preference"
+                    name="onSite"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
                   ></Input>
                   <label
-                    htmlFor="preference"
+                    htmlFor="onSite"
                     className="text-slate-700 font-mukta font-medium text-base"
                   >
                     On-site
@@ -336,12 +357,12 @@ function Resume() {
               <div className="flex justify-start space-x-6">
                 <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
-                    name="relocation"
+                    name="anotherState"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
                   ></Input>
                   <label
-                    htmlFor="relocation"
+                    htmlFor="anotherState"
                     className="text-slate-700 font-mukta font-medium text-base"
                   >
                     Another State
@@ -350,12 +371,12 @@ function Resume() {
 
                 <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
-                    name="relocation"
+                    name="anotherCountry"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
                   ></Input>
                   <label
-                    htmlFor="relocation"
+                    htmlFor="anotherCountry"
                     className="text-slate-700 font-mukta font-medium text-base"
                   >
                     Another Country
@@ -418,7 +439,8 @@ function Resume() {
                     id={ex.id.toString()}
                   >
                     <Input
-                      name="work"
+                      onChange={(e) => workInputHandler(e)}
+                      id={ex.id.toString()}
                       placeholder="Developed dynamic dashboards using Next.js."
                       type="text"
                       required
@@ -487,7 +509,7 @@ function Resume() {
             </p>
           )}
 
-          {inputState?.message && (
+          {inputState.message && (
             <p className="text-green-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
               {inputState.message}
             </p>

@@ -22,17 +22,17 @@ function Experience({
 
       <Input
         id={id}
-        name="from"
         type="month"
         onChange={(e) => fromDateHandler(e)}
         className="w-min"
+        defaultValue={""}
       ></Input>
       <Input
         id={id}
-        name="to"
         type="month"
         onChange={(e) => toDateHandler(e)}
         className="w-min"
+        defaultValue={""}
       ></Input>
     </div>
   );

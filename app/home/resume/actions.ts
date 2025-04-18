@@ -23,8 +23,13 @@ const ResumeSchema = z.object({
     .string()
     .trim()
     .min(2, { message: "Location should be longer than 2 characters." }),
-  preference: z.string().array().nonempty({ message: "Select a checkbox." }),
-  relocation: z.string().array().nonempty({ message: "Select a checkbox." }),
+  remote: z.string(),
+  hybrid: z.string(),
+  onsite: z.string(),
+  preference: z.undefined(),
+  anotherState: z.string().optional(),
+  anotherCountry: z.string().optional(),
+  relocation: z.undefined(),
   salary: z
     .string()
     .trim()
@@ -53,11 +58,20 @@ const ResumeSchema = z.object({
 
 export const getResumeData = async (previousState: any, formData: FormData) => {
   const resumeData = Object.fromEntries(formData);
-  const validateResumeData = ResumeSchema.safeParse(resumeData);
-  console.log("RESUME", resumeData);
   if (typeof resumeData.experience === "string") {
     resumeData.experience = JSON.parse(resumeData.experience);
   }
+  const validateResumeData = ResumeSchema.safeParse(resumeData);
+
+  if (!resumeData?.onSite && !resumeData?.hybrid && !resumeData.remote) {
+    return {
+      errors: {
+        preference: "Select a job preference.",
+      },
+    };
+  }
+
+  console.log("RESUME", resumeData);
   if (!validateResumeData.success) {
     const formErrors = validateResumeData.error.flatten().fieldErrors;
     return {
