@@ -29,6 +29,11 @@ export function AdminMenu() {
       icon: <IconFileCv className="h-5 w-6 shrink-0 text-slate-700 " />,
     },
     {
+      label: "Recruiters",
+      href: "home/recruiters",
+      icon: <IconGitPullRequest className="h-5 w-6 shrink-0 text-slate-700 " />,
+    },
+    {
       label: "Dashboard",
       href: "/home",
       icon: <IconUserFilled className="h-5 w-5 shrink-0 text-slate-700 " />,

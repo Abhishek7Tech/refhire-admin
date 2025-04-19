@@ -1,5 +1,5 @@
 "use server";
-import { generateAvatar } from "@/app/utils/add-avatars/avatar";
+import { generateAvatar } from "@/app/utils/avatars/avatar";
 import { createClient } from "@/app/utils/supabase/server";
 import { error } from "console";
 import { pre } from "motion/react-client";
