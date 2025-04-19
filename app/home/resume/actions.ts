@@ -1,4 +1,5 @@
 "use server";
+import { generateAvatar } from "@/app/utils/add-avatars/avatar";
 import { createClient } from "@/app/utils/supabase/server";
 import { error } from "console";
 import { pre } from "motion/react-client";
@@ -134,6 +135,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   const experience = resumeData.experience;
   const admin = resumeData.admin;
   const isHired = false;
+  const avatar = generateAvatar();
 
   const { data, error, status } = await supabase.from("resume").insert({
     name,
@@ -149,6 +151,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
     admin,
     admin_id: userId,
     is_hired: isHired,
+    avatar,
   });
   console.log("Error", error, "data", data, "status", status);
   if (error) {

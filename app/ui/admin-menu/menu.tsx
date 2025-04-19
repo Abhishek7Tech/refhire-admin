@@ -12,6 +12,7 @@ import {
   IconGitPullRequest,
   IconUserFilled,
   IconUserPlus,
+  IconFileCv,
 } from "@tabler/icons-react";
 import { useState } from "react";
 
@@ -23,9 +24,9 @@ export function AdminMenu() {
       icon: <IconUserPlus className="h-5 w-5 shrink-0 text-slate-700 " />,
     },
     {
-      label: "Recruiters",
-      href: "#",
-      icon: <IconGitPullRequest className="h-5 w-5 shrink-0 text-slate-700 " />,
+      label: "Resumes",
+      href: "home/cv",
+      icon: <IconFileCv className="h-5 w-6 shrink-0 text-slate-700 " />,
     },
     {
       label: "Dashboard",
@@ -35,9 +36,7 @@ export function AdminMenu() {
     {
       label: "Logout",
       href: "#",
-      icon: (
-        <IconArrowLeft className="h-5 w-5 shrink-0 text-slate-700" />
-      ),
+      icon: <IconArrowLeft className="h-5 w-5 shrink-0 text-slate-700" />,
     },
   ];
 
@@ -52,8 +51,7 @@ export function AdminMenu() {
     >
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
-        <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-            
+          <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
             <div className="mt-8 flex flex-col gap-2">
               {menuItems.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
