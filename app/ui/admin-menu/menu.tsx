@@ -29,7 +29,7 @@ export function AdminMenu() {
     },
     {
       label: "Dashboard",
-      href: "#",
+      href: "/home",
       icon: <IconUserFilled className="h-5 w-5 shrink-0 text-slate-700 " />,
     },
     {

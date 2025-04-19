@@ -17,6 +17,9 @@ const ResumeSchema = z.object({
     .string()
     .trim()
     .min(2, { message: "Profession should be longer than 2 characters." }),
+  yoe: z.coerce.number().refine((val) => val > 2, {
+    message: "Experience should be greater than 2.",
+  }),
   country: z
     .string()
     .trim()
@@ -69,6 +72,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
     console.log("Inside", typeof resumeData.experience === "string");
     resumeData.experience = JSON.parse(resumeData.experience);
   }
+
   const validateResumeData = ResumeSchema.safeParse(resumeData);
   console.log("Validating");
   if (!resumeData?.onSite && !resumeData?.hybrid && !resumeData.remote) {
@@ -88,6 +92,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
         name: formErrors?.name,
         email: formErrors?.email,
         profession: formErrors?.profession,
+        yoe: formErrors?.yoe,
         country: formErrors?.country,
         location: formErrors?.location,
         preference: formErrors?.profession,
@@ -103,6 +108,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   const name = resumeData.name;
   const email = resumeData.email;
   const profession = resumeData.profession;
+  const yoe = resumeData.yoe;
   const country = resumeData.country;
   const location = resumeData.location;
   const remote = resumeData?.remote;
@@ -134,6 +140,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
     email,
     profession,
     country,
+    years_of_experience: yoe,
     location,
     preference: JSON.stringify(preference),
     relocation: JSON.stringify(relocation),

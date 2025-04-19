@@ -25,6 +25,7 @@ const initialFormState = {
   name: "",
   email: "",
   profession: "",
+  yoe: 0,
   country: "",
   location: "",
   preference: [],
@@ -248,6 +249,29 @@ function Resume() {
               {inputState.errors.profession}
             </p>
           )}
+
+          <LabelInputContainer
+            className={inputState.errors?.yoe ? "mb-0" : "mb-4"}
+          >
+            <label
+              htmlFor="yoe"
+              className="text-slate-700 font-mukta font-medium text-base"
+            >
+              Years of Experience
+            </label>
+            <Input
+              name="yoe"
+              placeholder="3"
+              type="number"
+              required
+            ></Input>
+          </LabelInputContainer>
+          {inputState.errors?.yoe && (
+            <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+              {inputState.errors.yoe}
+            </p>
+          )}
+
           <LabelInputContainer
             className={inputState.errors?.country ? "mb-0" : "mb-4"}
           >
