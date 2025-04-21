@@ -46,6 +46,27 @@ function Resume() {
     { id: 1, role: "", from: "", to: "", work: [{ id: 1, work: "" }] },
   ]);
 
+  const [skills, setSkills] = useState<{ id: number; skill: string }[]>([
+    { id: 1, skill: "" },
+  ]);
+
+  const increaseSkillHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const id = skills.length + 1;
+    const addSkill = { id, skill: "" };
+    const updateSkill = [...skills, addSkill];
+    setSkills(updateSkill);
+  };
+
+  const decreaseSkillHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (skills.length === 1) {
+      return;
+    }
+    const id = +e.currentTarget.id;
+    const updateSkills = skills.filter((skill) => skill.id !== id);
+    setSkills(updateSkills);
+  };
   const increaseExpHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -259,12 +280,7 @@ function Resume() {
             >
               Years of Experience
             </label>
-            <Input
-              name="yoe"
-              placeholder="3"
-              type="number"
-              required
-            ></Input>
+            <Input name="yoe" placeholder="3" type="number" required></Input>
           </LabelInputContainer>
           {inputState.errors?.yoe && (
             <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
@@ -535,6 +551,62 @@ function Resume() {
               {inputState.errors.experience}
             </p>
           )}
+
+          <LabelInputContainer
+            className={inputState.errors?.experience ? "mb-0" : "mb-4"}
+          >
+            <label
+              htmlFor="experience"
+              className="text-slate-700 font-mukta font-medium text-base"
+            >
+              Skills
+            </label>
+            <div className="border-2 border-dashed border-green-300 p-4 rounded-md mb-3">
+              {skills.map((skill, idx) => {
+                return (
+                  <div
+                    className="my-4 flex space-x-2 items-center "
+                    key={skill.id.toString()}
+                  >
+                    <Input
+                      id={skill.id.toString()}
+                      name="role"
+                      type="text"
+                      onChange={(e) => {}}
+                      placeholder="React"
+                    ></Input>
+
+                    <motion.button
+                      whileHover={{
+                        scaleY: 1.1,
+                      }}
+                      type="button"
+                      id={skill.id.toString()}
+                      onClick={(e) => {
+                        increaseSkillHandler(e);
+                      }}
+                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                    >
+                      &#43;
+                    </motion.button>
+                    <motion.button
+                      whileHover={{
+                        scaleY: 1.1,
+                      }}
+                      type="button"
+                      id={skill.id.toString()}
+                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                      onClick={(e) => {
+                        decreaseSkillHandler(e);
+                      }}
+                    >
+                      &minus;
+                    </motion.button>
+                  </div>
+                );
+              })}
+            </div>
+          </LabelInputContainer>
 
           <LabelInputContainer
             className={inputState.errors?.admin ? "mb-0" : "mb-4"}

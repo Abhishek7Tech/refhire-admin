@@ -113,6 +113,16 @@ export const HoverEffect = ({
               </div>
 
               <div className="flex items-center gap-2">
+                <IconCoin className="h-5 w-5 shrink-0 text-slate-700" />
+                <span className="text-slate-700 font-mukta text-base font-semibold">
+                  Referral Amount:
+                </span>
+                <span className="font-medium text-slate-700 font-mukta text-base">
+                  $1000 - $2000
+                </span>
+              </div>
+              
+              <div className="flex items-center gap-2">
                 <IconBuildings className="h-5 w-5 shrink-0 text-slate-700" />
                 <span className="text-slate-700 font-mukta text-base font-semibold">
                   HQ:
@@ -122,15 +132,6 @@ export const HoverEffect = ({
                 </span>
               </div>
 
-              <div className="flex items-center gap-2">
-                <IconCoin className="h-5 w-5 shrink-0 text-slate-700" />
-                <span className="text-slate-700 font-mukta text-base font-semibold">
-                  Referral Amount:
-                </span>
-                <span className="font-medium text-slate-700 font-mukta text-base">
-                  $1000 - $2000
-                </span>
-              </div>
 
               <div className="flex items-center gap-2">
                 <IconAlarmSnooze className="h-5 w-5 shrink-0 text-slate-700" />
@@ -141,24 +142,7 @@ export const HoverEffect = ({
                   False
                 </span>
               </div>
-              <div className="flex justify-between">
-                <div className="flex items-center gap-2">
-                  <IconIdBadge className="h-5 w-5 shrink-0 text-slate-700" />
-                  <span className="text-slate-700 font-mukta text-base font-semibold">
-                    Application id:
-                  </span>
-                  <span className="font-medium text-slate-700 font-mukta text-base">
-                    74b885b9-ac...
-                  </span>
-                  <motion.button
-                    animate={{ scale: 1 }}
-                    whileHover={{ scale: 1.2 }}
-                    className="cursor-pointer"
-                  >
-                    <IconCopy className="h-5 w-5 shrink-0 text-slate-700" />
-                  </motion.button>
-                </div>
-              </div>
+              
             </div>
           </Card>
         </div>

@@ -20,17 +20,17 @@ export function AdminMenu() {
   const menuItems = [
     {
       label: "Add Resume",
-      href: "home/resume",
+      href: "/home/resume",
       icon: <IconUserPlus className="h-5 w-5 shrink-0 text-slate-700 " />,
     },
     {
       label: "Resumes",
-      href: "home/cv",
+      href: "/home/cv",
       icon: <IconFileCv className="h-5 w-6 shrink-0 text-slate-700 " />,
     },
     {
       label: "Recruiters",
-      href: "home/recruiters",
+      href: "/home/recruiters",
       icon: <IconGitPullRequest className="h-5 w-6 shrink-0 text-slate-700 " />,
     },
     {
