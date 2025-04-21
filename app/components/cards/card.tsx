@@ -11,6 +11,8 @@ import {
   IconBriefcase,
   IconBriefcaseFilled,
   IconBuildings,
+  IconCircleArrowDown,
+  IconCircleArrowUp,
   IconCoin,
   IconCopy,
   IconIdBadge,
@@ -18,6 +20,7 @@ import {
   IconMapPinFilled,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import { Categories } from "@/app/utils/categories/categories";
 export const HoverEffect = ({
   items,
   className,
@@ -30,6 +33,38 @@ export const HoverEffect = ({
   className?: string;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [categories, setCategories] = useState<
+    {
+      id: string;
+      name: string;
+      subCategories: string[];
+      showSubCategories: boolean;
+    }[]
+  >(Categories);
+
+  const showCategoryHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const id = e.currentTarget.id;
+    const updateCategories = categories.map((category) =>
+      category.id === id
+        ? { ...category, showSubCategories: true }
+        : { ...category, showSubCategories: false }
+    );
+    setCategories(updateCategories);
+  };
+
+  const hideCategoryHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const id = e.currentTarget.id;
+    const updateCategories = categories.map((category) =>
+      category.id === id ? { ...category, showSubCategories: false } : category
+    );
+    setCategories(updateCategories);
+  };
 
   return (
     <div
@@ -121,7 +156,7 @@ export const HoverEffect = ({
                   $1000 - $2000
                 </span>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <IconBuildings className="h-5 w-5 shrink-0 text-slate-700" />
                 <span className="text-slate-700 font-mukta text-base font-semibold">
@@ -132,7 +167,6 @@ export const HoverEffect = ({
                 </span>
               </div>
 
-
               <div className="flex items-center gap-2">
                 <IconAlarmSnooze className="h-5 w-5 shrink-0 text-slate-700" />
                 <span className="text-slate-700 font-mukta text-base font-semibold">
@@ -142,7 +176,72 @@ export const HoverEffect = ({
                   False
                 </span>
               </div>
-              
+              <h3 className="text-slate-700 font-mukta text-base font-semibold underline underline-offset-2">
+                Select category
+              </h3>
+              <div className="mt-2 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+
+              <div className="flex flex-col gap-2">
+                {categories.map((category) => {
+                  return (
+                    <div key={category.id} className="flex flex-col gap-2">
+                      <div className="flex justify-between items-center">
+                        <h4 className="text-slate-700 font-mukta text-sm font-semibold">
+                          {category.name}
+                        </h4>
+                        {category.showSubCategories ? (
+                          <motion.button
+                            onClick={(e) => hideCategoryHandler(e)}
+                            id={category.id}
+                            className="cursor-pointer"
+                          >
+                            <IconCircleArrowUp className="h-5 w-5 shrink-0 text-slate-700" />
+                          </motion.button>
+                        ) : (
+                          <motion.button
+                            onClick={(e) => showCategoryHandler(e)}
+                            id={category.id}
+                            className="cursor-pointer"
+                          >
+                            <IconCircleArrowDown className="h-5 w-5 shrink-0 text-slate-700" />
+                          </motion.button>
+                        )}
+                      </div>
+
+                      <AnimatePresence initial={false} mode="wait">
+                        {category.showSubCategories && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{
+                              opacity: 1,
+                              transition: { duration: 0.12, delay: 0.2 },
+                            }}
+                            exit={{
+                              opacity: 0,
+                              transition: { duration: 0.12, delay: 0.3 },
+                            }}
+                            className="flex gap-1 flex-wrap max-w-2xs"
+                            layoutId={`${category.subCategories}-${category.id}`}
+                            key={`${category.subCategories}-${category.id}`}
+                          >
+                            {category.subCategories.map((subCategory) => {
+                              return (
+                                <button
+                                  key={subCategory}
+                                  id={subCategory}
+                                  className="w-fit text-xs px-1 py-0.5 rounded-lg bg-gray-50 text-slate-700"
+                                >
+                                  {subCategory}
+                                </button>
+                              );
+                            })}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </Card>
         </div>
