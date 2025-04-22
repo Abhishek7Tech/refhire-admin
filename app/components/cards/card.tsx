@@ -33,6 +33,7 @@ export const HoverEffect = ({
   className?: string;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [categories, setCategories] = useState<
     {
       id: string;
@@ -48,9 +49,7 @@ export const HoverEffect = ({
     e.preventDefault();
     const id = e.currentTarget.id;
     const updateCategories = categories.map((category) =>
-      category.id === id
-        ? { ...category, showSubCategories: true }
-        : { ...category, showSubCategories: false }
+      category.id === id ? { ...category, showSubCategories: true } : category
     );
     setCategories(updateCategories);
   };
@@ -66,6 +65,20 @@ export const HoverEffect = ({
     setCategories(updateCategories);
   };
 
+  const subCategoryHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const subcategory = e.currentTarget.id;
+    if (selectedCategory?.includes(subcategory)) {
+      const updateSelectedCategory = selectedCategory.filter(
+        (category) => category !== subcategory
+      );
+      setSelectedCategory(updateSelectedCategory);
+      return;
+    }
+    setSelectedCategory((prev) => [...prev, subcategory]);
+  };
   return (
     <div
       className={cn(
@@ -227,9 +240,14 @@ export const HoverEffect = ({
                             {category.subCategories.map((subCategory) => {
                               return (
                                 <button
+                                  onClick={(e) => subCategoryHandler(e)}
                                   key={subCategory}
                                   id={subCategory}
-                                  className="w-fit text-xs px-1 py-0.5 rounded-lg bg-gray-50 text-slate-700"
+                                  className={`w-fit cursor-pointer text-xs px-1 py-0.5 rounded-lg ${
+                                    selectedCategory.includes(subCategory)
+                                      ? "bg-emerald-200 border-2 border-gray-50"
+                                      : "bg-gray-50"
+                                  } text-slate-700`}
                                 >
                                   {subCategory}
                                 </button>
