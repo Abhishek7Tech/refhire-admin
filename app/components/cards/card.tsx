@@ -16,6 +16,7 @@ import {
   IconCoin,
   IconCopy,
   IconIdBadge,
+  IconLink,
   IconMapPin,
   IconMapPinFilled,
 } from "@tabler/icons-react";
@@ -168,6 +169,20 @@ export const HoverEffect = ({
                 <span className="font-medium text-slate-700 font-mukta text-base">
                   $1000 - $2000
                 </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <IconLink className="h-5 w-5 shrink-0 text-slate-700" />
+                <span className="text-slate-700 font-mukta text-base font-semibold">
+                  Hiring Link:
+                </span>
+                <Link
+                  target="_blank"
+                  href={"https://t.co/KRNwUgXIqA"}
+                  className="text-slate-700 font-mukta text-base font-medium underline underline-offset-2"
+                >
+                  https://t.co/KRNwUg...
+                </Link>
               </div>
 
               <div className="flex items-center gap-2">
