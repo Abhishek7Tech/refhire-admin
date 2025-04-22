@@ -37,6 +37,8 @@ export const Categories = [
     id: "3",
     name: "Web3 & Blockchain",
     subCategories: [
+      "Frontend Developer Web3",
+      "Backend Developer Web3",
       "Blockchain Developer",
       "Smart Contract Developer",
       "Rust Developer",

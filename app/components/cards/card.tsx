@@ -22,15 +22,16 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { Categories } from "@/app/utils/categories/categories";
+import SubmitButton from "../buttons/card";
+import { RecruiteRequest } from "@/app/utils/types/types";
+
+const RESUME_AVATAR = process.env.NEXT_PUBLIC_RESUME_AVATAR_URL;
+
 export const HoverEffect = ({
   items,
   className,
 }: {
-  items: {
-    title: string;
-    description: string;
-    link: string;
-  }[];
+  items: RecruiteRequest[];
   className?: string;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -43,6 +44,7 @@ export const HoverEffect = ({
       showSubCategories: boolean;
     }[]
   >(Categories);
+  const [pending, setPending] = useState<boolean>(false);
 
   const showCategoryHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -80,6 +82,12 @@ export const HoverEffect = ({
     }
     setSelectedCategory((prev) => [...prev, subcategory]);
   };
+
+  const apporveRequestHandler = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+  };
   return (
     <div
       className={cn(
@@ -90,7 +98,7 @@ export const HoverEffect = ({
       {items.map((item, idx) => (
         <div
           //   href={item?.link}
-          key={item?.link}
+          key={item?.id}
           className="relative group  block p-2 h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
@@ -114,17 +122,22 @@ export const HoverEffect = ({
           </AnimatePresence>
           <Card>
             <div className="flex gap-4 items-center cursor-pointer">
-              <Image src={Mikasa} alt="user avatar" height={36} width={36} />
+              <Image
+                src={`${RESUME_AVATAR}/${item?.avatar}`}
+                alt="user avatar"
+                height={36}
+                width={36}
+              />
               <div className="flex flex-col gap-1">
                 <h3 className="text-slate-700 leading-2.5 font-medium font-mukta text-lg">
-                  Abhishek Lingwal,
+                  {item?.name}
                 </h3>
                 <Link
                   className="text-slate-700 font-semibold text-sm"
                   target="_blank"
-                  href={"#"}
+                  href={item?.organization_url}
                 >
-                  🏢 Facebook
+                  🏢 {item?.organization}
                 </Link>
               </div>
             </div>
@@ -133,8 +146,7 @@ export const HoverEffect = ({
               <div className="flex items-center gap-2">
                 <IconBriefcase className="h-5 w-5 shrink-0 text-slate-700" />{" "}
                 <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
-                  Hiring:{" "}
-                  <span className="font-medium ">Frontend Engineer</span>
+                  Hiring: <span className="font-medium ">{item?.position}</span>
                 </h4>
               </div>
               <div className="flex items-center gap-2">
@@ -144,10 +156,10 @@ export const HoverEffect = ({
                 </span>
                 <Link
                   target="_blank"
-                  href={"https://x.com/Abhishek_Tech_"}
+                  href={item?.twitter_recruiter}
                   className="text-slate-700 font-mukta text-base font-medium underline underline-offset-2"
                 >
-                  https://x.com/Abhishek_Tech_
+                  {item?.twitter_recruiter}
                 </Link>
               </div>
 
@@ -157,7 +169,7 @@ export const HoverEffect = ({
                   Location:
                 </span>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  Hybrid
+                  {item?.office_location}
                 </span>
               </div>
 
@@ -167,7 +179,7 @@ export const HoverEffect = ({
                   Referral Amount:
                 </span>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  $1000 - $2000
+                  {item?.amount}
                 </span>
               </div>
 
@@ -178,10 +190,10 @@ export const HoverEffect = ({
                 </span>
                 <Link
                   target="_blank"
-                  href={"https://t.co/KRNwUgXIqA"}
+                  href={item?.hiring_ad}
                   className="text-slate-700 font-mukta text-base font-medium underline underline-offset-2"
                 >
-                  https://t.co/KRNwUg...
+                  {item?.hiring_ad.slice(0, 20)}...
                 </Link>
               </div>
 
@@ -191,7 +203,7 @@ export const HoverEffect = ({
                   HQ:
                 </span>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  Menlo Park, California.
+                  {item?.office_location}
                 </span>
               </div>
 
@@ -201,7 +213,7 @@ export const HoverEffect = ({
                   Status:
                 </span>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  False
+                  {item?.application_status ? "🟢" : "🔴"}
                 </span>
               </div>
               <h3 className="text-slate-700 font-mukta text-base font-semibold underline underline-offset-2">
@@ -275,6 +287,11 @@ export const HoverEffect = ({
                   );
                 })}
               </div>
+              <SubmitButton
+                disabled={selectedCategory.length === 0}
+                pending={pending}
+                apporveRequestHandler={apporveRequestHandler}
+              />
             </div>
           </Card>
         </div>
