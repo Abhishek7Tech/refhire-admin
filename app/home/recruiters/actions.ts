@@ -32,3 +32,11 @@ export const getRecruiteRequests = async () => {
     status,
   };
 };
+
+export const addCategory = async () => {
+  const supabase = await createClient();
+  const userSession = await supabase.auth.getUser();
+  const userId = await userSession.data.user?.identities;
+
+  console.log("User Id", userId);
+};

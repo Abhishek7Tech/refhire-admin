@@ -33,7 +33,6 @@ export const getSignInData = async (previousState: any, formData: FormData) => {
     .eq("email", email)
     .single();
 
-  console.log("Data", data, status);
 
   if (!data?.email) {
     return {

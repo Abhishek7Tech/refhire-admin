@@ -24,6 +24,7 @@ import Link from "next/link";
 import { Categories } from "@/app/utils/categories/categories";
 import SubmitButton from "../buttons/card";
 import { RecruiteRequest } from "@/app/utils/types/types";
+import { addCategory } from "@/app/home/recruiters/actions";
 
 const RESUME_AVATAR = process.env.NEXT_PUBLIC_RESUME_AVATAR_URL;
 
@@ -87,6 +88,7 @@ export const HoverEffect = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    addCategory();
   };
   return (
     <div
