@@ -30,12 +30,3 @@ export function Recruiters() {
     </div>
   );
 }
-
-export const projects = [
-  {
-    title: "Stripe",
-    description:
-      "A technology company that builds economic infrastructure for the internet.",
-    link: "https://stripe.com",
-  },
-];

@@ -1,7 +1,7 @@
 import { cn } from "@/app/utils/utils";
 import { AnimatePresence, motion } from "motion/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Mikasa from "@/public/mikasa.png";
 import {
@@ -37,6 +37,8 @@ export const HoverEffect = ({
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [hiringData, setHiringData] = useState<RecruiteRequest[] | []>([]);
   const [categories, setCategories] = useState<
     {
       id: string;
@@ -47,6 +49,9 @@ export const HoverEffect = ({
   >(Categories);
   const [pending, setPending] = useState<boolean>(false);
 
+  useEffect(() => {
+    setHiringData(items);
+  }, [items]);
   const showCategoryHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -88,7 +93,26 @@ export const HoverEffect = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    addCategory();
+    setPending(true);
+    const res = await addCategory(selectedCategory);
+    if (res.error) {
+      setError(res.error);
+    }
+
+    if (res.data) {
+      const updateHiringData = hiringData.map((data) =>
+        data.id === res.data[0].id
+          ? {
+              ...data,
+              application_status: res.data[0].application_status,
+            }
+          : data
+      );
+      setHiringData(updateHiringData);
+      console.log("Parse", JSON.parse(res.data[0].tags))
+      // setSelectedCategory([JSON.parse(res.data[0].tags)]);
+    }
+    setPending(false);
   };
   return (
     <div
@@ -97,7 +121,7 @@ export const HoverEffect = ({
         className
       )}
     >
-      {items.map((item, idx) => (
+      {hiringData.map((item, idx) => (
         <div
           //   href={item?.link}
           key={item?.id}
@@ -289,6 +313,11 @@ export const HoverEffect = ({
                   );
                 })}
               </div>
+              {error && (
+                <p className="text-red-600 text-center text-sm max-w-sm  mt-1 font-medium">
+                  {error}
+                </p>
+              )}
               <SubmitButton
                 disabled={selectedCategory.length === 0}
                 pending={pending}

@@ -16,9 +16,9 @@ export const getRecruiteRequests = async () => {
   const { data, error, status } = await supabase
     .from("hiring")
     .select(
-      "id, amount, application_status, avatar, hiring_ad, office_location, work_mode, organization_url, twitter_recruiter, position, organization, name"
+      "id, amount, application_status, avatar, hiring_ad, office_location, work_mode, organization_url, twitter_recruiter, position, organization, name, tags"
     )
-    .eq("application_status", "FALSE");
+    .eq("admin_id", userId);
   console.log("Data:", data, status);
   if (error) {
     return {
@@ -33,10 +33,39 @@ export const getRecruiteRequests = async () => {
   };
 };
 
-export const addCategory = async () => {
+export const addCategory = async (category: string[]) => {
   const supabase = await createClient();
   const userSession = await supabase.auth.getUser();
-  const userId = await userSession.data.user?.identities;
+  const userId = await userSession.data.user?.id;
 
+  if (!userId) {
+    return {
+      error: "User not found",
+      status: 401,
+    };
+  }
+  const categoryToJson = JSON.stringify(category);
+  const { data, error, status } = await supabase
+    .from("hiring")
+    .update({ application_status: true, tags: categoryToJson })
+    .eq("id", "fb3059da-2086-46f1-b1f2-a785ceb190f4")
+    .eq("admin_id", userId)
+    .select(
+      "id, amount, application_status, avatar, hiring_ad, office_location, work_mode, organization_url, twitter_recruiter, position, organization, name, tags"
+    );
   console.log("User Id", userId);
+  console.log("Data:", data, status);
+  console.log("Error:", error);
+
+  if (error) {
+    return {
+      error: error.message,
+      status: status,
+    };
+  }
+
+  return {
+    data,
+    status,
+  };
 };
