@@ -13,3 +13,10 @@ export interface RecruiteRequest {
   name: string;
   tags: string[];
 }
+
+interface Category {
+  id: string;
+  name: string;
+  subCategories: string[];
+  showSubCategories: boolean;
+}

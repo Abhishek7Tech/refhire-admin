@@ -33,7 +33,7 @@ export const getRecruiteRequests = async () => {
   };
 };
 
-export const addCategory = async (category: string[]) => {
+export const addCategory = async (category: string[], id: string) => {
   const supabase = await createClient();
   const userSession = await supabase.auth.getUser();
   const userId = await userSession.data.user?.id;
@@ -48,7 +48,7 @@ export const addCategory = async (category: string[]) => {
   const { data, error, status } = await supabase
     .from("hiring")
     .update({ application_status: true, tags: categoryToJson })
-    .eq("id", "fb3059da-2086-46f1-b1f2-a785ceb190f4")
+    .eq("id", id)
     .eq("admin_id", userId)
     .select(
       "id, amount, application_status, avatar, hiring_ad, office_location, work_mode, organization_url, twitter_recruiter, position, organization, name, tags"
