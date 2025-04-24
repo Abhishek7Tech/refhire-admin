@@ -22,17 +22,16 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { Categories } from "@/app/utils/categories/categories";
-import SubmitButton from "../buttons/card";
+import SubmitButton from "../buttons/recruite";
 import { RecruiteRequest } from "@/app/utils/types/types";
 import {
   addCategory,
   getRecruiteRequests,
 } from "@/app/home/recruiters/actions";
-import { set } from "zod";
 
 const RESUME_AVATAR = process.env.NEXT_PUBLIC_RESUME_AVATAR_URL;
 
-export const HoverEffect = ({
+export const RecruiteCard = ({
   className,
   recruiteData,
   idx,
@@ -149,7 +148,7 @@ export const HoverEffect = ({
                 {recruiteData.name}
               </h3>
               <Link
-                className="text-slate-700 font-semibold text-sm"
+                className="text-slate-700 font-mukta font-semibold text-sm"
                 target="_blank"
                 href={recruiteData.organization_url}
               >
@@ -163,8 +162,10 @@ export const HoverEffect = ({
               <IconBriefcase className="h-5 w-5 shrink-0 text-slate-700" />{" "}
               <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
                 Hiring:{" "}
-                <span className="font-medium ">{recruiteData.position}</span>
               </h4>
+              <span className="font-medium text-slate-700 font-mukta text-base">
+                {recruiteData.position}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <IconBrandX className="h-5 w-5 shrink-0 text-slate-700" />{" "}
@@ -182,9 +183,9 @@ export const HoverEffect = ({
 
             <div className="flex items-center gap-2">
               <IconMapPin className="h-5 w-5 shrink-0 text-slate-700" />
-              <span className="text-slate-700 font-mukta text-base font-semibold">
+              <h4 className="text-slate-700 font-mukta text-base font-semibold">
                 Location:
-              </span>
+              </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
                 {recruiteData.office_location}
               </span>
@@ -192,9 +193,9 @@ export const HoverEffect = ({
 
             <div className="flex items-center gap-2">
               <IconCoin className="h-5 w-5 shrink-0 text-slate-700" />
-              <span className="text-slate-700 font-mukta text-base font-semibold">
+              <h4 className="text-slate-700 font-mukta text-base font-semibold">
                 Referral Amount:
-              </span>
+              </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
                 {recruiteData.amount}
               </span>
@@ -202,9 +203,9 @@ export const HoverEffect = ({
 
             <div className="flex items-center gap-2">
               <IconLink className="h-5 w-5 shrink-0 text-slate-700" />
-              <span className="text-slate-700 font-mukta text-base font-semibold">
+              <h4 className="text-slate-700 font-mukta text-base font-semibold">
                 Hiring Link:
-              </span>
+              </h4>
               <Link
                 target="_blank"
                 href={recruiteData.hiring_ad}
@@ -216,9 +217,9 @@ export const HoverEffect = ({
 
             <div className="flex items-center gap-2">
               <IconBuildings className="h-5 w-5 shrink-0 text-slate-700" />
-              <span className="text-slate-700 font-mukta text-base font-semibold">
+              <h4 className="text-slate-700 font-mukta text-base font-semibold">
                 HQ:
-              </span>
+              </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
                 {recruiteData.office_location}
               </span>
@@ -226,16 +227,16 @@ export const HoverEffect = ({
 
             <div className="flex items-center gap-2">
               <IconAlarmSnooze className="h-5 w-5 shrink-0 text-slate-700" />
-              <span className="text-slate-700 font-mukta text-base font-semibold">
+              <h4 className="text-slate-700 font-mukta text-base font-semibold">
                 Status:
-              </span>
+              </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
                 {recruiteData.application_status ? "🟢" : "🔴"}
               </span>
             </div>
-            <h3 className="text-slate-700 font-mukta text-base font-semibold underline underline-offset-2">
+            <h4 className="text-slate-700 font-mukta text-base font-semibold underline underline-offset-2">
               Select category
-            </h3>
+            </h4>
             <div className="mt-2 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
 
             <div className="flex flex-col gap-2">

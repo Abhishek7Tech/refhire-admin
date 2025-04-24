@@ -1,5 +1,5 @@
 "use client";
-import { HoverEffect } from "@/app/components/cards/card";
+import { RecruiteCard } from "@/app/components/cards/recruite";
 import { getRecruiteRequests } from "@/app/home/recruiters/actions";
 import { useEffect, useState } from "react";
 import { RecruiteRequest } from "@/app/utils/types/types";
@@ -28,7 +28,7 @@ export function Recruiters() {
     <div className="max-w-8xl z-0 mx-auto px-8">
       <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-10">
         {recruiteRequests.map((req, idx) => (
-          <HoverEffect idx={idx} key={req.id} recruiteData={req} />
+          <RecruiteCard idx={idx} key={req.id} recruiteData={req} />
         ))}
       </div>
     </div>

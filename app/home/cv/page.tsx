@@ -1,3 +1,4 @@
+import { CV } from "@/app/ui/cv/cv";
 export default function Page() {
-  return <div>Show Resumes</div>;
+  return <CV />;
 }
