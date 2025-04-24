@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Mikasa from "@/public/mikasa.png";
 import Image from "next/image";
 import { cn } from "@/app/utils/utils";
@@ -17,104 +17,180 @@ import {
 import SubmitButton from "../buttons/cv";
 export const ResumeCard = ({ idx }: { idx: number }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [active, setActive] = useState<boolean>(false);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setActive(false);
+      }
+    }
+    if (active && typeof active === "object") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [active]);
+
+  const setActiveHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setActive(true);
+    console.log("clicked", active);
+  };
+
+  const hideExperienceHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setActive(false);
+    console.log("clicked", active);
+  };
   return (
-    <div>
-      <div
-        key={1}
-        className="relative group  block p-2 h-full w-full"
-        onMouseEnter={() => setHoveredIndex(idx)}
-        onMouseLeave={() => setHoveredIndex(null)}
-      >
-        <AnimatePresence>
-          {hoveredIndex === idx && (
-            <motion.span
-              className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-white/[0.3] block  rounded-3xl"
-              layoutId="hoverBackground"
-              initial={{ opacity: 0 }}
-              animate={{
-                opacity: 1,
-                transition: { duration: 0.15 },
-              }}
-              exit={{
-                opacity: 0,
-                transition: { duration: 0.15, delay: 0.2 },
-              }}
-            />
-          )}
-        </AnimatePresence>
-        <Card>
-          <div className="flex gap-4 items-center cursor-pointer">
-            <Image
-              src={Mikasa}
-              alt="user avatar"
-              height={36}
-              width={36}
-            ></Image>
-            <div className="flex flex-col gap-1">
-              <h3 className="text-slate-700 leading-2.5 font-medium font-mukta text-lg">
-                Abhishek Lingwal
-              </h3>
-              <span className="text-slate-700 text-sm font-semibold">
-                🧑‍💻 Web developer
-              </span>
-            </div>
-          </div>
-
-          <div className="mt-4 flex flex-col gap-3">
-            <div className="flex items-center gap-2">
-              <IconBooks className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-              <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
-                Experience:
-              </h4>
-              <span className="font-medium text-slate-700 font-mukta text-base">
-                3 years
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <IconMapPin className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-              <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
-                Location:
-              </h4>
-              <span className="font-medium text-slate-700 font-mukta text-base">
-                Pauri, Uttarakhand, India
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <IconDevices2 className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-              <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
-                Job Preference:
-              </h4>
-              <span className="font-medium text-slate-700 font-mukta text-base">
-                Remote, Hybrid
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <IconSend className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-              <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
-                Relocation:
-              </h4>
-              <span className="font-medium text-slate-700 font-mukta text-base">
-                Across <b>States</b> & <b>Countries</b>
-              </span>
+    <>
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="inset-0 bg-red-300 w-auto z-40 fixed"
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {active ? (
+          <motion.div
+            className="grid place-items-center absolute z-[100] max-w-screen opacity-100"
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            exit={{
+              opacity: 0,
+              transition: {
+                duration: 0.05,
+              },
+            }}
+          >
+            <h1 className="text-slate-700 font-mukta text-2xl">
+              Show experience....
+            </h1>
+            <button onClick={(e) => hideExperienceHandler(e)}>
+              {" "}
+              <CloseIcon />
+            </button>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+      <div>
+        <div
+          key={1}
+          className="relative group p-2 h-full w-full z-0"
+          onMouseEnter={() => setHoveredIndex(idx)}
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
+          <AnimatePresence>
+            {hoveredIndex === idx && (
+              <motion.span
+                className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-white/[0.3] block  rounded-3xl"
+                layoutId="hoverBackground"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: 1,
+                  transition: { duration: 0.15 },
+                }}
+                exit={{
+                  opacity: 0,
+                  transition: { duration: 0.15, delay: 0.2 },
+                }}
+              />
+            )}
+          </AnimatePresence>
+          <Card>
+            <div className="flex gap-4 items-center cursor-pointer">
+              <Image
+                src={Mikasa}
+                alt="user avatar"
+                height={36}
+                width={36}
+              ></Image>
+              <div className="flex flex-col gap-1">
+                <h3 className="text-slate-700 leading-2.5 font-medium font-mukta text-lg">
+                  Abhishek Lingwal
+                </h3>
+                <span className="text-slate-700 text-sm font-semibold">
+                  🧑‍💻 Web developer
+                </span>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <IconCoin className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-              <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
-                Expected Salary:
-              </h4>
-              <span className="font-medium text-slate-700 font-mukta text-base">
-                $50,000
-              </span>
+            <div className="mt-4 flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <IconBooks className="h-5 w-5 shrink-0 text-slate-700" />{" "}
+                <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+                  Experience:
+                </h4>
+                <span className="font-medium text-slate-700 font-mukta text-base">
+                  3 years
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <IconMapPin className="h-5 w-5 shrink-0 text-slate-700" />{" "}
+                <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+                  Location:
+                </h4>
+                <span className="font-medium text-slate-700 font-mukta text-base">
+                  Pauri, Uttarakhand, India
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <IconDevices2 className="h-5 w-5 shrink-0 text-slate-700" />{" "}
+                <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+                  Job Preference:
+                </h4>
+                <span className="font-medium text-slate-700 font-mukta text-base">
+                  Remote, Hybrid
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <IconSend className="h-5 w-5 shrink-0 text-slate-700" />{" "}
+                <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+                  Relocation:
+                </h4>
+                <span className="font-medium text-slate-700 font-mukta text-base">
+                  Across <b>States</b> & <b>Countries</b>
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <IconCoin className="h-5 w-5 shrink-0 text-slate-700" />{" "}
+                <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+                  Expected Salary:
+                </h4>
+                <span className="font-medium text-slate-700 font-mukta text-base">
+                  $50,000
+                </span>
+              </div>
+              <SubmitButton
+                setActiveHandler={(e) => setActiveHandler(e)}
+                disabled={false}
+                pending={false}
+              />
             </div>
-            <SubmitButton disabled={false} pending={false} />
-          </div>
-        </Card>
+          </Card>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -136,5 +212,38 @@ export const Card = ({
         <div className="p-4">{children}</div>
       </div>
     </div>
+  );
+};
+
+export const CloseIcon = () => {
+  return (
+    <motion.svg
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      exit={{
+        opacity: 0,
+        transition: {
+          duration: 0.05,
+        },
+      }}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-4 w-4 text-black"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M18 6l-12 12" />
+      <path d="M6 6l12 12" />
+    </motion.svg>
   );
 };
