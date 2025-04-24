@@ -4,11 +4,14 @@ import { Input } from "@/app/components/input/input";
 import { cn } from "@/app/utils/utils";
 import Experience from "../add-experience/experience";
 import { useActionState, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { v4 as uuid } from "uuid";
 import { formatMonth } from "@/app/utils/format-date/date";
 import SubmitButton from "@/app/components/buttons/resume";
 import { getResumeData } from "@/app/home/resume/actions";
+import { Categories } from "@/app/utils/categories/categories";
+import { IconCircleArrowDown, IconCircleArrowUp } from "@tabler/icons-react";
+
 interface WorkInterface {
   id: number;
   work: string;
@@ -33,6 +36,7 @@ const initialFormState = {
   salary: "",
   experience: [],
   admin: "",
+  tags: [],
   message: "",
 };
 
@@ -45,7 +49,15 @@ function Resume() {
   const [experience, setExperience] = useState<ExperienceInterface[]>([
     { id: 1, role: "", from: "", to: "", work: [{ id: 1, work: "" }] },
   ]);
-
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+  const [categoriesTags, setCategoriesTags] = useState<
+    {
+      id: string;
+      name: string;
+      subCategories: string[];
+      showSubCategories: boolean;
+    }[]
+  >(Categories);
   const increaseExpHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -61,6 +73,28 @@ function Resume() {
     };
     const updateExperience = [...experience, addExperience];
     setExperience(updateExperience);
+  };
+
+  const showCategoryHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const id = e.currentTarget.id;
+    const updateCategories = categoriesTags.map((category) =>
+      category.id === id ? { ...category, showSubCategories: true } : category
+    );
+    setCategoriesTags(updateCategories);
+  };
+
+  const hideCategoryHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const id = e.currentTarget.id;
+    const updateCategories = categoriesTags.map((category) =>
+      category.id === id ? { ...category, showSubCategories: false } : category
+    );
+    setCategoriesTags(updateCategories);
   };
 
   const addExperienceHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,6 +180,20 @@ function Resume() {
         : ex
     );
     setExperience(updateWork);
+  };
+  const subCategoryHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const subcategory = e.currentTarget.id;
+    if (selectedCategory?.includes(subcategory)) {
+      const updateSelectedCategory = selectedCategory.filter(
+        (category) => category !== subcategory
+      );
+      setSelectedCategory(updateSelectedCategory);
+      return;
+    }
+    setSelectedCategory((prev) => [...prev, subcategory]);
   };
 
   const workInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -530,6 +578,93 @@ function Resume() {
               {inputState.errors.experience}
             </p>
           )}
+          <LabelInputContainer
+            className={inputState.errors?.tags ? "mb-0" : "mb-4"}
+          >
+            <label
+              htmlFor="tags"
+              className="text-slate-700 font-mukta font-medium text-base"
+            >
+              Select Category
+            </label>
+
+            <div className="flex flex-col gap-2 border-2 border-dashed border-green-300 p-4 rounded-md mb-3">
+              {categoriesTags.map((category) => {
+                return (
+                  <div key={category.id} className="flex flex-col gap-2">
+                    <div className="flex justify-between items-center">
+                      <h4 className="text-slate-700 font-mukta text-sm font-semibold">
+                        {category.name}
+                      </h4>
+                      {category.showSubCategories ? (
+                        <motion.button
+                          onClick={(e) => hideCategoryHandler(e)}
+                          id={category.id}
+                          className="cursor-pointer"
+                        >
+                          <IconCircleArrowUp className="h-5 w-5 shrink-0 text-slate-700" />
+                        </motion.button>
+                      ) : (
+                        <motion.button
+                          onClick={(e) => showCategoryHandler(e)}
+                          id={category.id}
+                          className="cursor-pointer"
+                        >
+                          <IconCircleArrowDown className="h-5 w-5 shrink-0 text-slate-700" />
+                        </motion.button>
+                      )}
+                    </div>
+
+                    <AnimatePresence initial={false} mode="wait">
+                      {category.showSubCategories && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{
+                            opacity: 1,
+                            transition: { duration: 0.12, delay: 0.2 },
+                          }}
+                          exit={{
+                            opacity: 0,
+                            transition: { duration: 0.12, delay: 0.3 },
+                          }}
+                          className="flex gap-1 flex-wrap max-w-lg"
+                          layoutId={`${category.subCategories}-${category.id}`}
+                          key={`${category.subCategories}-${category.id}`}
+                        >
+                          {category.subCategories.map((subCategory) => {
+                            return (
+                              <button
+                                onClick={(e) => subCategoryHandler(e)}
+                                key={subCategory}
+                                id={subCategory}
+                                className={`w-fit cursor-pointer text-xs px-1 py-0.5 rounded-lg ${
+                                  selectedCategory.includes(subCategory)
+                                    ? "bg-emerald-200 border-2 border-gray-50"
+                                    : "bg-gray-50"
+                                } text-slate-700`}
+                              >
+                                {subCategory}
+                              </button>
+                            );
+                          })}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
+          </LabelInputContainer>
+          <input
+            type="hidden"
+            name="tags"
+            value={JSON.stringify(selectedCategory)}
+          ></input>
+          {inputState.errors?.tags && (
+            <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
+              {inputState.errors.tags}
+            </p>
+          )}
 
           <LabelInputContainer
             className={inputState.errors?.admin ? "mb-0" : "mb-4"}
@@ -557,6 +692,7 @@ function Resume() {
               {inputState.message}
             </p>
           )}
+
           <SubmitButton />
           <div className="mt-4 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
         </div>

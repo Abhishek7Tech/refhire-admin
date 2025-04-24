@@ -61,6 +61,7 @@ const ResumeSchema = z.object({
     })
   ),
   admin: z.string().trim().min(5, { message: "Please add your name." }),
+  tags: z.array(z.string()).min(1, { message: "Please select a category." }),
 });
 
 export const getResumeData = async (previousState: any, formData: FormData) => {
@@ -72,6 +73,11 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   if (typeof resumeData.experience === "string") {
     console.log("Inside", typeof resumeData.experience === "string");
     resumeData.experience = JSON.parse(resumeData.experience);
+  }
+
+  if (typeof resumeData.tags === "string") {
+    resumeData.tags = JSON.parse(resumeData.tags);
+    console.log("Tags", resumeData.tags);
   }
 
   const validateResumeData = ResumeSchema.safeParse(resumeData);
@@ -101,6 +107,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
         salary: formErrors?.salary,
         experience: formErrors?.experience,
         admin: formErrors?.admin,
+        tags: formErrors?.tags,
       },
     };
   }
@@ -136,6 +143,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   const admin = resumeData.admin;
   const isHired = false;
   const avatar = generateAvatar();
+  const tagsToJson = JSON.stringify(resumeData.tags);
 
   const { data, error, status } = await supabase.from("resume").insert({
     name,
@@ -152,6 +160,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
     admin_id: userId,
     is_hired: isHired,
     avatar,
+    tags: tagsToJson,
   });
   console.log("Error", error, "data", data, "status", status);
   if (error) {
