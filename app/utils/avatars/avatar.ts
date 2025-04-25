@@ -1,4 +1,3 @@
-const AVATAR_URL = process.env.NEXT_PUBLIC_RESUME_AVATAR_URL;
 const AVATAR_NAMES = [
   "deku.png",
   "enoske.png",
@@ -22,5 +21,5 @@ const AVATAR_NAMES = [
 ];
 export const generateAvatar = () => {
   const avatar = AVATAR_NAMES[Math.floor(Math.random() * AVATAR_NAMES.length)];
-  return `${AVATAR_URL}/${avatar}`;
+  return avatar;
 };

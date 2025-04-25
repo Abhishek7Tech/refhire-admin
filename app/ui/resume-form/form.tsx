@@ -10,20 +10,9 @@ import SubmitButton from "@/app/components/buttons/resume";
 import { getResumeData } from "@/app/home/resume/actions";
 import { Categories } from "@/app/utils/categories/categories";
 import { IconCircleArrowDown, IconCircleArrowUp } from "@tabler/icons-react";
+import { ExperienceInterface } from "@/app/utils/types/types";
 
-interface WorkInterface {
-  id: number;
-  work: string;
-}
-interface ExperienceInterface {
-  id: number;
-  role: string;
-  from: string;
-  to: string;
-  city: string;
-  country: string;
-  work: WorkInterface[] | [];
-}
+
 
 const initialFormState = {
   name: "",

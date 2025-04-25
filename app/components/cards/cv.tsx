@@ -15,10 +15,27 @@ import {
   IconSend,
 } from "@tabler/icons-react";
 import SubmitButton from "../buttons/cv";
-export const ResumeCard = ({ idx }: { idx: number }) => {
+import { CV } from "@/app/utils/types/types";
+const CV_AVATAR = process.env.NEXT_PUBLIC_RESUME_AVATAR_URL;
+
+export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [active, setActive] = useState<boolean>(false);
+  const [preference, setPreference] = useState<
+    { remote: boolean; hybrid: boolean; onsite: boolean }[] | []
+  >([]);
 
+  const [relocation, setRelocation] = useState<
+    { acrossStates: boolean; acrossCountries: boolean }[] | []
+  >([]);
+  // }
+  useEffect(() => {
+    const parsePreference = JSON.parse(data.preference);
+    const parseRelocation = JSON.parse(data.relocation);
+    console.log("parsed", parsePreference);
+    setPreference(parsePreference);
+    setRelocation(parseRelocation);
+  }, [data]);
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -91,7 +108,7 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
                   width: 30,
                 }}
                 transition={{
-                  duration: 0.1
+                  duration: 0.1,
                 }}
                 onClick={(e) => hideExperienceHandler(e)}
                 className="cursor-pointer"
@@ -233,19 +250,19 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
             )}
           </AnimatePresence>
           <Card>
-            <div className="flex gap-4 items-center cursor-pointer">
+            <div className="flex gap-4 items-center  cursor-pointer">
               <Image
-                src={Mikasa}
+                src={`${CV_AVATAR}/${data.avatar}`}
                 alt="user avatar"
                 height={36}
                 width={36}
               ></Image>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 place-items-center">
                 <h3 className="text-slate-700 leading-2.5 font-medium font-mukta text-lg">
-                  Abhishek Lingwal
+                  { data.name}
                 </h3>
                 <span className="text-slate-700 text-sm font-semibold">
-                  🧑‍💻 Web developer
+                  🧑‍💻 {data.profession}
                 </span>
               </div>
             </div>
@@ -257,7 +274,7 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
                   Experience:
                 </h4>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  3 years
+                  {data.years_of_experience.toString()} years
                 </span>
               </div>
 
@@ -267,7 +284,7 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
                   Location:
                 </h4>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  Pauri, Uttarakhand, India
+                  {data.location}, {data.country}
                 </span>
               </div>
 
@@ -277,7 +294,11 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
                   Job Preference:
                 </h4>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  Remote, Hybrid
+                  {preference[0]?.remote &&
+                    `${preference[0]?.hybrid ? "Remote," : "Remote"}`}{" "}
+                  {preference[0]?.hybrid &&
+                    `${preference[0]?.onsite ? "Hybrid," : "Hybrid"}`}{" "}
+                  {preference[0]?.onsite && "Onsite"}
                 </span>
               </div>
 
@@ -287,7 +308,19 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
                   Relocation:
                 </h4>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  Across <b>States</b> & <b>Countries</b>
+                  {!relocation[0]?.acrossStates &&
+                    !relocation[0]?.acrossCountries && <b>Remote Only</b>}
+                  {relocation[0]?.acrossStates && relocation[0]?.acrossCountries
+                    ? <span>Across</span> +
+                      `${(<b>States</b>)}` +
+                      "&" +
+                      `${(<b>Countries</b>)}`
+                    : ""}
+                  {relocation[0]?.acrossStates &&
+                    <span>Across</span> + `${(<b>States</b>)}`}
+
+                  {relocation[0]?.acrossCountries &&
+                    <span>Across</span> + `${(<b>Countries</b>)}`}
                 </span>
               </div>
 
@@ -297,7 +330,7 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
                   Expected Salary:
                 </h4>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  $50,000
+                  ${data.salary}
                 </span>
               </div>
               <SubmitButton

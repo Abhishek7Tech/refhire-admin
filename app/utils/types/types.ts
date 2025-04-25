@@ -20,3 +20,31 @@ interface Category {
   subCategories: string[];
   showSubCategories: boolean;
 }
+
+export interface WorkInterface {
+  id: number;
+  work: string;
+}
+export interface ExperienceInterface {
+  id: number;
+  role: string;
+  from: string;
+  to: string;
+  city: string;
+  country: string;
+  work: WorkInterface[] | [];
+}
+
+export interface CV {
+  id: string;
+  avatar: string;
+  country: string;
+  location: string;
+  experience: ExperienceInterface[] | [];
+  name: string;
+  preference: string;
+  relocation: string;
+  salary: string;
+  years_of_experience: number;
+  profession: string;
+}
