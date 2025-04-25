@@ -58,14 +58,14 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="inset-0 bg-red-300 w-auto z-40 fixed"
+            className="inset-0 backdrop-blur-lg w-auto z-40 fixed"
           />
         )}
       </AnimatePresence>
       <AnimatePresence>
         {active ? (
           <motion.div
-            className="grid place-items-center absolute z-[100] max-w-screen opacity-100"
+            className="grid bg-white/25 border border-white/30 shadow-lg rounded-2xl min-w-4xl place-items-start absolute z-[100] max-w-screen opacity-100"
             initial={{
               opacity: 0,
             }}
@@ -79,13 +79,25 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
               },
             }}
           >
-            <h1 className="text-slate-700 font-mukta text-2xl">
-              Show experience....
-            </h1>
-            <button onClick={(e) => hideExperienceHandler(e)}>
-              {" "}
-              <CloseIcon />
-            </button>
+            <div className="flex justify-between w-full px-3 pt-4">
+              <h3 className="text-slate-700 font-mukta text-2xl w-full underline underline-offset-2 font-medium">
+                Experience
+              </h3>
+
+              <button onClick={(e) => hideExperienceHandler(e)}>
+                {" "}
+                <CloseIcon />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 py-2 px-3">
+              <div className="col-span-2">
+                <h4 className="font-medium capitalize text-lg text-slate-700 font-mukta">
+                  Frontend React Developer Intern
+                </h4>
+                <ol></ol>
+              </div>
+            </div>
           </motion.div>
         ) : null}
       </AnimatePresence>
@@ -231,15 +243,15 @@ export const CloseIcon = () => {
         },
       }}
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width="32"
+      height="32"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-4 w-4 text-black"
+      className="h-6 w-6 text-black"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M18 6l-12 12" />

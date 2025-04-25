@@ -3,9 +3,8 @@
 import { Input } from "@/app/components/input/input";
 import { cn } from "@/app/utils/utils";
 import Experience from "../add-experience/experience";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { v4 as uuid } from "uuid";
 import { formatMonth } from "@/app/utils/format-date/date";
 import SubmitButton from "@/app/components/buttons/resume";
 import { getResumeData } from "@/app/home/resume/actions";
@@ -21,6 +20,8 @@ interface ExperienceInterface {
   role: string;
   from: string;
   to: string;
+  city: string;
+  country: string;
   work: WorkInterface[] | [];
 }
 
@@ -45,9 +46,26 @@ function Resume() {
     getResumeData,
     initialFormState
   );
+  const [current, setCurrent] = useState<{ id: number; present: boolean }[]>([
+    {
+      id: 1,
+      present: false,
+    },
+  ]);
 
+  useEffect(() => {
+    console.log("InputState", current[0]);
+  }, []);
   const [experience, setExperience] = useState<ExperienceInterface[]>([
-    { id: 1, role: "", from: "", to: "", work: [{ id: 1, work: "" }] },
+    {
+      id: 1,
+      role: "",
+      from: "",
+      to: "",
+      city: "",
+      country: "",
+      work: [{ id: 1, work: "" }],
+    },
   ]);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [categoriesTags, setCategoriesTags] = useState<
@@ -58,6 +76,25 @@ function Resume() {
       showSubCategories: boolean;
     }[]
   >(Categories);
+
+  const currentHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    const value = e.currentTarget.value;
+    console.log("Value", value);
+    const inputId = e.currentTarget.id;
+    if (!inputId) {
+      return;
+    }
+    const updateExperience = experience.map((ex) =>
+      ex.id === +inputId ? { ...ex, to: value } : ex
+    );
+    setExperience(updateExperience);
+    const updateCurrent = current.map((ex) =>
+      ex.id === +inputId ? { ...ex, present: !ex.present } : ex
+    );
+
+    setCurrent(updateCurrent);
+  };
   const increaseExpHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -69,10 +106,15 @@ function Resume() {
       role: "",
       from: "",
       to: "",
+      city: "",
+      country: "",
       work: [{ id: 1, work: "" }],
     };
+    const addCurrent = { id, present: false };
     const updateExperience = [...experience, addExperience];
+    const updateCurrent = [...current, addCurrent];
     setExperience(updateExperience);
+    setCurrent(updateCurrent);
   };
 
   const showCategoryHandler = (
@@ -145,6 +187,30 @@ function Resume() {
     setExperience(updateExperience);
   };
 
+  const countryHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const value = e.currentTarget.value;
+    const inputId = e.currentTarget.id;
+    if (!value) {
+      return;
+    }
+    const updateExperience = experience.map((ex) =>
+      ex.id === +inputId ? { ...ex, country: value } : ex
+    );
+    setExperience(updateExperience);
+  };
+  const cityHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const value = e.currentTarget.value;
+    const inputId = e.currentTarget.id;
+    if (!value) {
+      return;
+    }
+    const updateExperience = experience.map((ex) =>
+      ex.id === +inputId ? { ...ex, city: value } : ex
+    );
+    setExperience(updateExperience);
+  };
   const increaseWorkHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -227,7 +293,9 @@ function Resume() {
     }
     const id = +e.currentTarget.id;
     const updateExperience = experience.filter((ex) => ex.id !== id);
+    const updateCurrent = current.filter((ex) => ex.id !== id);
     setExperience(updateExperience);
+    setCurrent(updateCurrent);
   };
 
   return (
@@ -490,40 +558,69 @@ function Resume() {
             >
               Experience
             </label>
-            {experience.map((ex) => (
-              <div
-                key={ex.id}
-                className="border-2 border-dashed border-green-300 p-4 rounded-md mb-3"
-              >
-                <Experience
-                  fromDateHandler={fromDateHandler}
-                  experienceHandler={addExperienceHandler}
-                  toDateHandler={toDateHandler}
-                  id={ex.id.toString()}
-                />
-                {ex.work.map((work) => (
-                  <div
-                    className="my-4 flex space-x-2 items-center "
-                    key={work.id.toString()}
+            {
+              experience.map((ex) => (
+                <div
+                  key={ex.id}
+                  className="border-2 border-dashed border-green-300 p-4 rounded-md mb-3"
+                >
+                  <Experience
+                    current={current[ex.id - 1]?.present}
+                    currentHandler={currentHandler}
+                    cityHandler={cityHandler}
+                    countryHandler={countryHandler}
+                    fromDateHandler={fromDateHandler}
+                    experienceHandler={addExperienceHandler}
+                    toDateHandler={toDateHandler}
                     id={ex.id.toString()}
-                  >
-                    <Input
-                      onChange={(e) => workInputHandler(e)}
-                      id={work.id.toString()}
-                      placeholder="Developed dynamic dashboards using Next.js."
-                      type="text"
-                      required
-                      autoComplete="off"
-                    ></Input>
+                  />
+                  {ex.work.map((work) => (
+                    <div
+                      className="my-4 flex space-x-2 items-center "
+                      key={work.id.toString()}
+                      id={ex.id.toString()}
+                    >
+                      <Input
+                        onChange={(e) => workInputHandler(e)}
+                        id={work.id.toString()}
+                        placeholder="Developed dynamic dashboards using Next.js."
+                        type="text"
+                        required
+                        autoComplete="off"
+                      ></Input>
 
+                      <motion.button
+                        whileHover={{
+                          scaleY: 1.1,
+                        }}
+                        type="button"
+                        id={work.id.toString()}
+                        onClick={(e) => increaseWorkHandler(e)}
+                        className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                      >
+                        &#43;
+                      </motion.button>
+                      <motion.button
+                        whileHover={{
+                          scaleY: 1.1,
+                        }}
+                        type="button"
+                        id={work.id.toString()}
+                        className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                        onClick={(e) => decreaseWorkHandler(e)}
+                      >
+                        &minus;
+                      </motion.button>
+                    </div>
+                  ))}
+                  <div className="w-full flex items-center space-x-2 justify-center mb-2 mt-4">
                     <motion.button
                       whileHover={{
                         scaleY: 1.1,
                       }}
                       type="button"
-                      id={work.id.toString()}
-                      onClick={(e) => increaseWorkHandler(e)}
-                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                      onClick={(e) => increaseExpHandler(e)}
+                      className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
                     >
                       &#43;
                     </motion.button>
@@ -532,39 +629,15 @@ function Resume() {
                         scaleY: 1.1,
                       }}
                       type="button"
-                      id={work.id.toString()}
-                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
-                      onClick={(e) => decreaseWorkHandler(e)}
+                      id={ex.id.toString()}
+                      className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                      onClick={(e) => decreaseExpHandler(e)}
                     >
                       &minus;
                     </motion.button>
                   </div>
-                ))}
-                <div className="w-full flex items-center space-x-2 justify-center mb-2 mt-4">
-                  <motion.button
-                    whileHover={{
-                      scaleY: 1.1,
-                    }}
-                    type="button"
-                    onClick={(e) => increaseExpHandler(e)}
-                    className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
-                  >
-                    &#43;
-                  </motion.button>
-                  <motion.button
-                    whileHover={{
-                      scaleY: 1.1,
-                    }}
-                    type="button"
-                    id={ex.id.toString()}
-                    className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
-                    onClick={(e) => decreaseExpHandler(e)}
-                  >
-                    &minus;
-                  </motion.button>
                 </div>
-              </div>
-            ))}
+              ))}
           </LabelInputContainer>
           {experience && (
             <input

@@ -50,6 +50,13 @@ const ResumeSchema = z.object({
         .min(2, { message: "Role should be longer than 2 characters" }),
       from: z.string().trim().min(5, { message: "Invalid date format." }),
       to: z.string().trim().min(5, { message: "Invalid date format." }),
+      city: z
+        .string()
+        .trim()
+        .min(2, { message: "City should be longer than 2." }),
+      country: z.string().trim().min(2, {
+        message: "Country should be longer than 2 characters.",
+      }),
       work: z.array(
         z.object({
           id: number().min(1, { message: "Id should be greater than 0." }),
