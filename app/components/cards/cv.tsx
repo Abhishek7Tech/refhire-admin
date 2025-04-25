@@ -65,7 +65,7 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
       <AnimatePresence>
         {active ? (
           <motion.div
-            className="grid bg-white/25 border border-white/30 shadow-lg rounded-2xl min-w-4xl place-items-start absolute z-[100] max-w-screen opacity-100"
+            className="grid bg-white/25 border border-white/30 shadow-lg rounded-2xl max-w-4xl max-h-[70vh] overflow-y-scroll place-items-start place-self-center self-center top-20 absolute z-[100] opacity-100 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] scroll-smooth"
             initial={{
               opacity: 0,
             }}
@@ -84,18 +84,125 @@ export const ResumeCard = ({ idx }: { idx: number }) => {
                 Experience
               </h3>
 
-              <button onClick={(e) => hideExperienceHandler(e)}>
+              <motion.button
+                animate={{
+                  scaleY: 1.1,
+                  height: 30,
+                  width: 30,
+                }}
+                transition={{
+                  duration: 0.1
+                }}
+                onClick={(e) => hideExperienceHandler(e)}
+                className="cursor-pointer"
+              >
                 {" "}
                 <CloseIcon />
-              </button>
+              </motion.button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 py-2 px-3">
-              <div className="col-span-2">
+            <div className="grid grid-cols-5 row-auto gap-4 py-2 px-3 w-full">
+              <div className="col-span-5 col-end-5">
+                <h4 className="capitalize text-lg font-semibold text-slate-700 font-mukta">
+                  Frontend React Developer Intern
+                </h4>
+                <ol className="list-disc px-4 w-fit text-base text-slate-700 font-mukta">
+                  <li>
+                    Implemented Material UI & SCSS to create visually appealing
+                    UIs and components, adding a creative touch to project
+                    aesthetics.
+                  </li>
+                  <li>
+                    Developed 17+ assessment projects, employing a tailored
+                    approach to overcome unique challenges.{" "}
+                  </li>
+                  <li>
+                    Revamped e-commerce UX, resulting in a measurable 15% boost
+                    in sales and improved customer satisfaction.{" "}
+                  </li>
+                  <li>
+                    Streamlined CRM & back-office processes, enhancing overall
+                    operational efficiency and productivity.{" "}
+                  </li>
+                </ol>
+              </div>
+              <div className="col-start-5 col-end-6 place-items-end w-full">
+                <h4 className="font-medium text-base text-slate-700 font-mukta">
+                  {"May 2023"}-{"Aug 2023"}
+                </h4>
+                <span className="font-medium text-sm text-slate-700">
+                  Capetown, South Africa
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-5 row-auto gap-4 py-2 px-3 w-full">
+              <div className="col-span-5 col-end-5">
                 <h4 className="font-medium capitalize text-lg text-slate-700 font-mukta">
                   Frontend React Developer Intern
                 </h4>
-                <ol></ol>
+                <ol className="list-disc px-4 w-fit text-base text-slate-700 font-mukta">
+                  <li>
+                    Implemented Material UI & SCSS to create visually appealing
+                    UIs and components, adding a creative touch to project
+                    aesthetics.
+                  </li>
+                  <li>
+                    Developed 17+ assessment projects, employing a tailored
+                    approach to overcome unique challenges.{" "}
+                  </li>
+                  <li>
+                    Revamped e-commerce UX, resulting in a measurable 15% boost
+                    in sales and improved customer satisfaction.{" "}
+                  </li>
+                  <li>
+                    Streamlined CRM & back-office processes, enhancing overall
+                    operational efficiency and productivity.{" "}
+                  </li>
+                </ol>
+              </div>
+              <div className="col-start-5 col-end-6 place-items-end w-full">
+                <h4 className="font-medium text-base text-slate-700 font-mukta">
+                  {"May 2023"}-{"Aug 2023"}
+                </h4>
+                <span className="font-medium text-sm text-slate-700">
+                  Capetown, South Africa
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-5 row-auto gap-4 py-2 px-3 w-full">
+              <div className="col-span-5 col-end-5">
+                <h4 className="font-medium capitalize text-lg text-slate-700 font-mukta">
+                  Frontend React Developer Intern
+                </h4>
+                <ol className="list-disc px-4 w-fit text-base text-slate-700 font-mukta">
+                  <li>
+                    Implemented Material UI & SCSS to create visually appealing
+                    UIs and components, adding a creative touch to project
+                    aesthetics.
+                  </li>
+                  <li>
+                    Developed 17+ assessment projects, employing a tailored
+                    approach to overcome unique challenges.{" "}
+                  </li>
+                  <li>
+                    Revamped e-commerce UX, resulting in a measurable 15% boost
+                    in sales and improved customer satisfaction.{" "}
+                  </li>
+                  <li>
+                    Streamlined CRM & back-office processes, enhancing overall
+                    operational efficiency and productivity.{" "}
+                  </li>
+                </ol>
+              </div>
+              <div className="col-start-5 col-end-6 place-items-end w-full">
+                <h4 className="font-medium text-base text-slate-700 font-mukta">
+                  {"May 2023"}-{"Aug 2023"}
+                </h4>
+                <span className="font-medium text-sm text-slate-700">
+                  Capetown, South Africa
+                </span>
               </div>
             </div>
           </motion.div>
