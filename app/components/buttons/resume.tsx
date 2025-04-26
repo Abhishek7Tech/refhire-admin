@@ -4,10 +4,11 @@ import { useActionState, useContext, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import LoadingSvg from "../../../public/loading.gif";
 function SubmitButton() {
-  const { data, pending } = useFormStatus();
+  const  { data, pending } = useFormStatus();
 
   useEffect(() => {
     console.log("PENDING...", pending);
+    
   }, [pending]);
   return (
     <button

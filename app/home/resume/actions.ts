@@ -147,7 +147,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   const isHired = false;
   const avatar = generateAvatar();
   const tagsToJson = JSON.stringify(resumeData.tags);
-
+  console.log("EXperience", experience);
   const { data, error, status } = await supabase.from("resume").insert({
     name,
     email,

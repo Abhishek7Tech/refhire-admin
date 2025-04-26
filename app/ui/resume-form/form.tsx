@@ -3,7 +3,7 @@
 import { Input } from "@/app/components/input/input";
 import { cn } from "@/app/utils/utils";
 import Experience from "../add-experience/experience";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { formatMonth } from "@/app/utils/format-date/date";
 import SubmitButton from "@/app/components/buttons/resume";
@@ -50,9 +50,6 @@ function Resume() {
     },
   ]);
 
-  useEffect(() => {
-    console.log("InputState", current[0]);
-  }, []);
   const [experience, setExperience] = useState<ExperienceInterface[]>([
     {
       id: 1,
@@ -75,6 +72,25 @@ function Resume() {
     }[]
   >(Categories);
 
+  useEffect(() => {
+    if (inputState.message) {
+      setCurrent([{ id: 1, present: false }]);
+      setRemoteLocation([{ id: 1, remoteLocation: false }]);
+      setSelectedCategory([]);
+      setExperience([
+        {
+          id: 1,
+          role: "",
+          from: "",
+          to: "",
+          city: "",
+          country: "",
+          remote: "",
+          work: [{ id: 1, work: "" }],
+        },
+      ]);
+    }
+  }, [inputState.message]);
   const currentHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     const value = e.currentTarget.value;
@@ -104,7 +120,7 @@ function Resume() {
     }
 
     const updateExperience = experience.map((ex) =>
-      ex.id === +inputId ? { ...ex, remote: value } : ex
+      ex.id === +inputId ? { ...ex, remote: value, city: "", country: "" } : ex
     );
     setExperience(updateExperience);
 
