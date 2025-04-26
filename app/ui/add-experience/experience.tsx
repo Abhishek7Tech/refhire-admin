@@ -9,16 +9,20 @@ function Experience({
   currentHandler,
   cityHandler,
   countryHandler,
+  remoteLocHandler,
   current,
+  remoteLoc,
 }: {
   id: string;
   current: boolean;
+  remoteLoc: boolean;
   experienceHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   cityHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   countryHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fromDateHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   toDateHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   currentHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  remoteLocHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   useEffect(() => {
     console.log("current", current);
@@ -41,7 +45,7 @@ function Experience({
         ></Input>
       </div>
 
-      <div className="flex justify-around space-x-6">
+      <div className="flex justify-between space-x-4">
         <div className="space-y-1 flex flex-col">
           <label
             htmlFor="city"
@@ -50,10 +54,12 @@ function Experience({
             City
           </label>
           <Input
+            disabled={remoteLoc}
             id={id}
             type="text"
             onChange={(e) => cityHandler(e)}
             className="w-min"
+            placeholder="Optional"
             defaultValue={""}
           ></Input>
         </div>
@@ -65,12 +71,30 @@ function Experience({
             Country
           </label>
           <Input
+            disabled={remoteLoc}
             id={id}
             type="text"
             onChange={(e) => countryHandler(e)}
             className="w-min"
+            placeholder="Optional"
             defaultValue={""}
           ></Input>
+        </div>
+
+        <div className="flex space-x-2 place-self-end items-center h-10 py-1 px-2 w-full bg-gray-50 rounded-md">
+          <Input
+            id={id}
+            onChange={(e) => remoteLocHandler(e)}
+            type="checkbox"
+            value={"Remote"}
+            className="w-4 h-4 rounded-sm cursor-pointer"
+          ></Input>
+          <label
+            htmlFor="current"
+            className="text-slate-700 font-mukta font-medium text-base text-nowrap"
+          >
+            Remote
+          </label>
         </div>
       </div>
 
@@ -108,7 +132,7 @@ function Experience({
         </div>
         <div className="flex space-x-2 place-self-end items-center h-10 py-1 px-2 w-full bg-gray-50 rounded-md">
           <Input
-          id={id}
+            id={id}
             onChange={(e) => currentHandler(e)}
             type="checkbox"
             value={"present"}

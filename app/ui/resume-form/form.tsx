@@ -11,8 +11,7 @@ import { getResumeData } from "@/app/home/resume/actions";
 import { Categories } from "@/app/utils/categories/categories";
 import { IconCircleArrowDown, IconCircleArrowUp } from "@tabler/icons-react";
 import { ExperienceInterface } from "@/app/utils/types/types";
-
-
+import { boolean } from "zod";
 
 const initialFormState = {
   name: "",
@@ -42,6 +41,15 @@ function Resume() {
     },
   ]);
 
+  const [remoteLocation, setRemoteLocation] = useState<
+    { id: number; remoteLocation: boolean }[]
+  >([
+    {
+      id: 1,
+      remoteLocation: false,
+    },
+  ]);
+
   useEffect(() => {
     console.log("InputState", current[0]);
   }, []);
@@ -53,6 +61,7 @@ function Resume() {
       to: "",
       city: "",
       country: "",
+      remote: "",
       work: [{ id: 1, work: "" }],
     },
   ]);
@@ -84,6 +93,27 @@ function Resume() {
 
     setCurrent(updateCurrent);
   };
+
+  const remoteLocationHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    const value = e.currentTarget.value;
+    const inputId = e.currentTarget.id;
+
+    if (!inputId) {
+      return;
+    }
+
+    const updateExperience = experience.map((ex) =>
+      ex.id === +inputId ? { ...ex, remote: value } : ex
+    );
+    setExperience(updateExperience);
+
+    const updateRemoteEx = remoteLocation.map((ex) =>
+      ex.id === +inputId ? { ...ex, remoteLocation: !ex.remoteLocation } : ex
+    );
+    setRemoteLocation(updateRemoteEx);
+  };
+
   const increaseExpHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -97,13 +127,17 @@ function Resume() {
       to: "",
       city: "",
       country: "",
+      remote: "",
       work: [{ id: 1, work: "" }],
     };
     const addCurrent = { id, present: false };
+    const addRemoteLocation = { id, remoteLocation: false };
     const updateExperience = [...experience, addExperience];
     const updateCurrent = [...current, addCurrent];
+    const updateRemoteLocation = [...remoteLocation, addRemoteLocation];
     setExperience(updateExperience);
     setCurrent(updateCurrent);
+    setRemoteLocation(updateRemoteLocation);
   };
 
   const showCategoryHandler = (
@@ -283,8 +317,10 @@ function Resume() {
     const id = +e.currentTarget.id;
     const updateExperience = experience.filter((ex) => ex.id !== id);
     const updateCurrent = current.filter((ex) => ex.id !== id);
+    const updateRemoteLocation = remoteLocation.filter((ex) => ex.id !== id);
     setExperience(updateExperience);
     setCurrent(updateCurrent);
+    setRemoteLocation(updateRemoteLocation);
   };
 
   return (
@@ -547,69 +583,46 @@ function Resume() {
             >
               Experience
             </label>
-            {
-              experience.map((ex) => (
-                <div
-                  key={ex.id}
-                  className="border-2 border-dashed border-green-300 p-4 rounded-md mb-3"
-                >
-                  <Experience
-                    current={current[ex.id - 1]?.present}
-                    currentHandler={currentHandler}
-                    cityHandler={cityHandler}
-                    countryHandler={countryHandler}
-                    fromDateHandler={fromDateHandler}
-                    experienceHandler={addExperienceHandler}
-                    toDateHandler={toDateHandler}
+            {experience.map((ex) => (
+              <div
+                key={ex.id}
+                className="border-2 border-dashed border-green-300 p-4 rounded-md mb-3"
+              >
+                <Experience
+                  current={current[ex.id - 1]?.present}
+                  remoteLoc={remoteLocation[ex.id - 1]?.remoteLocation}
+                  currentHandler={currentHandler}
+                  cityHandler={cityHandler}
+                  countryHandler={countryHandler}
+                  fromDateHandler={fromDateHandler}
+                  experienceHandler={addExperienceHandler}
+                  toDateHandler={toDateHandler}
+                  remoteLocHandler={remoteLocationHandler}
+                  id={ex.id.toString()}
+                />
+                {ex.work.map((work) => (
+                  <div
+                    className="my-4 flex space-x-2 items-center "
+                    key={work.id.toString()}
                     id={ex.id.toString()}
-                  />
-                  {ex.work.map((work) => (
-                    <div
-                      className="my-4 flex space-x-2 items-center "
-                      key={work.id.toString()}
-                      id={ex.id.toString()}
-                    >
-                      <Input
-                        onChange={(e) => workInputHandler(e)}
-                        id={work.id.toString()}
-                        placeholder="Developed dynamic dashboards using Next.js."
-                        type="text"
-                        required
-                        autoComplete="off"
-                      ></Input>
+                  >
+                    <Input
+                      onChange={(e) => workInputHandler(e)}
+                      id={work.id.toString()}
+                      placeholder="Developed dynamic dashboards using Next.js."
+                      type="text"
+                      required
+                      autoComplete="off"
+                    ></Input>
 
-                      <motion.button
-                        whileHover={{
-                          scaleY: 1.1,
-                        }}
-                        type="button"
-                        id={work.id.toString()}
-                        onClick={(e) => increaseWorkHandler(e)}
-                        className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
-                      >
-                        &#43;
-                      </motion.button>
-                      <motion.button
-                        whileHover={{
-                          scaleY: 1.1,
-                        }}
-                        type="button"
-                        id={work.id.toString()}
-                        className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
-                        onClick={(e) => decreaseWorkHandler(e)}
-                      >
-                        &minus;
-                      </motion.button>
-                    </div>
-                  ))}
-                  <div className="w-full flex items-center space-x-2 justify-center mb-2 mt-4">
                     <motion.button
                       whileHover={{
                         scaleY: 1.1,
                       }}
                       type="button"
-                      onClick={(e) => increaseExpHandler(e)}
-                      className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                      id={work.id.toString()}
+                      onClick={(e) => increaseWorkHandler(e)}
+                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
                     >
                       &#43;
                     </motion.button>
@@ -618,15 +631,39 @@ function Resume() {
                         scaleY: 1.1,
                       }}
                       type="button"
-                      id={ex.id.toString()}
-                      className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
-                      onClick={(e) => decreaseExpHandler(e)}
+                      id={work.id.toString()}
+                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                      onClick={(e) => decreaseWorkHandler(e)}
                     >
                       &minus;
                     </motion.button>
                   </div>
+                ))}
+                <div className="w-full flex items-center space-x-2 justify-center mb-2 mt-4">
+                  <motion.button
+                    whileHover={{
+                      scaleY: 1.1,
+                    }}
+                    type="button"
+                    onClick={(e) => increaseExpHandler(e)}
+                    className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                  >
+                    &#43;
+                  </motion.button>
+                  <motion.button
+                    whileHover={{
+                      scaleY: 1.1,
+                    }}
+                    type="button"
+                    id={ex.id.toString()}
+                    className="text-slate-700 cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                    onClick={(e) => decreaseExpHandler(e)}
+                  >
+                    &minus;
+                  </motion.button>
                 </div>
-              ))}
+              </div>
+            ))}
           </LabelInputContainer>
           {experience && (
             <input

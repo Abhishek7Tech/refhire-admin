@@ -32,6 +32,7 @@ export interface ExperienceInterface {
   to: string;
   city: string;
   country: string;
+  remote: string;
   work: WorkInterface[] | [];
 }
 
