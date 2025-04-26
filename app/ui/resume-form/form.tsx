@@ -11,7 +11,6 @@ import { getResumeData } from "@/app/home/resume/actions";
 import { Categories } from "@/app/utils/categories/categories";
 import { IconCircleArrowDown, IconCircleArrowUp } from "@tabler/icons-react";
 import { ExperienceInterface } from "@/app/utils/types/types";
-import { boolean } from "zod";
 
 const initialFormState = {
   name: "",
@@ -89,6 +88,7 @@ function Resume() {
           work: [{ id: 1, work: "" }],
         },
       ]);
+      setCategoriesTags(Categories);
     }
   }, [inputState.message]);
   const currentHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -577,6 +577,10 @@ function Resume() {
               className="text-slate-700 font-mukta font-medium text-base"
             >
               Salary Expectations
+              <small className="text-xs font-medium text-slate-700">
+                {" "}
+                /yearly
+              </small>
             </label>
             <Input
               name="salary"

@@ -35,6 +35,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   useEffect(() => {
     const parsePreference = JSON.parse(data.preference);
     const parseRelocation = JSON.parse(data.relocation);
+    console.log(JSON.parse(data.experience));
     const parseExperience = JSON.parse(data.experience);
     setPreference(parsePreference);
     setRelocation(parseRelocation);
@@ -142,7 +143,9 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                       {ex.from}-{ex.to}
                     </h4>
                     <span className="font-medium text-sm text-slate-700">
-                      {ex.city}, {ex.country}{" "}
+                      {ex.remote
+                        ? `${ex.remote}`
+                        : `${ex.city}, ${ex.country}`}{" "}
                     </span>
                   </div>
                 </div>
@@ -258,7 +261,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                   Expected Salary:
                 </h4>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  ${data.salary}
+                  {data.salary}
                 </span>
               </div>
               <SubmitButton
