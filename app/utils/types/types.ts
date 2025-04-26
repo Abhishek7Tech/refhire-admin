@@ -41,11 +41,13 @@ export interface CV {
   avatar: string;
   country: string;
   location: string;
+  resume_id: string;
   experience: string;
   name: string;
   preference: string;
   relocation: string;
   salary: string;
+  is_hired: boolean;
   years_of_experience: number;
   profession: string;
 }

@@ -6,6 +6,7 @@ import Mikasa from "@/public/mikasa.png";
 import Image from "next/image";
 import { cn } from "@/app/utils/utils";
 import {
+  IconAlarmSnooze,
   IconBooks,
   IconBriefcase,
   IconCoin,
@@ -17,11 +18,14 @@ import {
 } from "@tabler/icons-react";
 import SubmitButton from "../buttons/cv";
 import { CV, ExperienceInterface } from "@/app/utils/types/types";
+import { updateHiringStatus } from "@/app/home/cv/actions";
+import UpdateStatus from "../buttons/hiringStatus";
 const CV_AVATAR = process.env.NEXT_PUBLIC_RESUME_AVATAR_URL;
 
 export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [active, setActive] = useState<boolean>(false);
+  const [hiringStatus, setHiringStatus] = useState<boolean>(data.is_hired);
   const [preference, setPreference] = useState<
     { remote: boolean; hybrid: boolean; onsite: boolean }[] | []
   >([]);
@@ -29,13 +33,15 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   const [relocation, setRelocation] = useState<
     { acrossStates: boolean; acrossCountries: boolean }[] | []
   >([]);
-
   const [experience, setExperience] = useState<ExperienceInterface[]>([]);
+  const [hiringStatusPending, setHiringStatusPending] =
+    useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
   // }
   useEffect(() => {
     const parsePreference = JSON.parse(data.preference);
     const parseRelocation = JSON.parse(data.relocation);
-    console.log(JSON.parse(data.experience));
     const parseExperience = JSON.parse(data.experience);
     setPreference(parsePreference);
     setRelocation(parseRelocation);
@@ -56,6 +62,27 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [active]);
+
+  const hiringStatusHandler = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setHiringStatusPending(true);
+    setError(null);
+    try {
+      const res = await updateHiringStatus(data.resume_id);
+      if (res.error) {
+        setError(res.error);
+      }
+      
+      if (res.data?.length) {
+        setHiringStatus(res.data[0].is_hired);
+      }
+    } catch (error) {
+      setError("Something went wrong.");
+    }
+    setHiringStatusPending(false);
+  };
 
   const setActiveHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -143,9 +170,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                       {ex.from}-{ex.to}
                     </h4>
                     <span className="font-medium text-sm text-slate-700">
-                      {ex.remote
-                        ? `${ex.remote}`
-                        : `${ex.city}, ${ex.country}`}{" "}
+                      {ex.remote ? `${ex.remote}` : `${ex.city}, ${ex.country}`}{" "}
                     </span>
                   </div>
                 </div>
@@ -264,10 +289,30 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                   {data.salary}
                 </span>
               </div>
+
+              <div className="flex items-center gap-2">
+                <IconAlarmSnooze className="h-5 w-5 shrink-0 text-slate-700" />
+                <h4 className="text-slate-700 font-mukta text-base font-semibold">
+                  Status:
+                </h4>
+                <span className="font-medium text-slate-700 font-mukta text-base">
+                  {hiringStatus ? "🔴" : "🟢"}
+                </span>
+              </div>
+              {error && (
+              <p className="text-red-600 text-center text-sm max-w-sm  mt-1 font-medium">
+                {error}
+              </p>
+            )}
               <SubmitButton
                 setActiveHandler={(e) => setActiveHandler(e)}
                 disabled={false}
                 pending={false}
+              />
+              <UpdateStatus
+                hiringStatusHandler={(e) => hiringStatusHandler(e)}
+                pending={hiringStatusPending}
+                disabled={hiringStatus}
               />
             </div>
           </Card>

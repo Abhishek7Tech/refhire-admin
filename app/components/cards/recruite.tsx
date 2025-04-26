@@ -102,10 +102,15 @@ export const RecruiteCard = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    setError(null);
     setPending(true);
-    const res = await addCategory(selectedCategory, recruiteData.id);
-    if (res.error) {
-      setError(res.error);
+    try {
+      const res = await addCategory(selectedCategory, recruiteData.id);
+      if (res.error) {
+        setError(res.error);
+      }
+    } catch (error) {
+      setError("Something went wrong.");
     }
     setPending(false);
   };
