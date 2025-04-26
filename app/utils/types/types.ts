@@ -40,7 +40,7 @@ export interface CV {
   avatar: string;
   country: string;
   location: string;
-  experience: ExperienceInterface[] | [];
+  experience: string;
   name: string;
   preference: string;
   relocation: string;

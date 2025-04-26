@@ -9,13 +9,14 @@ import {
   IconBooks,
   IconBriefcase,
   IconCoin,
+  IconDeviceLaptop,
   IconDevices2,
   IconDevicesPc,
   IconMapPin,
   IconSend,
 } from "@tabler/icons-react";
 import SubmitButton from "../buttons/cv";
-import { CV } from "@/app/utils/types/types";
+import { CV, ExperienceInterface } from "@/app/utils/types/types";
 const CV_AVATAR = process.env.NEXT_PUBLIC_RESUME_AVATAR_URL;
 
 export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
@@ -28,13 +29,16 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   const [relocation, setRelocation] = useState<
     { acrossStates: boolean; acrossCountries: boolean }[] | []
   >([]);
+
+  const [experience, setExperience] = useState<ExperienceInterface[]>([]);
   // }
   useEffect(() => {
     const parsePreference = JSON.parse(data.preference);
     const parseRelocation = JSON.parse(data.relocation);
-    console.log("parsed", parsePreference);
+    const parseExperience = JSON.parse(data.experience);
     setPreference(parsePreference);
     setRelocation(parseRelocation);
+    setExperience(parseExperience);
   }, [data]);
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -117,111 +121,32 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                 <CloseIcon />
               </motion.button>
             </div>
-
-            <div className="grid grid-cols-5 row-auto gap-4 py-2 px-3 w-full">
-              <div className="col-span-5 col-end-5">
-                <h4 className="capitalize text-lg font-semibold text-slate-700 font-mukta">
-                  Frontend React Developer Intern
-                </h4>
-                <ol className="list-disc px-4 w-fit text-base text-slate-700 font-mukta">
-                  <li>
-                    Implemented Material UI & SCSS to create visually appealing
-                    UIs and components, adding a creative touch to project
-                    aesthetics.
-                  </li>
-                  <li>
-                    Developed 17+ assessment projects, employing a tailored
-                    approach to overcome unique challenges.{" "}
-                  </li>
-                  <li>
-                    Revamped e-commerce UX, resulting in a measurable 15% boost
-                    in sales and improved customer satisfaction.{" "}
-                  </li>
-                  <li>
-                    Streamlined CRM & back-office processes, enhancing overall
-                    operational efficiency and productivity.{" "}
-                  </li>
-                </ol>
-              </div>
-              <div className="col-start-5 col-end-6 place-items-end w-full">
-                <h4 className="font-medium text-base text-slate-700 font-mukta">
-                  {"May 2023"}-{"Aug 2023"}
-                </h4>
-                <span className="font-medium text-sm text-slate-700">
-                  Capetown, South Africa
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-5 row-auto gap-4 py-2 px-3 w-full">
-              <div className="col-span-5 col-end-5">
-                <h4 className="font-medium capitalize text-lg text-slate-700 font-mukta">
-                  Frontend React Developer Intern
-                </h4>
-                <ol className="list-disc px-4 w-fit text-base text-slate-700 font-mukta">
-                  <li>
-                    Implemented Material UI & SCSS to create visually appealing
-                    UIs and components, adding a creative touch to project
-                    aesthetics.
-                  </li>
-                  <li>
-                    Developed 17+ assessment projects, employing a tailored
-                    approach to overcome unique challenges.{" "}
-                  </li>
-                  <li>
-                    Revamped e-commerce UX, resulting in a measurable 15% boost
-                    in sales and improved customer satisfaction.{" "}
-                  </li>
-                  <li>
-                    Streamlined CRM & back-office processes, enhancing overall
-                    operational efficiency and productivity.{" "}
-                  </li>
-                </ol>
-              </div>
-              <div className="col-start-5 col-end-6 place-items-end w-full">
-                <h4 className="font-medium text-base text-slate-700 font-mukta">
-                  {"May 2023"}-{"Aug 2023"}
-                </h4>
-                <span className="font-medium text-sm text-slate-700">
-                  Capetown, South Africa
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-5 row-auto gap-4 py-2 px-3 w-full">
-              <div className="col-span-5 col-end-5">
-                <h4 className="font-medium capitalize text-lg text-slate-700 font-mukta">
-                  Frontend React Developer Intern
-                </h4>
-                <ol className="list-disc px-4 w-fit text-base text-slate-700 font-mukta">
-                  <li>
-                    Implemented Material UI & SCSS to create visually appealing
-                    UIs and components, adding a creative touch to project
-                    aesthetics.
-                  </li>
-                  <li>
-                    Developed 17+ assessment projects, employing a tailored
-                    approach to overcome unique challenges.{" "}
-                  </li>
-                  <li>
-                    Revamped e-commerce UX, resulting in a measurable 15% boost
-                    in sales and improved customer satisfaction.{" "}
-                  </li>
-                  <li>
-                    Streamlined CRM & back-office processes, enhancing overall
-                    operational efficiency and productivity.{" "}
-                  </li>
-                </ol>
-              </div>
-              <div className="col-start-5 col-end-6 place-items-end w-full">
-                <h4 className="font-medium text-base text-slate-700 font-mukta">
-                  {"May 2023"}-{"Aug 2023"}
-                </h4>
-                <span className="font-medium text-sm text-slate-700">
-                  Capetown, South Africa
-                </span>
-              </div>
-            </div>
+            {experience &&
+              experience.map((ex, idx) => (
+                <div
+                  key={ex.role}
+                  className="grid grid-cols-5 row-auto gap-4 py-2 px-3 w-full"
+                >
+                  <div className="col-span-5 col-end-5">
+                    <h4 className="capitalize text-lg font-semibold text-slate-700 font-mukta">
+                      {ex.role}
+                    </h4>
+                    <ol className="list-disc px-4 w-fit text-base text-slate-700 font-mukta">
+                      {ex.work.map((work) => (
+                        <li key={work.id}>{work.work}</li>
+                      ))}
+                    </ol>
+                  </div>
+                  <div className="col-start-5 col-end-6 place-items-end w-full">
+                    <h4 className="font-medium text-base text-slate-700 font-mukta">
+                      {ex.from}-{ex.to}
+                    </h4>
+                    <span className="font-medium text-sm text-slate-700">
+                      {ex.city}, {ex.country}{" "}
+                    </span>
+                  </div>
+                </div>
+              ))}
           </motion.div>
         ) : null}
       </AnimatePresence>
@@ -250,20 +175,23 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
             )}
           </AnimatePresence>
           <Card>
-            <div className="flex gap-4 items-center  cursor-pointer">
+            <div className="flex gap-3 items-center  cursor-pointer">
               <Image
                 src={`${CV_AVATAR}/${data.avatar}`}
                 alt="user avatar"
                 height={36}
                 width={36}
               ></Image>
-              <div className="flex flex-col gap-1 place-items-center">
-                <h3 className="text-slate-700 leading-2.5 font-medium font-mukta text-lg">
-                  { data.name}
+              <div className="flex flex-col gap-1">
+                <h3 className="text-slate-700 leading-2.5 font-medium font-mukta text-lg px-0.5">
+                  {data.name}
                 </h3>
-                <span className="text-slate-700 text-sm font-semibold">
-                  🧑‍💻 {data.profession}
-                </span>
+                <div className="flex items-center gap-1">
+                  <IconDeviceLaptop className="h-5 w-5 shrink-0 text-slate-700" />{" "}
+                  <span className="text-slate-700 text-sm font-semibold">
+                    {data.profession}
+                  </span>
+                </div>
               </div>
             </div>
 
