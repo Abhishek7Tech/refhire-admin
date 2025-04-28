@@ -1,6 +1,5 @@
 import { CV } from "@/app/ui/cv/cv";
 
-export default function Page() {
- 
+export default async function Page() {
   return  <CV />;
 }

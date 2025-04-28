@@ -2,21 +2,26 @@
 import { ResumeCard } from "@/app/components/cards/cv";
 import { getCVData } from "@/app/home/cv/actions";
 import Error from "@/app/home/error";
+import Loading from "@/app/home/loading";
 import { CV as CVInterface } from "@/app/utils/types/types";
 import { useEffect, useState } from "react";
 
 export function CV() {
   const [cvData, setCvData] = useState<CVInterface[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     if (error) {
       return;
     }
+    setLoading(true);
+
     (async () => {
       try {
         const res = await getCVData();
         if (res.error) {
           setError(res.error);
+          setLoading(false);
           return;
         }
 
@@ -24,12 +29,18 @@ export function CV() {
         if (data.length) {
           setCvData(data);
         }
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         setError("Something went wrong.");
         return;
       }
     })();
   }, [error]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (error) {
     return <Error error={{ message: error }} reset={() => setError(null)} />;
