@@ -4,6 +4,7 @@ import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
+import { signOut } from "@/app/utils/actions/logout/actions";
 
 interface Links {
   label: string;
@@ -165,6 +166,48 @@ export const SidebarLink = ({
   props?: LinkProps;
 }) => {
   const { open, animate } = useSidebar();
+
+  const logoutHanlder = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    try {
+      const req = await signOut();
+      if (req.status) {
+        throw new Error(req.message);
+      }
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+
+  if (link.label === "Logout") {
+    return (
+      <div
+        className={cn(
+          "flex items-center cursor-pointer justify-start gap-2  group/sidebar py-2",
+          className
+        )}
+        {...props}
+      >
+        {link.icon}
+        <motion.button
+          onClick={(e) => logoutHanlder(e)}
+          animate={{
+            display: animate
+              ? open
+                ? "inline-block"
+                : "none"
+              : "inline-block",
+            opacity: animate ? (open ? 1 : 0) : 1,
+          }}
+          className="text-slate-700 cursor-pointer font-medium font-mukta  text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        >
+          {link.label}
+        </motion.button>
+      </div>
+    );
+  }
   return (
     <Link
       href={link.href}
