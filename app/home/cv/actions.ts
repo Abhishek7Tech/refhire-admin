@@ -9,7 +9,7 @@ export const getCVData = async () => {
 
   if (!userId) {
     return {
-      error: "User not found",
+      error: "User not found.",
       status: 401,
     };
   }
