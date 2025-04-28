@@ -53,9 +53,7 @@ export const addCategory = async (category: string[], id: string) => {
     .select(
       "id, amount, application_status, avatar, hiring_ad, office_location, work_mode, organization_url, twitter_recruiter, position, organization, name, tags"
     );
-  console.log("User Id", userId);
-  console.log("Data:", data, status);
-  console.log("Error:", error);
+
 
   if (error) {
     return {
