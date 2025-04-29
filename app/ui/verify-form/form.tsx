@@ -18,6 +18,7 @@ function Verify() {
     getVerifyData,
     initialFormState
   );
+  const [resendError, setResendError] = useState<undefined | string>(undefined);
 
   const [pending, setPending] = useState<boolean>(false);
 
@@ -31,9 +32,11 @@ function Verify() {
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       setPending(true);
+      setResendError(undefined);
       if (!userContext?.email) return;
       console.log("Email", userContext.email);
-      await resendOtp(userContext.email);
+      const res = await resendOtp(userContext.email);
+      setResendError(res?.errors.otp);
       setPending(false);
     },
     [userContext.email]
@@ -57,6 +60,12 @@ function Verify() {
           {inputState.errors?.otp && (
             <p className="text-red-600 text-center text-sm max-w-sm mb-2 mt-1 font-medium">
               {inputState.errors.otp}
+            </p>
+          )}
+
+          {resendError && (
+            <p className="text-red-600 text-center text-sm max-w-sm mb-2 mt-1 font-medium">
+              {resendError}
             </p>
           )}
 
