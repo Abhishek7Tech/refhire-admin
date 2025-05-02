@@ -42,10 +42,10 @@ export interface CV {
   country: string;
   location: string;
   resume_id: string;
-  experience: string;
+  experience: ExperienceInterface[];
   name: string;
-  preference: {preferences: string};
-  relocation: {relocateTo: string};
+  preference: {preferences: { remote: boolean; hybrid: boolean; onsite: boolean }[]};
+  relocation: {relocateTo: { anotherState: boolean; anotherCountry: boolean }[]};
   salary: string;
   is_hired: boolean;
   years_of_experience: number;

@@ -51,12 +51,11 @@ export const addCategory = async (category: string[], id: string) => {
       status: 400,
     };
   }
-  const categoryToJson = JSON.stringify(category);
   const { data, error, status } = await supabase
     .from("hiring")
     .update({
       application_status: true,
-      tags: { tagNames: categoryToJson.trim() },
+      tags: { tagNames: category },
     })
     .eq("id", id)
     .eq("admin_id", userId)

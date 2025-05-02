@@ -40,13 +40,9 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
 
   // }
   useEffect(() => {
-    const parsePreference = JSON.parse(data.preference.preferences);
-    const parseRelocation = JSON.parse(data.relocation.relocateTo);
-    const parseExperience = JSON.parse(data.experience);
-    setPreference(parsePreference);
-    setRelocation(parseRelocation);
-    console.log("parsed", parseRelocation[0].anotherState);
-    setExperience(parseExperience);
+    setPreference(data.preference.preferences);
+    setRelocation(data.relocation.relocateTo);
+    setExperience(data.experience);
   }, [data]);
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {

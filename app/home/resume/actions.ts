@@ -149,7 +149,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   const admin = resumeData.admin;
   const isHired = false;
   const avatar = generateAvatar();
-  const tagsToJson = JSON.stringify(resumeData.tags);
+  const tags = resumeData.tags;
   console.log("EXperience", experience);
   const { data, error, status } = await supabase.from("resume").insert({
     name,
@@ -158,15 +158,15 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
     country,
     years_of_experience: yoe,
     location,
-    preference: { preferences: JSON.stringify(preference).trim() },
-    relocation: { relocateTo: JSON.stringify(relocation).trim() },
+    preference: { preferences: preference },
+    relocation: { relocateTo: relocation },
     salary,
-    experience: JSON.stringify(experience).trim(),
+    experience: experience,
     admin,
     admin_id: userId,
     is_hired: isHired,
     avatar,
-    tags: { tagNames: tagsToJson },
+    tags: { tagNames: tags },
   });
   console.log("Error", error, "data", data, "status", status);
   if (error) {
