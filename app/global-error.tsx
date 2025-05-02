@@ -8,7 +8,7 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="mx-auto z-100 w-full max-w-max bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl my-32">
+    <div className="mx-auto flex flex-col z-100 w-full max-w-max bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl my-32">
       <h2 className="text-slate-700 font-medium text-lg">
         {error?.message || "Something went wrong." + " ☹️"}
       </h2>

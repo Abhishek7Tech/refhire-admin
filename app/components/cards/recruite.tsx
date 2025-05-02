@@ -43,6 +43,7 @@ export const RecruiteCard = ({
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [applicationStatus, setApplicationStatus] = useState<boolean>(false);
   const [categoriesTags, setCategoriesTags] = useState<
     {
       id: string;
@@ -54,10 +55,15 @@ export const RecruiteCard = ({
   const [pending, setPending] = useState<boolean>(false);
 
   useEffect(() => {
-    if (recruiteData.tags) {
-      console.log("Tags:", recruiteData.tags);
-      setSelectedCategory(recruiteData.tags);
-      // setSelectedCategory(JSON.parse(recruiteData.tags));
+    if (recruiteData.tags.tagNames) {
+      console.log("Tags:", recruiteData.tags.tagNames);
+      // const parseRecuriteTags = JSON.parse();
+      // setSelectedCategory(recruiteData.tags);
+      setSelectedCategory(recruiteData.tags.tagNames);
+    }
+
+    if (recruiteData.application_status) {
+      setApplicationStatus(recruiteData.application_status);
     }
   }, [recruiteData]);
 
@@ -104,10 +110,19 @@ export const RecruiteCard = ({
     e.preventDefault();
     setError(null);
     setPending(true);
+    if (!selectedCategory.length) {
+      setError("Select a category.");
+      return;
+    }
     try {
       const res = await addCategory(selectedCategory, recruiteData.id);
       if (res.error) {
         setError(res.error);
+        return;
+      }
+      console.log("RES", res);
+      if (res && res.status === 200 && res.data?.length) {
+        setApplicationStatus(res.data[0].application_status);
       }
     } catch (error) {
       setError("Something went wrong.");
@@ -236,7 +251,7 @@ export const RecruiteCard = ({
                 Status:
               </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
-                {recruiteData.application_status ? "🟢" : "🔴"}
+                {applicationStatus ? "🟢" : "🔴"}
               </span>
             </div>
             <h4 className="text-slate-700 font-mukta text-base font-semibold underline underline-offset-2">
@@ -294,7 +309,7 @@ export const RecruiteCard = ({
                                 key={subCategory}
                                 id={subCategory}
                                 className={`w-fit cursor-pointer text-xs px-1 py-0.5 rounded-lg ${
-                                  selectedCategory.includes(subCategory)
+                                  selectedCategory?.includes(subCategory)
                                     ? "bg-emerald-200 border-2 border-gray-50"
                                     : "bg-gray-50"
                                 } text-slate-700`}
@@ -316,7 +331,7 @@ export const RecruiteCard = ({
               </p>
             )}
             <SubmitButton
-              disabled={selectedCategory.length === 0}
+              disabled={applicationStatus}
               pending={pending}
               apporveRequestHandler={apporveRequestHandler}
             />

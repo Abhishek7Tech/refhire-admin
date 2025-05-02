@@ -177,7 +177,7 @@ export const SidebarLink = ({
         throw new Error(req.message);
       }
     } catch (error) {
-      console.log("Error", error);
+      throw new Error("Failed to logout.");
     }
   };
 

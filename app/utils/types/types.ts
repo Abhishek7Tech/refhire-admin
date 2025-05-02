@@ -11,7 +11,7 @@ export interface RecruiteRequest {
   position: string;
   organization: string;
   name: string;
-  tags: string[];
+  tags: { tagNames: string[] };
 }
 
 interface Category {
@@ -44,8 +44,8 @@ export interface CV {
   resume_id: string;
   experience: string;
   name: string;
-  preference: string;
-  relocation: string;
+  preference: {preferences: string};
+  relocation: {relocateTo: string};
   salary: string;
   is_hired: boolean;
   years_of_experience: number;

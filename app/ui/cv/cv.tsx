@@ -26,6 +26,7 @@ export function CV() {
         }
 
         const data = res.data as CVInterface[] | [];
+        console.log("DATA", data);
         if (data.length) {
           setCvData(data);
         }
@@ -46,12 +47,12 @@ export function CV() {
     return <Error error={{ message: error }} reset={() => setError(null)} />;
   }
   return (
-    <div className="max-w-8xl z-0 mx-auto px-8">
+    <section className="max-w-8xl z-0 mx-auto px-8">
       <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-10">
         {cvData.map((cv, idx) => (
           <ResumeCard key={cv.id} idx={idx} data={cv} />
         ))}
       </div>
-    </div>
+    </section>
   );
 }

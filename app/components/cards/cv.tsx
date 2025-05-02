@@ -27,12 +27,12 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   const [active, setActive] = useState<boolean>(false);
   const [hiringStatus, setHiringStatus] = useState<boolean>(data.is_hired);
   const [preference, setPreference] = useState<
-    { remote: boolean; hybrid: boolean; onsite: boolean }[] | []
-  >([]);
+    { remote: boolean; hybrid: boolean; onsite: boolean } | undefined
+  >(undefined);
 
   const [relocation, setRelocation] = useState<
-    { acrossStates: boolean; acrossCountries: boolean }[] | []
-  >([]);
+    { anotherState: boolean; anotherCountry: boolean } | undefined
+  >(undefined);
   const [experience, setExperience] = useState<ExperienceInterface[]>([]);
   const [hiringStatusPending, setHiringStatusPending] =
     useState<boolean>(false);
@@ -40,11 +40,12 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
 
   // }
   useEffect(() => {
-    const parsePreference = JSON.parse(data.preference);
-    const parseRelocation = JSON.parse(data.relocation);
+    const parsePreference = JSON.parse(data.preference.preferences);
+    const parseRelocation = JSON.parse(data.relocation.relocateTo);
     const parseExperience = JSON.parse(data.experience);
     setPreference(parsePreference);
     setRelocation(parseRelocation);
+    console.log("parsed", parseRelocation);
     setExperience(parseExperience);
   }, [data]);
   useEffect(() => {
@@ -74,7 +75,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
       if (res.error) {
         setError(res.error);
       }
-      
+
       if (res.data?.length) {
         setHiringStatus(res.data[0].is_hired);
       }
@@ -250,11 +251,11 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                   Job Preference:
                 </h4>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  {preference[0]?.remote &&
-                    `${preference[0]?.hybrid ? "Remote," : "Remote"}`}{" "}
-                  {preference[0]?.hybrid &&
-                    `${preference[0]?.onsite ? "Hybrid," : "Hybrid"}`}{" "}
-                  {preference[0]?.onsite && "Onsite"}
+                  {preference?.remote &&
+                    `${preference?.hybrid ? "Remote," : "Remote"}`}{" "}
+                  {preference?.hybrid &&
+                    `${preference?.onsite ? "Hybrid," : "Hybrid"}`}{" "}
+                  {preference?.onsite && "Onsite"}
                 </span>
               </div>
 
@@ -264,19 +265,31 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                   Relocation:
                 </h4>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  {!relocation[0]?.acrossStates &&
-                    !relocation[0]?.acrossCountries && <b>Remote Only</b>}
-                  {relocation[0]?.acrossStates && relocation[0]?.acrossCountries
-                    ? <span>Across</span> +
-                      `${(<b>States</b>)}` +
-                      "&" +
-                      `${(<b>Countries</b>)}`
-                    : ""}
-                  {relocation[0]?.acrossStates &&
-                    <span>Across</span> + `${(<b>States</b>)}`}
+                  {!relocation?.anotherState && !relocation?.anotherCountry && (
+                    <b>Remote Only</b>
+                  )}
+                  {relocation?.anotherState && relocation?.anotherCountry ? (
+                    <>
+                      <p className="break-words"><span>Across </span>
+                      <b>States </b>{" "}
+                      
+                        & <b> Countries</b></p>
+                      {" "}
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  {relocation?.anotherState && !relocation?.anotherCountry && (
+                    <>
+                      <span>Across</span> + <b>States</b>
+                    </>
+                  )}
 
-                  {relocation[0]?.acrossCountries &&
-                    <span>Across</span> + `${(<b>Countries</b>)}`}
+                  {relocation?.anotherCountry && !relocation?.anotherState && (
+                    <>
+                      <span>Across</span> <b>Countries</b>
+                    </>
+                  )}
                 </span>
               </div>
 
@@ -296,14 +309,14 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                   Status:
                 </h4>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  {hiringStatus ? "🔴" : "🟢"}
+                  {hiringStatus ? "🟢" : "🔴"}
                 </span>
               </div>
               {error && (
-              <p className="text-red-600 text-center text-sm max-w-sm  mt-1 font-medium">
-                {error}
-              </p>
-            )}
+                <p className="text-red-600 text-center text-sm max-w-sm  mt-1 font-medium">
+                  {error}
+                </p>
+              )}
               <SubmitButton
                 setActiveHandler={(e) => setActiveHandler(e)}
                 disabled={false}

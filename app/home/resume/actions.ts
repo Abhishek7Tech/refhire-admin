@@ -29,12 +29,12 @@ const ResumeSchema = z.object({
     .string()
     .trim()
     .min(2, { message: "Location should be longer than 2 characters." }),
-  remote: z.string().optional(),
-  hybrid: z.string().optional(),
-  onsite: z.string().optional(),
+  remote: z.string().trim().optional(),
+  hybrid: z.string().trim().optional(),
+  onsite: z.string().trim().optional(),
   preference: z.undefined(),
-  anotherState: z.string().optional(),
-  anotherCountry: z.string().optional(),
+  anotherState: z.string().trim().optional(),
+  anotherCountry: z.string().trim().optional(),
   relocation: z.undefined(),
   salary: z
     .string()
@@ -47,16 +47,17 @@ const ResumeSchema = z.object({
       id: z.number().min(1, { message: "Invlaid id." }),
       role: z
         .string()
+        .trim()
         .min(2, { message: "Role should be longer than 2 characters" }),
       from: z.string().trim().min(5, { message: "Invalid date format." }),
       to: z.string().trim().min(5, { message: "Invalid date format." }),
-      city: z.string().optional(),
-      country: z.string().optional(),
-      remoteLoacation: z.string().optional(),
+      city: z.string().trim().optional(),
+      country: z.string().trim().optional(),
+      remoteLoacation: z.string().trim().optional(),
       work: z.array(
         z.object({
           id: number().min(1, { message: "Id should be greater than 0." }),
-          work: z.string().min(5, {
+          work: z.string().trim().min(5, {
             message: "Please describe your experience in more detail.",
           }),
         })
@@ -64,7 +65,9 @@ const ResumeSchema = z.object({
     })
   ),
   admin: z.string().trim().min(5, { message: "Please add your name." }),
-  tags: z.array(z.string()).min(1, { message: "Please select a category." }),
+  tags: z
+    .array(z.string().trim())
+    .min(1, { message: "Please select a category." }),
 });
 
 export const getResumeData = async (previousState: any, formData: FormData) => {
@@ -155,15 +158,15 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
     country,
     years_of_experience: yoe,
     location,
-    preference: JSON.stringify(preference),
-    relocation: JSON.stringify(relocation),
+    preference: { preferences: JSON.stringify(preference[0]).trim() },
+    relocation: { relocateTo: JSON.stringify(relocation[0]).trim() },
     salary,
-    experience: JSON.stringify(experience),
+    experience: JSON.stringify(experience).trim(),
     admin,
     admin_id: userId,
     is_hired: isHired,
     avatar,
-    tags: tagsToJson,
+    tags: { tagNames: tagsToJson },
   });
   console.log("Error", error, "data", data, "status", status);
   if (error) {

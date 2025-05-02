@@ -40,20 +40,27 @@ export const addCategory = async (category: string[], id: string) => {
 
   if (!userId) {
     return {
-      error: "User not found",
+      error: "User not found.",
       status: 401,
+    };
+  }
+
+  if (!category.length) {
+    return {
+      error: "Select a category.",
+      status: 400,
     };
   }
   const categoryToJson = JSON.stringify(category);
   const { data, error, status } = await supabase
     .from("hiring")
-    .update({ application_status: true, tags: categoryToJson })
+    .update({
+      application_status: true,
+      tags: { tagNames: categoryToJson.trim() },
+    })
     .eq("id", id)
     .eq("admin_id", userId)
-    .select(
-      "id, amount, application_status, avatar, hiring_ad, office_location, work_mode, organization_url, twitter_recruiter, position, organization, name, tags"
-    );
-
+    .select("id, application_status");
 
   if (error) {
     return {
