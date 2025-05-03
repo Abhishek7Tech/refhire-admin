@@ -171,13 +171,10 @@ export const SidebarLink = ({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    try {
-      const req = await signOut();
-      if (req.status) {
-        throw new Error(req.message);
-      }
-    } catch (error) {
-      throw new Error("Failed to logout.");
+
+    const res = await signOut();
+    if (res?.status) {
+      throw new Error(res.message);
     }
   };
 
