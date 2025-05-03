@@ -7,6 +7,7 @@ function SubmitButton({
   disabled,
   pending,
   setActiveHandler,
+  id,
 }: //   apporveRequestHandler,
 {
   disabled: boolean;
@@ -14,10 +15,11 @@ function SubmitButton({
   setActiveHandler: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
- 
+  id: string;
 }) {
   return (
     <button
+      id={id}
       disabled={disabled}
       onClick={(e) => setActiveHandler(e)}
       type="button"

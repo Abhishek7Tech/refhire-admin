@@ -37,6 +37,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   const [hiringStatusPending, setHiringStatusPending] =
     useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [disFromTop, setDisFromTop] = useState(0);
 
   // }
   useEffect(() => {
@@ -44,6 +45,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
     setRelocation(data.relocation.relocateTo);
     setExperience(data.experience);
   }, [data]);
+
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -86,7 +88,19 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   ) => {
     e.preventDefault();
     setActive(true);
-    console.log("clicked", active);
+    const id = e.currentTarget.id;
+    const cardId = document.getElementById(id);
+    const cardDistanceFromTop = cardId?.getBoundingClientRect().top;
+    if (!cardDistanceFromTop) {
+      return;
+    }
+    console.log("Dis from top", cardDistanceFromTop);
+    if (Math.abs(cardDistanceFromTop) < 100) {
+      setDisFromTop(80);
+      return;
+    }
+
+    setDisFromTop(Math.abs(cardDistanceFromTop));
   };
 
   const hideExperienceHandler = (
@@ -111,12 +125,13 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
       <AnimatePresence>
         {active ? (
           <motion.div
-            className="grid bg-white/25 border border-white/30 shadow-lg rounded-2xl max-w-4xl max-h-[70vh] overflow-y-scroll place-items-start place-self-center self-center top-20 absolute z-[100] opacity-100 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] scroll-smooth"
+            className={`grid bg-white/25 border border-white/30 shadow-lg max-w-4xl max-h-[70vh] rounded-2xl overflow-y-scroll place-items-start place-self-center absolute z-[100] opacity-100 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] scroll-smooth`}
             initial={{
               opacity: 0,
             }}
             animate={{
               opacity: 1,
+              top: disFromTop
             }}
             exit={{
               opacity: 0,
@@ -125,7 +140,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
               },
             }}
           >
-            <div className="flex justify-between w-full px-3 pt-4">
+            <div className="flex justify-between w-full px-3 py-4">
               <h3 className="text-slate-700 font-mukta text-2xl w-full underline underline-offset-2 font-medium">
                 Experience
               </h3>
@@ -199,7 +214,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
               />
             )}
           </AnimatePresence>
-          <Card>
+          <Card id={idx.toString()}>
             <div className="flex gap-3 items-center  cursor-pointer">
               <Image
                 src={`${CV_AVATAR}/${data.avatar}`}
@@ -261,10 +276,10 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                   Relocation:
                 </h4>
                 <span className="font-medium text-slate-700 font-mukta text-base">
-                  {!relocation[0]?.anotherState && !relocation[0]?.anotherCountry && (
-                    <b>Remote Only</b>
-                  )}
-                  {relocation[0]?.anotherState && relocation[0]?.anotherCountry ? (
+                  {!relocation[0]?.anotherState &&
+                    !relocation[0]?.anotherCountry && <b>Remote Only</b>}
+                  {relocation[0]?.anotherState &&
+                  relocation[0]?.anotherCountry ? (
                     <>
                       <p className="break-words">
                         <span>Across </span>
@@ -274,17 +289,19 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                   ) : (
                     ""
                   )}
-                  {relocation[0]?.anotherState && !relocation[0]?.anotherCountry && (
-                    <>
-                      <span>Across</span> + <b>States</b>
-                    </>
-                  )}
+                  {relocation[0]?.anotherState &&
+                    !relocation[0]?.anotherCountry && (
+                      <>
+                        <span>Across</span> + <b>States</b>
+                      </>
+                    )}
 
-                  {relocation[0]?.anotherCountry && !relocation[0]?.anotherState && (
-                    <>
-                      <span>Across</span> <b>Countries</b>
-                    </>
-                  )}
+                  {relocation[0]?.anotherCountry &&
+                    !relocation[0]?.anotherState && (
+                      <>
+                        <span>Across</span> <b>Countries</b>
+                      </>
+                    )}
                 </span>
               </div>
 
@@ -316,6 +333,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                 setActiveHandler={(e) => setActiveHandler(e)}
                 disabled={false}
                 pending={false}
+                id={idx.toString()}
               />
               <UpdateStatus
                 hiringStatusHandler={(e) => hiringStatusHandler(e)}
@@ -333,12 +351,15 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
 export const Card = ({
   className,
   children,
+  id,
 }: {
   className?: string;
   children: React.ReactNode;
+  id: string;
 }) => {
   return (
     <div
+      id={id}
       className={cn(
         "rounded-2xl h-full w-full p-2 overflow-hidden bg-white/35 border border-white/30 shadow-lg backdrop-blur-md  group-hover:border-green-300 relative z-20",
         className
