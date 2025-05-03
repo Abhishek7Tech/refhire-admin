@@ -17,7 +17,6 @@ const mukta = Mukta({
   weight: ["200", "300", "400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-mukta",
-  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <UserProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} ${mukta.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} ${mukta.className} antialiased`}
         >
           {children}
         </body>

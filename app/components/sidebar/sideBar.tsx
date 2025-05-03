@@ -201,7 +201,7 @@ export const SidebarLink = ({
               : "inline-block",
             opacity: animate ? (open ? 1 : 0) : 1,
           }}
-          className="text-slate-700 cursor-pointer font-medium font-mukta  text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+          className="text-slate-700 cursor-pointer font-medium font-mukta  text-base group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
         >
           {link.label}
         </motion.button>
@@ -224,7 +224,7 @@ export const SidebarLink = ({
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-slate-700 font-medium font-mukta  text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        className="text-slate-700 font-medium font-mukta  text-base group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
       >
         {link.label}
       </motion.span>

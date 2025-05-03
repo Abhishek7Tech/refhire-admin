@@ -25,7 +25,7 @@ function SubmitButton() {
             alt="loading-spinner"
           ></Image>
         ) : (
-          <span>Add Resume</span>
+          <span className="text-base">Add Resume</span>
         )}
       </div>
     </button>

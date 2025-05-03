@@ -352,7 +352,7 @@ function Resume() {
           >
             <label
               htmlFor="name"
-              className="text-slate-700 font-mukta font-medium text-base"
+              className="text-slate-700 font-mukta font-medium text-lg"
             >
               Name
             </label>
@@ -369,7 +369,7 @@ function Resume() {
           >
             <label
               htmlFor="email"
-              className="text-slate-700 font-mukta font-medium text-base"
+              className="text-slate-700 font-mukta font-medium text-lg"
             >
               Email
             </label>
@@ -390,7 +390,7 @@ function Resume() {
           >
             <label
               htmlFor="profession"
-              className="text-slate-700 font-mukta font-medium text-base"
+              className="text-slate-700 font-mukta font-medium text-lg"
             >
               Profession
             </label>
@@ -412,7 +412,7 @@ function Resume() {
           >
             <label
               htmlFor="yoe"
-              className="text-slate-700 font-mukta font-medium text-base"
+              className="text-slate-700 font-mukta font-medium text-lg"
             >
               Years of Experience
             </label>
@@ -429,7 +429,7 @@ function Resume() {
           >
             <label
               htmlFor="country"
-              className="text-slate-700 font-mukta font-medium text-base"
+              className="text-slate-700 font-mukta font-medium text-lg"
             >
               Country of Residence
             </label>
@@ -451,7 +451,7 @@ function Resume() {
           >
             <label
               htmlFor="location"
-              className="text-slate-700 font-mukta font-medium text-base"
+              className="text-slate-700 font-mukta font-medium text-lg"
             >
               Location
             </label>
@@ -471,7 +471,7 @@ function Resume() {
             className={inputState.errors?.preference ? "mb-0" : "mb-4"}
           >
             <fieldset className=" border-2 border-dashed border-green-300 p-4 rounded-md">
-              <legend className="text-slate-700 font-mukta font-medium text-base">
+              <legend className="text-slate-700 font-mukta font-medium text-lg">
                 Job Preference:
               </legend>
               <div className="flex justify-start space-x-6">
@@ -528,7 +528,7 @@ function Resume() {
             className={inputState.errors?.relocation ? "mb-0" : "mb-4"}
           >
             <fieldset className=" border-2 border-dashed border-green-300 p-4 rounded-md ">
-              <legend className="text-slate-700 font-mukta font-medium text-base">
+              <legend className="text-slate-700 font-mukta font-medium text-lg">
                 Open to Relocation:
               </legend>
 
@@ -574,7 +574,7 @@ function Resume() {
           >
             <label
               htmlFor="salary"
-              className="text-slate-700 font-mukta font-medium text-base"
+              className="text-slate-700 font-mukta font-medium text-lg"
             >
               Salary Expectations
               <small className="text-xs font-medium text-slate-700">
@@ -594,12 +594,13 @@ function Resume() {
               {inputState.errors.salary}
             </p>
           )}
+
           <LabelInputContainer
             className={inputState.errors?.experience ? "mb-0" : "mb-4"}
           >
             <label
               htmlFor="experience"
-              className="text-slate-700 font-mukta font-medium text-base"
+              className="text-slate-700 font-mukta font-medium text-lg"
             >
               Experience
             </label>
@@ -702,7 +703,7 @@ function Resume() {
           >
             <label
               htmlFor="tags"
-              className="text-slate-700 font-mukta font-medium text-base"
+              className="text-slate-700 font-mukta font-medium text-lg"
             >
               Select Category
             </label>
@@ -712,7 +713,7 @@ function Resume() {
                 return (
                   <div key={category.id} className="flex flex-col gap-2">
                     <div className="flex justify-between items-center">
-                      <h4 className="text-slate-700 font-mukta text-sm font-semibold">
+                      <h4 className="text-slate-700 font-mukta text-base font-semibold">
                         {category.name}
                       </h4>
                       {category.showSubCategories ? (
@@ -756,7 +757,7 @@ function Resume() {
                                 onClick={(e) => subCategoryHandler(e)}
                                 key={subCategory}
                                 id={subCategory}
-                                className={`w-fit cursor-pointer text-xs px-1 py-0.5 rounded-lg ${
+                                className={`w-fit cursor-pointer text-sm px-1 py-0.5 rounded-lg ${
                                   selectedCategory.includes(subCategory)
                                     ? "bg-emerald-200 border-2 border-gray-50"
                                     : "bg-gray-50"
@@ -790,7 +791,7 @@ function Resume() {
           >
             <label
               htmlFor="admin"
-              className="text-slate-700 font-mukta font-medium text-base"
+              className="text-slate-700 font-mukta font-medium text-lg"
             >
               Submitted by
             </label>

@@ -254,7 +254,7 @@ export const RecruiteCard = ({
                 {applicationStatus ? "🟢" : "🔴"}
               </span>
             </div>
-            <h4 className="text-slate-700 font-mukta text-base font-semibold underline underline-offset-2">
+            <h4 className="text-slate-700 font-mukta text-lg font-semibold underline underline-offset-2">
               Select category
             </h4>
             <div className="mt-2 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
@@ -264,7 +264,7 @@ export const RecruiteCard = ({
                 return (
                   <div key={category.id} className="flex flex-col gap-2">
                     <div className="flex justify-between items-center">
-                      <h4 className="text-slate-700 font-mukta text-sm font-semibold">
+                      <h4 className="text-slate-700 font-mukta text-base font-semibold">
                         {category.name}
                       </h4>
                       {category.showSubCategories ? (
@@ -308,7 +308,7 @@ export const RecruiteCard = ({
                                 onClick={(e) => subCategoryHandler(e)}
                                 key={subCategory}
                                 id={subCategory}
-                                className={`w-fit cursor-pointer text-xs px-1 py-0.5 rounded-lg ${
+                                className={`w-fit cursor-pointer text-sm px-1 py-0.5 rounded-lg ${
                                   selectedCategory?.includes(subCategory)
                                     ? "bg-emerald-200 border-2 border-gray-50"
                                     : "bg-gray-50"
