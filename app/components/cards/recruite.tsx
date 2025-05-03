@@ -173,7 +173,7 @@ export const RecruiteCard = ({
                 href={recruiteData.organization_url}
               >
                 🏢 {recruiteData.organization}
-              </Link>
+              </Link> 
             </div>
           </div>
 
@@ -264,7 +264,7 @@ export const RecruiteCard = ({
                 return (
                   <div key={category.id} className="flex flex-col gap-2">
                     <div className="flex justify-between items-center">
-                      <h4 className="text-slate-700 font-mukta text-base font-semibold">
+                      <h4 className="text-slate-700 font-mukta text-base font-medium">
                         {category.name}
                       </h4>
                       {category.showSubCategories ? (
@@ -308,7 +308,7 @@ export const RecruiteCard = ({
                                 onClick={(e) => subCategoryHandler(e)}
                                 key={subCategory}
                                 id={subCategory}
-                                className={`w-fit cursor-pointer text-sm px-1 py-0.5 rounded-lg ${
+                                className={`w-fit cursor-pointer text-[13px] px-1 py-0.5 rounded-lg ${
                                   selectedCategory?.includes(subCategory)
                                     ? "bg-emerald-200 border-2 border-gray-50"
                                     : "bg-gray-50"

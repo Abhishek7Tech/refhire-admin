@@ -29,7 +29,7 @@ function SignIn() {
           >
             <label
               htmlFor="email"
-              className="text-slate-700 font-mukta font-medium text-lg"
+              className="text-slate-700 font-mukta font-semibold text-base"
             >
               Email
             </label>

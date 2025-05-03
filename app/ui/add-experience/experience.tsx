@@ -32,7 +32,7 @@ function Experience({
       <div className="space-y-1 flex flex-col">
         <label
           htmlFor="role"
-          className="text-slate-700 font-mukta font-medium text-base"
+          className="text-slate-700 font-mukta font-medium text-[15px]"
         >
           Job Title
         </label>
@@ -49,7 +49,7 @@ function Experience({
         <div className="space-y-1 flex flex-col">
           <label
             htmlFor="city"
-            className="text-slate-700 font-mukta font-medium text-base"
+            className="text-slate-700 font-mukta font-medium text-[15px]"
           >
             City
           </label>
@@ -66,7 +66,7 @@ function Experience({
         <div className="space-y-1 flex flex-col">
           <label
             htmlFor="end-date"
-            className="text-slate-700 font-mukta font-medium text-base"
+            className="text-slate-700 font-mukta font-medium text-[15px]"
           >
             Country
           </label>
@@ -91,7 +91,7 @@ function Experience({
           ></Input>
           <label
             htmlFor="current"
-            className="text-slate-700 font-mukta font-medium text-base text-nowrap"
+            className="text-slate-700 font-mukta font-medium text-[15px] text-nowrap"
           >
             Remote
           </label>
@@ -102,7 +102,7 @@ function Experience({
         <div className="space-y-1 flex flex-col w-full">
           <label
             htmlFor="start-date"
-            className="text-slate-700 font-mukta font-medium text-base"
+            className="text-slate-700 font-mukta font-medium text-[15px]"
           >
             Start Date
           </label>
@@ -117,7 +117,7 @@ function Experience({
         <div className="space-y-1 flex flex-col w-full">
           <label
             htmlFor="end-date"
-            className="text-slate-700 font-mukta font-medium text-base"
+            className="text-slate-700 font-mukta font-medium text-[15px]"
           >
             End Date
           </label>
@@ -140,7 +140,7 @@ function Experience({
           ></Input>
           <label
             htmlFor="current"
-            className="text-slate-700 font-mukta font-medium text-base text-nowrap"
+            className="text-slate-700 font-mukta font-medium text-[15px] text-nowrap"
           >
             Present (Current)
           </label>
