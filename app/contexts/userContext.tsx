@@ -13,7 +13,6 @@ export const UserContext = createContext<UserContextType | undefined>(
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
   const [email, setEmail] = useState<string | undefined>(undefined);
-
   const emailHandler = (email: string) => {
     setEmail(email);
   };

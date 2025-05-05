@@ -17,7 +17,7 @@ import {
   IconSend,
 } from "@tabler/icons-react";
 import SubmitButton from "../buttons/cv";
-import { CV, ExperienceInterface } from "@/app/utils/types/types";
+import { CV, ExperienceInterface, Preference, Relocation } from "@/app/utils/types/types";
 import { updateHiringStatus } from "@/app/home/cv/actions";
 import UpdateStatus from "../buttons/hiringStatus";
 const CV_AVATAR = process.env.NEXT_PUBLIC_RESUME_AVATAR_URL;
@@ -27,11 +27,11 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   const [active, setActive] = useState<boolean>(false);
   const [hiringStatus, setHiringStatus] = useState<boolean>(data.is_hired);
   const [preference, setPreference] = useState<
-    { remote: boolean; hybrid: boolean; onsite: boolean }[] | []
+    Preference[] | []
   >([]);
 
   const [relocation, setRelocation] = useState<
-    { anotherState: boolean; anotherCountry: boolean }[] | []
+    Relocation[] | []
   >([]);
   const [experience, setExperience] = useState<ExperienceInterface[]>([]);
   const [hiringStatusPending, setHiringStatusPending] =

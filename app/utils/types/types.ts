@@ -1,3 +1,14 @@
+export interface Preference {
+  remote: boolean;
+  hybrid: boolean;
+  onsite: boolean;
+}
+
+export interface Relocation {
+  anotherState: boolean;
+  anotherCountry: boolean;
+}
+
 export interface RecruiteRequest {
   id: string;
   office_location: string;
@@ -44,8 +55,8 @@ export interface CV {
   resume_id: string;
   experience: ExperienceInterface[];
   name: string;
-  preference: {preferences: { remote: boolean; hybrid: boolean; onsite: boolean }[]};
-  relocation: {relocateTo: { anotherState: boolean; anotherCountry: boolean }[]};
+  preference: { preferences: Preference[] };
+  relocation: { relocateTo: Relocation[] };
   salary: string;
   is_hired: boolean;
   years_of_experience: number;
