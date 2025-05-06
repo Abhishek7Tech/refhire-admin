@@ -207,7 +207,7 @@ export const RecruiteCard = ({
                 Location:
               </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
-                {recruiteData.office_location}
+                {recruiteData.office_location_country}
               </span>
             </div>
 
@@ -241,7 +241,7 @@ export const RecruiteCard = ({
                 HQ:
               </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
-                {recruiteData.office_location}
+                {recruiteData.office_location_city}, {recruiteData.office_location_country}
               </span>
             </div>
 

@@ -16,7 +16,7 @@ export const getRecruiteRequests = async () => {
   const { data, error, status } = await supabase
     .from("hiring")
     .select(
-      "id, amount, application_status, avatar, hiring_ad, office_location, work_mode, organization_url, twitter_recruiter, position, organization, name, tags"
+      "id, amount, application_status, avatar, hiring_ad, office_location_city, office_location_country, work_mode, organization_url, twitter_recruiter, position, organization, name, tags"
     )
     .eq("admin_id", userId);
   console.log("Data:", data, status);

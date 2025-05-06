@@ -11,7 +11,8 @@ export interface Relocation {
 
 export interface RecruiteRequest {
   id: string;
-  office_location: string;
+  office_location_city: string;
+  office_location_country: string;
   avatar: string;
   hiring_ad: string;
   application_status: boolean;
