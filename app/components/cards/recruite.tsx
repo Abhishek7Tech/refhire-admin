@@ -112,6 +112,7 @@ export const RecruiteCard = ({
     setPending(true);
     if (!selectedCategory.length) {
       setError("Select a category.");
+      setPending(false);
       return;
     }
     try {
@@ -139,7 +140,7 @@ export const RecruiteCard = ({
         onMouseLeave={() => setHoveredIndex(null)}
       >
         <AnimatePresence>
-          {hoveredIndex === idx && (
+            {hoveredIndex === idx && (
             <motion.span
               className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-white/[0.3] block  rounded-3xl"
               layoutId="hoverBackground"
@@ -173,7 +174,7 @@ export const RecruiteCard = ({
                 href={recruiteData.organization_url}
               >
                 🏢 {recruiteData.organization}
-              </Link> 
+              </Link>
             </div>
           </div>
 
@@ -241,7 +242,8 @@ export const RecruiteCard = ({
                 HQ:
               </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
-                {recruiteData.office_location_city}, {recruiteData.office_location_country}
+                {recruiteData.office_location_city},{" "}
+                {recruiteData.office_location_country}
               </span>
             </div>
 
@@ -352,7 +354,7 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "rounded-2xl h-full w-full p-2 overflow-hidden bg-white/35 border border-white/30 shadow-lg backdrop-blur-md  group-hover:border-green-300 relative z-20",
+        "rounded-2xl h-min w-full p-2 overflow-hidden bg-white/35 border border-white/30 shadow-lg backdrop-blur-md  group-hover:border-green-300 relative z-20",
         className
       )}
     >

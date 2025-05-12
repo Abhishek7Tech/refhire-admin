@@ -1,3 +1,6 @@
+import { motion } from "motion/react";
+
+
 function Dashboard() {
   return (
     <section className="mt-8 mx-auto">
@@ -26,6 +29,8 @@ function Dashboard() {
           </h1>
         </div>
       </div>
+
+     
     </section>
   );
 }

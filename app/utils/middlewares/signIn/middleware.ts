@@ -10,7 +10,7 @@ export default async function allowToSignIn(request: NextRequest) {
     .select("email")
     .eq("email", userEmail);
 
-  if (userEmail || (data && data?.length > 0)) {
+  if (userEmail && (data && data?.length > 0)) {
     return NextResponse.redirect(new URL("/home", request.url));
   }
   return NextResponse.next();
