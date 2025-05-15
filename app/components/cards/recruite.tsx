@@ -218,7 +218,7 @@ export const RecruiteCard = ({
                 Referral Amount:
               </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
-                {recruiteData.amount}
+                ${recruiteData.amount}
               </span>
             </div>
 
