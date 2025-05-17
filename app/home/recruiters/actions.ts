@@ -70,7 +70,7 @@ export const addCategory = async (category: string[], id: string) => {
     })
     .eq("id", id)
     .eq("admin_id", userId)
-    .select("id, application_status, name, position");
+    .select("id, application_status, name, position, email");
 
   if (error) {
     return {
@@ -85,6 +85,7 @@ export const addCategory = async (category: string[], id: string) => {
       status: 500,
     };
   }
+  console.log("Status", status);
   if (status === 200) {
     const plunk = new Plunk(PLUNK_AUTH);
     const body = await render(
@@ -93,7 +94,7 @@ export const addCategory = async (category: string[], id: string) => {
 
     try {
       const res = await plunk.emails.send({
-        to: userEmail,
+        to: data[0].email,
         subject: `Your Request Has Been Reviewed.`,
         body,
       });
