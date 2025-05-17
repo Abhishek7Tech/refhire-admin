@@ -57,8 +57,6 @@ export const RecruiteCard = ({
   useEffect(() => {
     if (recruiteData.tags.tagNames) {
       console.log("Tags:", recruiteData.tags.tagNames);
-      // const parseRecuriteTags = JSON.parse();
-      // setSelectedCategory(recruiteData.tags);
       setSelectedCategory(recruiteData.tags.tagNames);
     }
 

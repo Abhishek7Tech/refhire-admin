@@ -68,6 +68,8 @@ export const addCategory = async (category: string[], id: string) => {
     };
   }
 
+  // send user a email about the request being apporoved //
+
   return {
     data,
     status,
