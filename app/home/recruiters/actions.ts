@@ -1,7 +1,10 @@
 "use server";
 
+import Email from "@/app/utils/email/email";
 import { createClient } from "@/app/utils/supabase/server";
-
+import Plunk from "@plunk/node";
+import { render } from "jsx-email";
+const PLUNK_AUTH = process.env.PLUNK_SECRET_KEY;
 export const getRecruiteRequests = async () => {
   const supabase = await createClient();
   const session = await supabase.auth.getUser();
@@ -37,8 +40,9 @@ export const addCategory = async (category: string[], id: string) => {
   const supabase = await createClient();
   const userSession = await supabase.auth.getUser();
   const userId = await userSession.data.user?.id;
+  const userEmail = await userSession.data.user?.email;
 
-  if (!userId) {
+  if (!userId || !userEmail) {
     return {
       error: "User not found.",
       status: 401,
@@ -51,6 +55,13 @@ export const addCategory = async (category: string[], id: string) => {
       status: 400,
     };
   }
+
+  if (!id) {
+    return {
+      error: "User not found.",
+      status: 400,
+    };
+  }
   const { data, error, status } = await supabase
     .from("hiring")
     .update({
@@ -59,7 +70,7 @@ export const addCategory = async (category: string[], id: string) => {
     })
     .eq("id", id)
     .eq("admin_id", userId)
-    .select("id, application_status");
+    .select("id, application_status, name, position");
 
   if (error) {
     return {
@@ -68,10 +79,42 @@ export const addCategory = async (category: string[], id: string) => {
     };
   }
 
-  // send user a email about the request being apporoved //
+  if (!PLUNK_AUTH) {
+    return {
+      error: "Failed to deliver the message. Try again.",
+      status: 500,
+    };
+  }
+  if (status === 200) {
+    const plunk = new Plunk(PLUNK_AUTH);
+    const body = await render(
+      Email({ name: data[0].name as string, position: data[0].position })
+    );
+
+    try {
+      const res = await plunk.emails.send({
+        to: userEmail,
+        subject: `Your Request Has Been Reviewed.`,
+        body,
+      });
+
+      if (res.success && data.length) {
+        return {
+          data: [
+            { id: data[0].id, application_status: data[0].application_status },
+          ],
+          status,
+        };
+      }
+    } catch (error) {
+      return {
+        error: "Failed to send message. Try again.",
+      };
+    }
+  }
 
   return {
-    data,
+    data: [{ id: data[0].id, application_status: data[0].application_status }],
     status,
   };
 };

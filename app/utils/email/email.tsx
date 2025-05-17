@@ -26,9 +26,9 @@ export function Email({ name, position }: Props) {
               📩 You got a new message!
             </Heading>
             <div className="mb-4  whitespace-pre-line border border-gray-200 rounded-xl leading-1">
-              <Text className="text-start">Hi {name}</Text>
+              <Text className="text-start">Hi {name.split(" ")[0]},</Text>
               <Text className="text-start">
-                Your request for the {position} has been approved.
+                Your request for the <span className="font-semibold">{position}</span> has been approved.
               </Text>
               <Text className="text-start font-semibold">
                 Click here to continue 👉:{" "}
