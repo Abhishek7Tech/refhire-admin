@@ -5,6 +5,9 @@ import { createClient } from "@/app/utils/supabase/server";
 import Plunk from "@plunk/node";
 import { render } from "jsx-email";
 const PLUNK_AUTH = process.env.PLUNK_SECRET_KEY;
+import { STATS_TABLE_ID } from "@/app/utils/statsId/stats";
+
+
 export const getRecruiteRequests = async () => {
   const supabase = await createClient();
   const session = await supabase.auth.getUser();
@@ -85,7 +88,7 @@ export const addCategory = async (category: string[], id: string) => {
       status: 500,
     };
   }
-  
+
   if (status === 200) {
     const plunk = new Plunk(PLUNK_AUTH);
     const body = await render(
@@ -100,6 +103,9 @@ export const addCategory = async (category: string[], id: string) => {
       });
 
       if (res.success && data.length) {
+        await supabase.rpc("update_total_recruiters", {
+          table_id: STATS_TABLE_ID,
+        });
         return {
           data: [
             { id: data[0].id, application_status: data[0].application_status },

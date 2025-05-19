@@ -4,7 +4,7 @@ import { createClient } from "@/app/utils/supabase/server";
 import { error } from "console";
 import { pre } from "motion/react-client";
 import { boolean, number, string, z } from "zod";
-
+import { STATS_TABLE_ID } from "@/app/utils/statsId/stats";
 const ResumeSchema = z.object({
   name: z
     .string()
@@ -178,6 +178,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   }
 
   if (status === 201) {
+    await supabase.rpc("update_total_candidates", {table_id: STATS_TABLE_ID})
     return {
       message: "Resume submitted successfully.",
     };

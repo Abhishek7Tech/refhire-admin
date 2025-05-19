@@ -1,0 +1,1 @@
+export const STATS_TABLE_ID = "aaefca1f-4748-4671-bfe3-651daf605ab3";

@@ -100,8 +100,6 @@ export const getUsersActivity = async () => {
   };
 };
 
-
-
 export async function getPlatformStats() {
   const supabase = await createClient();
 
@@ -115,36 +113,27 @@ export async function getPlatformStats() {
     };
   }
 
-  const [totalrecruiters, totalCandidates, totalHires] = await Promise.all([
-    supabase.from("recruiters").select("*", { count: "exact", head: true }),
-    supabase.from("resume").select("*", { count: "exact", head: true }),
-    supabase
-      .from("resume")
-      .select("*", { count: "exact", head: true })
-      .eq("is_hired", true),
-  ]);
+  const { data, error, status } = await supabase
+    .from("app_stats")
+    .select("id, total_recruiters, total_hires, total_candidates")
+    .single();
 
-  if (totalrecruiters.error || totalCandidates.error || totalHires.error) {
+  if (error) {
     return {
-      status: 404,
-      error: "Failed to fetch info.",
+      error: error.message,
+      status: status,
     };
   }
-
-  if (
-    totalrecruiters.count !== null &&
-    totalCandidates.count !== null &&
-    totalHires.count !== null
-  ) {
-    const totalUsers = totalrecruiters.count + totalCandidates.count;
-    const hires = totalHires.count;
+  if (data && status === 200) {
+    const totalUsers = data.total_candidates + data.total_recruiters;
+    const hires = data.total_hires;
 
     return {
       status: 200,
       data: {
         totalUsers,
-        totalRecruiters: totalrecruiters.count,
-        totalCandidates: totalCandidates.count,
+        totalRecruiters: data.total_recruiters,
+        totalCandidates: data.total_candidates,
         hires,
       },
     };

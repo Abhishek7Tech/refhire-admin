@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/app/utils/supabase/server";
+import { STATS_TABLE_ID } from "@/app/utils/statsId/stats";
 
 export const getCVData = async () => {
   const supabase = await createClient();
@@ -61,7 +62,10 @@ export const updateHiringStatus = async (formId: string) => {
       status: status,
     };
   }
-
+ if(status === 200 && data[0].is_hired) {
+  await supabase.rpc("update_total_hires", {table_id: STATS_TABLE_ID })
+ }
+  
   return {
     data,
     status,
