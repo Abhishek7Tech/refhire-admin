@@ -2,6 +2,7 @@
 
 import { createClient } from "@/app/utils/supabase/server";
 import { STATS_TABLE_ID } from "@/app/utils/statsId/stats";
+import { createAdminClient } from "@/app/utils/supabase/admin";
 
 export const getCVData = async () => {
   const supabase = await createClient();
@@ -35,24 +36,13 @@ export const getCVData = async () => {
 };
 
 export const updateHiringStatus = async (formId: string) => {
-  const supabase = await createClient();
-  const userSession = await supabase.auth.getUser();
-  const userId = await userSession.data.user?.id;
-
-  if (!userId) {
-    return {
-      error: "User not found",
-      status: 401,
-    };
-  }
-
+  const supabase = await createAdminClient();
+ 
   const { data, error, status } = await supabase
     .from("resume")
     .update({ is_hired: true })
     .eq("resume_id", formId)
-    .eq("admin_id", userId)
     .select("id, is_hired");
-  console.log("User Id", userId);
   console.log("Data:", data, status);
   console.log("Error:", error);
 

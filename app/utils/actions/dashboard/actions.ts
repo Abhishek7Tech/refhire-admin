@@ -36,15 +36,8 @@ export const getAdminStats = async () => {
 };
 
 export const getRecruiteRequests = async () => {
-  const supabase = await createClient();
-  const userSession = await supabase.auth.getUser();
-  const userId = await userSession.data.user?.id;
-  if (!userId) {
-    return {
-      error: "User not found.",
-      status: 401,
-    };
-  }
+  const supabase = await createAdminClient();
+  
   const { data, error, status } = await supabase
     .from("hiring")
     .select("id, name, position, application_status, created_at")
