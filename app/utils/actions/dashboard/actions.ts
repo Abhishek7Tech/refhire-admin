@@ -11,12 +11,10 @@ export const getAdminStats = async () => {
       status: 401,
     };
   }
-  const [adminStats] = await Promise.all([
-    await supabase
-      .from("admins")
-      .select("id, name,resume_count, referral_earnings,referral_count")
-      .eq("user_id", userId),
-  ]);
+  const adminStats = await supabase
+    .from("admins")
+    .select("id, name,resume_count, referral_earnings,referral_count")
+    .eq("user_id", userId);
 
   if (adminStats.error) {
     return {
@@ -25,15 +23,49 @@ export const getAdminStats = async () => {
     };
   }
 
-  if (adminStats.data.length === 0) {
+  if (adminStats.data) {
     return {
-      error: "No data found.",
-      status: 404,
+      data: adminStats.data[0],
+      status: adminStats.status,
     };
   }
-  const data = adminStats.data[0];
   return {
-    data,
-    status: adminStats.status,
+    error: "No data found.",
+    status: 404,
+  };
+};
+
+export const getRecruiteRequests = async () => {
+  const supabase = await createClient();
+  const userSession = await supabase.auth.getUser();
+  const userId = await userSession.data.user?.id;
+  if (!userId) {
+    return {
+      error: "User not found.",
+      status: 401,
+    };
+  }
+  const { data, error, status } = await supabase
+    .from("hiring")
+    .select("id, name, position, application_status, created_at")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return {
+      error: error.message,
+      status: status,
+    };
+  }
+
+  if (status === 200 && data) {
+    return {
+      status,
+      data,
+    };
+  }
+
+  return {
+    status: 500,
+    error: "Something went wrong.",
   };
 };

@@ -5,6 +5,7 @@ import { getAdminStats } from "@/app/utils/actions/dashboard/actions";
 import { AdminInterface } from "@/app/utils/types/types";
 
 import { useEffect, useState } from "react";
+import RequestTable from "../request-table.tsx/request";
 
 function Dashboard() {
   const [error, setError] = useState<string | null>(null);
@@ -13,6 +14,7 @@ function Dashboard() {
   );
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
+    
     setError(null);
     (async () => {
       try {
@@ -70,6 +72,12 @@ function Dashboard() {
             ✅ Successfull Referrals: {adminData?.referral_count || 0}
           </h1>
         </div>
+      </div>
+
+      <div className="flex space-x-8 my-6">
+        <RequestTable />
+        {/* <PlatformStats /> */}
+        {/* <ActivityTable /> */}
       </div>
     </section>
   );
