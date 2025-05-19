@@ -63,3 +63,11 @@ export interface CV {
   years_of_experience: number;
   profession: string;
 }
+
+export interface AdminInterface {
+  id: string;
+  name: string;
+  resume_count: number;
+  referral_earnings: number;
+  referral_count: number;
+}

@@ -1,36 +1,76 @@
-import { motion } from "motion/react";
+"use client";
+import Error from "@/app/home/error";
+import Loading from "@/app/loading";
+import { getAdminStats } from "@/app/utils/actions/dashboard/actions";
+import { AdminInterface } from "@/app/utils/types/types";
 
+import { useEffect, useState } from "react";
 
 function Dashboard() {
+  const [error, setError] = useState<string | null>(null);
+  const [adminData, setAdminData] = useState<undefined | AdminInterface>(
+    undefined
+  );
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    setError(null);
+    (async () => {
+      try {
+        const res = await getAdminStats();
+        if (res.status !== 200) {
+          setError("Something went wrong.");
+          setLoading(false);
+          return;
+        }
+        if (res.error) {
+          setError(res.error);
+          setLoading(false);
+          return;
+        }
+        setAdminData(res.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setError("Something went wrong.");
+        return;
+      }
+    })();
+  }, []);
+
+  if (error) {
+    return <Error error={{ message: error }} reset={() => setError(null)} />;
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <section className="mt-8 mx-auto">
       <div className="flex space-x-8">
         <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">
           <h1 className="text-slate-700 font-mukta text-2xl font-medium">
-            👋 Welcome, Abhishek
+            👋 Welcome, {adminData?.name.split(" ")[0] || "Admin"}
           </h1>
         </div>
 
         <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">
           <h1 className="text-slate-700 font-mukta text-2xl font-medium">
-            💰 Earnings: $500
+            💰 Earnings: ${adminData?.referral_earnings || 0}
           </h1>
         </div>
 
         <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">
           <h1 className="text-slate-700 font-mukta text-2xl font-medium">
-            📑Resume Added: 10
+            📑Resume Added: {adminData?.resume_count || 0}
           </h1>
         </div>
 
         <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">
           <h1 className="text-slate-700 font-mukta text-2xl font-medium">
-            ✅ Successfull Referrals: 6
+            ✅ Successfull Referrals: {adminData?.referral_count || 0}
           </h1>
         </div>
       </div>
-
-     
     </section>
   );
 }

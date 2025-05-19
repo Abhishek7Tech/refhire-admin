@@ -85,7 +85,7 @@ export const addCategory = async (category: string[], id: string) => {
       status: 500,
     };
   }
-  console.log("Status", status);
+  
   if (status === 200) {
     const plunk = new Plunk(PLUNK_AUTH);
     const body = await render(

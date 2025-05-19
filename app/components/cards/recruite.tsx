@@ -128,6 +128,7 @@ export const RecruiteCard = ({
     }
     setPending(false);
   };
+  
   return (
     <div>
       <div
