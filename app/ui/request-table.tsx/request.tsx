@@ -24,7 +24,6 @@ function RequestTable() {
       try {
         setError(null);
         const res = await getRecruiteRequests();
-        setError(null);
         if (res.error) {
           console.log("Error", res.error);
           setLoading(false);

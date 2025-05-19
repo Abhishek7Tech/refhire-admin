@@ -6,6 +6,8 @@ import { AdminInterface } from "@/app/utils/types/types";
 
 import { useEffect, useState } from "react";
 import RequestTable from "../request-table.tsx/request";
+import ActivityTable from "../activity-table.tsx/activity";
+import PlatformStats from "../platform-stats/stats";
 
 function Dashboard() {
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +16,6 @@ function Dashboard() {
   );
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    
     setError(null);
     (async () => {
       try {
@@ -48,7 +49,7 @@ function Dashboard() {
   }
   return (
     <section className="mt-8 mx-auto">
-      <div className="flex space-x-8">
+      <div className="flex space-x-8 justify-center">
         <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">
           <h1 className="text-slate-700 font-mukta text-2xl font-medium">
             👋 Welcome, {adminData?.name.split(" ")[0] || "Admin"}
@@ -76,8 +77,10 @@ function Dashboard() {
 
       <div className="flex space-x-8 my-6">
         <RequestTable />
-        {/* <PlatformStats /> */}
-        {/* <ActivityTable /> */}
+        <PlatformStats />
+      </div>
+      <div className="my-6">
+        <ActivityTable />
       </div>
     </section>
   );

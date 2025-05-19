@@ -1,6 +1,6 @@
 "use server";
 import { createClient } from "../../supabase/server";
-
+import { createAdminClient } from "../../supabase/admin";
 export const getAdminStats = async () => {
   const supabase = await createClient();
   const userSesssion = await supabase.auth.getUser();
@@ -48,7 +48,8 @@ export const getRecruiteRequests = async () => {
   const { data, error, status } = await supabase
     .from("hiring")
     .select("id, name, position, application_status, created_at")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(5);
 
   if (error) {
     return {
@@ -69,3 +70,83 @@ export const getRecruiteRequests = async () => {
     error: "Something went wrong.",
   };
 };
+
+export const getUsersActivity = async () => {
+  const supabase = await createAdminClient();
+
+  const { data, status, error } = await supabase
+    .from("messages")
+    .select("created_at, sender, receiver, receiver_email, id")
+    .order("created_at", { ascending: false })
+    .limit(5);
+  console.log("Data", data, error, status);
+  if (error) {
+    return {
+      status: status,
+      error: error.message,
+    };
+  }
+
+  if (status === 200 && data) {
+    return {
+      status,
+      data,
+    };
+  }
+
+  return {
+    status: 500,
+    error: "Something went wrong.",
+  };
+};
+
+
+
+export async function getPlatformStats() {
+  const supabase = await createClient();
+
+  const session = await supabase.auth.getUser();
+  const userId = await session.data.user?.id;
+
+  if (!userId) {
+    return {
+      error: "Invaild user id.",
+      status: 404,
+    };
+  }
+
+  const [totalrecruiters, totalCandidates, totalHires] = await Promise.all([
+    supabase.from("recruiters").select("*", { count: "exact", head: true }),
+    supabase.from("resume").select("*", { count: "exact", head: true }),
+    supabase
+      .from("resume")
+      .select("*", { count: "exact", head: true })
+      .eq("is_hired", true),
+  ]);
+
+  if (totalrecruiters.error || totalCandidates.error || totalHires.error) {
+    return {
+      status: 404,
+      error: "Failed to fetch info.",
+    };
+  }
+
+  if (
+    totalrecruiters.count !== null &&
+    totalCandidates.count !== null &&
+    totalHires.count !== null
+  ) {
+    const totalUsers = totalrecruiters.count + totalCandidates.count;
+    const hires = totalHires.count;
+
+    return {
+      status: 200,
+      data: {
+        totalUsers,
+        totalRecruiters: totalrecruiters.count,
+        totalCandidates: totalCandidates.count,
+        hires,
+      },
+    };
+  }
+}
