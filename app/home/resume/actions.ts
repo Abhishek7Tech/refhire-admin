@@ -5,6 +5,7 @@ import { error } from "console";
 import { pre } from "motion/react-client";
 import { boolean, number, string, z } from "zod";
 import { STATS_TABLE_ID } from "@/app/utils/statsId/stats";
+import { createAdminClient } from "@/app/utils/supabase/admin";
 const ResumeSchema = z.object({
   name: z
     .string()
@@ -72,9 +73,17 @@ const ResumeSchema = z.object({
 
 export const getResumeData = async (previousState: any, formData: FormData) => {
   const resumeData = Object.fromEntries(formData);
+  const supabaseAdmin = await createAdminClient();
   const supabase = await createClient();
   const userSession = await supabase.auth.getUser();
   const userId = await userSession.data.user?.id;
+
+  if (!userId) {
+    return {
+      error: "User not found",
+      status: 401,
+    };
+  }
 
   if (typeof resumeData.experience === "string") {
     console.log("Inside", typeof resumeData.experience === "string");
@@ -151,7 +160,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   const avatar = generateAvatar();
   const tags = resumeData.tags;
   console.log("EXperience", experience);
-  const { data, error, status } = await supabase.from("resume").insert({
+  const { data, error, status } = await supabaseAdmin.from("resume").insert({
     name,
     email,
     profession,
@@ -169,7 +178,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
     tags: { tagNames: tags },
   });
   console.log("Error", error, "data", data, "status", status);
-  if (error) {
+  if (error || status !== 201) {
     return {
       errors: {
         admin: "Failed to submit resume.",
@@ -178,7 +187,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   }
 
   if (status === 201) {
-    await supabase.rpc("update_total_candidates", {table_id: STATS_TABLE_ID})
+    await supabase.rpc("update_total_candidates", { table_id: STATS_TABLE_ID });
     return {
       message: "Resume submitted successfully.",
     };
