@@ -12,6 +12,7 @@ import { Categories } from "@/app/utils/categories/categories";
 import { IconCircleArrowDown, IconCircleArrowUp } from "@tabler/icons-react";
 import { ExperienceInterface } from "@/app/utils/types/types";
 
+
 const initialFormState = {
   name: "",
   email: "",
@@ -72,7 +73,7 @@ function Resume() {
   >(Categories);
 
   useEffect(() => {
-    if (inputState.message) {
+    if (inputState.message || inputState.errors) {
       setCurrent([{ id: 1, present: false }]);
       setRemoteLocation([{ id: 1, remoteLocation: false }]);
       setSelectedCategory([]);
@@ -128,6 +129,7 @@ function Resume() {
       ex.id === +inputId ? { ...ex, remoteLocation: !ex.remoteLocation } : ex
     );
     setRemoteLocation(updateRemoteEx);
+
   };
 
   const increaseExpHandler = (
@@ -185,11 +187,10 @@ function Resume() {
     if (!inputId || value.length < 3) {
       return;
     }
-
-    const updateExperince = experience.map((ex) =>
+    const updateExperience = experience.map((ex) =>
       ex.id === +inputId ? { ...ex, role: value } : ex
-    );
-    setExperience(updateExperince);
+  );
+  setExperience(updateExperience);
   };
 
   const fromDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -207,6 +208,7 @@ function Resume() {
       ex.id === +inputId ? { ...ex, from: month } : ex
     );
     setExperience(updateExperience);
+
   };
 
   const toDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -224,6 +226,7 @@ function Resume() {
       ex.id === +inputId ? { ...ex, to: month } : ex
     );
     setExperience(updateExperience);
+
   };
 
   const countryHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -249,6 +252,7 @@ function Resume() {
       ex.id === +inputId ? { ...ex, city: value } : ex
     );
     setExperience(updateExperience);
+
   };
   const increaseWorkHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -276,9 +280,7 @@ function Resume() {
       return;
     }
 
-    console.log("EX", experience);
     const workId = +e.currentTarget.id;
-    console.log("WORKID", workId);
     const updateWork = experience.map((ex) =>
       ex.id === +experienceId && ex.work.length > 1
         ? { ...ex, work: ex.work.filter((work) => work.id !== workId) }
@@ -690,6 +692,7 @@ function Resume() {
             <input
               type="hidden"
               name="experience"
+              readOnly
               value={JSON.stringify(experience)}
             ></input>
           )}
@@ -778,6 +781,7 @@ function Resume() {
           <input
             type="hidden"
             name="tags"
+            readOnly
             value={JSON.stringify(selectedCategory)}
           ></input>
           {inputState.errors?.tags && (

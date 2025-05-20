@@ -1,8 +1,6 @@
 "use server";
 import { generateAvatar } from "@/app/utils/avatars/avatar";
 import { createClient } from "@/app/utils/supabase/server";
-import { error } from "console";
-import { pre } from "motion/react-client";
 import { boolean, number, string, z } from "zod";
 import { STATS_TABLE_ID } from "@/app/utils/statsId/stats";
 import { createAdminClient } from "@/app/utils/supabase/admin";
@@ -50,6 +48,7 @@ const ResumeSchema = z.object({
         .string()
         .trim()
         .min(2, { message: "Role should be longer than 2 characters" }),
+
       from: z.string().trim().min(5, { message: "Invalid date format." }),
       to: z.string().trim().min(5, { message: "Invalid date format." }),
       city: z.string().trim().optional(),
@@ -73,6 +72,7 @@ const ResumeSchema = z.object({
 
 export const getResumeData = async (previousState: any, formData: FormData) => {
   const resumeData = Object.fromEntries(formData);
+  console.log("Resume Data", resumeData.experience);
   const supabaseAdmin = await createAdminClient();
   const supabase = await createClient();
   const userSession = await supabase.auth.getUser();
@@ -159,7 +159,27 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   const isHired = false;
   const avatar = generateAvatar();
   const tags = resumeData.tags;
-  console.log("EXperience", experience);
+
+  const res = await supabase.rpc("email_exsist", { p_email: email as string });
+
+  if (res.error) {
+    return {
+      errors: {
+        email: "Failed to check email.",
+      },
+    };
+  }
+
+  console.log("Res", res.data);
+
+  if (res.data) {
+    return {
+      errors: {
+        email: "User resume already exsist.",
+      },
+    };
+  }
+
   const { data, error, status } = await supabaseAdmin.from("resume").insert({
     name,
     email,
