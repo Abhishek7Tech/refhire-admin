@@ -6,10 +6,11 @@ import Plunk from "@plunk/node";
 import { render } from "jsx-email";
 const PLUNK_AUTH = process.env.PLUNK_SECRET_KEY;
 import { STATS_TABLE_ID } from "@/app/utils/statsId/stats";
-
+import { createAdminClient } from "@/app/utils/supabase/admin";
 
 export const getRecruiteRequests = async () => {
   const supabase = await createClient();
+  const supabaseAdmin = await createAdminClient();
   const session = await supabase.auth.getUser();
   const userId = await session.data.user?.id;
 
@@ -19,7 +20,7 @@ export const getRecruiteRequests = async () => {
       status: 401,
     };
   }
-  const { data, error, status } = await supabase
+  const { data, error, status } = await supabaseAdmin
     .from("hiring")
     .select(
       "id, amount, application_status, avatar, hiring_ad, office_location_city, office_location_country, work_mode, organization_url, twitter_recruiter, position, organization, name, tags"
@@ -41,6 +42,7 @@ export const getRecruiteRequests = async () => {
 
 export const addCategory = async (category: string[], id: string) => {
   const supabase = await createClient();
+  const supabaseAdmin = await createAdminClient();
   const userSession = await supabase.auth.getUser();
   const userId = await userSession.data.user?.id;
   const userEmail = await userSession.data.user?.email;
@@ -65,7 +67,7 @@ export const addCategory = async (category: string[], id: string) => {
       status: 400,
     };
   }
-  const { data, error, status } = await supabase
+  const { data, error, status } = await supabaseAdmin
     .from("hiring")
     .update({
       application_status: true,
