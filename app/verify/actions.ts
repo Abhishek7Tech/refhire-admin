@@ -8,9 +8,10 @@ import { console } from "inspector";
 const VerifySchema = z.object({
   otp: z
     .string()
+    .trim()
     .min(6, { message: "OTP should be atleast 6 characters" })
     .max(6, "OTP should be maximum 6 characters."),
-  email: z.string().email(),
+  email: z.string().trim().email(),
 });
 
 export const getVerifyData = async (previousState: any, formData: FormData) => {
@@ -67,7 +68,7 @@ export const resendOtp = async (email: string) => {
   }
 
   const { error } = await supabase.auth.signInWithOtp({
-    email: email,
+    email: email.trim(),
   });
 
   if (error) {

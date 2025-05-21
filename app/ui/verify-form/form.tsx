@@ -47,7 +47,7 @@ function Verify() {
         Verify your email
       </h2>
       <form className="my-2" action={setInputState}>
-        <input type="hidden" name="email" value={userContext.email} />
+        <input type="hidden" name="email" readOnly value={userContext.email} />
         <div className="mb-4 flex flex-col space-y-3">
           <LabelInputContainer className={inputState.errors?.otp ? "" : "mb-4"}>
             <Input

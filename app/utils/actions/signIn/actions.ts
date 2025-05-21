@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createClient } from "../../supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { sanitize } from "../../formValidation/validation";
 
 const SignInSchema = z.object({
   email: z
@@ -25,7 +26,7 @@ export const getSignInData = async (previousState: any, formData: FormData) => {
     };
   }
 
-  const email = signInData.email as string;
+  const email = sanitize(signInData.email as string);
 
   const { data, status } = await supabase
     .from("admins")

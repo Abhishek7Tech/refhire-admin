@@ -10,8 +10,7 @@ import SubmitButton from "@/app/components/buttons/resume";
 import { getResumeData } from "@/app/home/resume/actions";
 import { Categories } from "@/app/utils/categories/categories";
 import { IconCircleArrowDown, IconCircleArrowUp } from "@tabler/icons-react";
-import { ExperienceInterface } from "@/app/utils/types/types";
-
+import { ExperienceInterface, TagsInterface } from "@/app/utils/types/types";
 
 const initialFormState = {
   name: "",
@@ -63,14 +62,8 @@ function Resume() {
     },
   ]);
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [categoriesTags, setCategoriesTags] = useState<
-    {
-      id: string;
-      name: string;
-      subCategories: string[];
-      showSubCategories: boolean;
-    }[]
-  >(Categories);
+  const [categoriesTags, setCategoriesTags] =
+    useState<TagsInterface[]>(Categories);
 
   useEffect(() => {
     if (inputState.message || inputState.errors) {
@@ -129,7 +122,6 @@ function Resume() {
       ex.id === +inputId ? { ...ex, remoteLocation: !ex.remoteLocation } : ex
     );
     setRemoteLocation(updateRemoteEx);
-
   };
 
   const increaseExpHandler = (
@@ -189,8 +181,8 @@ function Resume() {
     }
     const updateExperience = experience.map((ex) =>
       ex.id === +inputId ? { ...ex, role: value } : ex
-  );
-  setExperience(updateExperience);
+    );
+    setExperience(updateExperience);
   };
 
   const fromDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,7 +200,6 @@ function Resume() {
       ex.id === +inputId ? { ...ex, from: month } : ex
     );
     setExperience(updateExperience);
-
   };
 
   const toDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -226,7 +217,6 @@ function Resume() {
       ex.id === +inputId ? { ...ex, to: month } : ex
     );
     setExperience(updateExperience);
-
   };
 
   const countryHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -252,7 +242,6 @@ function Resume() {
       ex.id === +inputId ? { ...ex, city: value } : ex
     );
     setExperience(updateExperience);
-
   };
   const increaseWorkHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>

@@ -48,6 +48,13 @@ export interface ExperienceInterface {
   work: WorkInterface[] | [];
 }
 
+export interface TagsInterface {
+  id: string;
+  name: string;
+  subCategories: string[];
+  showSubCategories: boolean;
+}
+
 export interface CV {
   id: string;
   avatar: string;

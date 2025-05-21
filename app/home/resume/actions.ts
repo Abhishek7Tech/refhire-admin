@@ -4,6 +4,13 @@ import { createClient } from "@/app/utils/supabase/server";
 import { boolean, number, string, z } from "zod";
 import { STATS_TABLE_ID } from "@/app/utils/statsId/stats";
 import { createAdminClient } from "@/app/utils/supabase/admin";
+import DOMPurify from "isomorphic-dompurify";
+import { ExperienceInterface, TagsInterface } from "@/app/utils/types/types";
+import {
+  sanitize,
+  sanitizeExperience,
+  sanitizeTags,
+} from "@/app/utils/formValidation/validation";
 const ResumeSchema = z.object({
   name: z
     .string()
@@ -128,15 +135,15 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   }
   console.log("Validation Success");
 
-  const name = resumeData.name;
-  const email = resumeData.email;
-  const profession = resumeData.profession;
-  const yoe = resumeData.yoe;
-  const country = resumeData.country;
-  const location = resumeData.location;
-  const remote = resumeData?.remote;
-  const hybrid = resumeData?.hybrid;
-  const onsite = resumeData?.onsite;
+  const name = sanitize(resumeData.name as string);
+  const email = sanitize(resumeData.email as string);
+  const profession = sanitize(resumeData.profession as string);
+  const yoe = Number(sanitize(resumeData.yoe as string));
+  const country = sanitize(resumeData.country as string);
+  const location = sanitize(resumeData.location as string);
+  const remote = sanitize(resumeData?.remote as string);
+  const hybrid = sanitize(resumeData?.hybrid as string);
+  const onsite = sanitize(resumeData?.onsite as string);
   const preference: { remote: boolean; hybrid: boolean; onsite: boolean }[] =
     [];
 
@@ -145,20 +152,26 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
     hybrid: hybrid ? true : false,
     onsite: onsite ? true : false,
   });
-  const anotherState = resumeData?.anotherState;
-  const anotherCountry = resumeData?.anotherCountry;
+  const anotherState = sanitize(resumeData?.anotherState as string);
+  const anotherCountry = sanitize(resumeData?.anotherCountry as string);
   const relocation: { anotherState: boolean; anotherCountry: boolean }[] = [];
 
   relocation.push({
     anotherState: anotherState ? true : false,
     anotherCountry: anotherCountry ? true : false,
   });
-  const salary = resumeData.salary;
-  const experience = resumeData.experience;
-  const admin = resumeData.admin;
+  const salary = sanitize(resumeData.salary as string);
+  // const experienceArray =
+  //   typeof resumeData.experience === "string"
+  //     ? JSON.parse(resumeData.experience)
+  //     : resumeData.experience;
+  const experience = sanitizeExperience(
+    resumeData.experience as unknown as ExperienceInterface[]
+  );
+  const admin = sanitize(resumeData.admin as string);
   const isHired = false;
   const avatar = generateAvatar();
-  const tags = resumeData.tags;
+  const tags = sanitizeTags(resumeData.tags as unknown as string[]);
 
   const res = await supabase.rpc("email_exsist", { p_email: email as string });
 
@@ -169,8 +182,6 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
       },
     };
   }
-
-  console.log("Res", res.data);
 
   if (res.data) {
     return {
