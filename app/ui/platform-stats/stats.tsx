@@ -1,4 +1,5 @@
 "use client";
+import Error from "@/app/home/error";
 import { getPlatformStats } from "@/app/utils/actions/dashboard/actions";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
@@ -13,21 +14,18 @@ function PlatformStats() {
       }
     | undefined
   >(undefined);
-
   useEffect(() => {
     (async () => {
       try {
         const res = await getPlatformStats();
         if (res?.status !== 200) {
-          console.log("Error", res?.error);
           return;
         }
         setStats(res.data);
-      } catch (error) {
-        console.log("Error", error);
-      }
+      } catch (error) {}
     })();
   }, []);
+
   return (
     <div className="grid grid-cols-2 grid-flow-row gap-3">
       <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">

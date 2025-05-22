@@ -43,6 +43,17 @@ export function CV() {
     return <Loading />;
   }
 
+  if(!loading && cvData.length === 0) {
+    return (
+     <section className="max-w-8xl z-0 mx-auto px-8 h-[90vh] flex items-center justify-center">
+        <div className="bg-white/25 place-self-center self-center align-middle border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">
+          <h1 className="text-slate-700 font-mukta text-2xl font-medium">
+            No CVs found.
+          </h1>
+      </div>
+    </section>
+    );
+  }
   if (error) {
     return <Error error={{ message: error }} reset={() => setError(null)} />;
   }

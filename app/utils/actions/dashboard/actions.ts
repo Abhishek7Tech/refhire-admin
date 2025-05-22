@@ -2,7 +2,8 @@
 import { createClient } from "../../supabase/server";
 import { createAdminClient } from "../../supabase/admin";
 export const getAdminStats = async () => {
-  const supabase = await createClient();
+  const supabaseAdmin = await createAdminClient();
+  const supabase = await createClient();  
   const userSesssion = await supabase.auth.getUser();
   const userId = await userSesssion.data.user?.id;
   if (!userId) {
@@ -11,7 +12,7 @@ export const getAdminStats = async () => {
       status: 401,
     };
   }
-  const adminStats = await supabase
+  const adminStats = await supabaseAdmin
     .from("admins")
     .select("id, name,resume_count, referral_earnings,referral_count")
     .eq("user_id", userId);
@@ -94,23 +95,24 @@ export const getUsersActivity = async () => {
 };
 
 export async function getPlatformStats() {
+  const supabaseAdmin = await createAdminClient();
   const supabase = await createClient();
-
   const session = await supabase.auth.getUser();
   const userId = await session.data.user?.id;
 
-  if (!userId) {
+  if (userId) {
     return {
       error: "Invaild user id.",
       status: 404,
     };
   }
 
-  const { data, error, status } = await supabase
+  const { data, error, status } = await supabaseAdmin
     .from("app_stats")
     .select("id, total_recruiters, total_hires, total_candidates")
     .single();
 
+    console.log("Data stats", data, error, status);
   if (error) {
     return {
       error: error.message,
