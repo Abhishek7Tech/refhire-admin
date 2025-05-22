@@ -6,12 +6,10 @@ export default async function allowToLogin(request: NextRequest) {
   const session = await supabase.auth.getUser();
   const userEmail = await session.data.user?.email;
 
-  const { data } = await supabase
-    .from("admins")
-    .select("email")
-    .eq("email", userEmail);
-
-  if (!userEmail || data === null || data.length === 0) {
+    const { data, status, error } = await supabase.
+  rpc("validate_admin", { p_email: userEmail });
+console.log("HOME", data, status, error, userEmail);
+  if (!userEmail || !data && status !== 200) {
     return NextResponse.redirect(new URL("/", request.url));
   }
   return NextResponse.next();

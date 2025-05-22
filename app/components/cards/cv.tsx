@@ -1,4 +1,4 @@
-"use client";
+ "use client";
 
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
@@ -108,7 +108,6 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   ) => {
     e.preventDefault();
     setActive(false);
-    console.log("clicked", active);
   };
   return (
     <>

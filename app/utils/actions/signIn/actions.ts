@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createClient } from "../../supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { sanitize } from "../../formValidation/validation";
+import { sanitize } from "../../form-validation/validation";
 
 const SignInSchema = z.object({
   email: z
@@ -28,14 +28,18 @@ export const getSignInData = async (previousState: any, formData: FormData) => {
 
   const email = sanitize(signInData.email as string);
 
-  const { data, status } = await supabase
-    .from("admins")
-    .select("email")
-    .eq("email", email)
-    .single();
+  const { data, status, error } = await supabase.
+    rpc("validate_admin", { p_email: email });
 
+    if(status !== 200 || error) {
+      return {
+        errors: {
+          email: "Failed to validate admin.",
+        }
+      } 
+    } 
 
-  if (!data?.email) {
+  if (!data) {
     return {
       errors: {
         email: "You are not registered as an admin.",
@@ -45,14 +49,14 @@ export const getSignInData = async (previousState: any, formData: FormData) => {
 
  
  
-  const { error } = await supabase.auth.signInWithOtp({
+  const validateOtp = await supabase.auth.signInWithOtp({
     email: email,
   });
 
-  if (error) {
+  if (validateOtp.error) {
     return {
       errors: {
-        email: error.message,
+        email: validateOtp.error.message,
       },
     };
   }

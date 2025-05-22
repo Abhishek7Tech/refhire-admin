@@ -10,7 +10,7 @@ import {
   sanitize,
   sanitizeExperience,
   sanitizeTags,
-} from "@/app/utils/formValidation/validation";
+} from "@/app/utils/form-validation/validation";
 const ResumeSchema = z.object({
   name: z
     .string()
@@ -79,7 +79,7 @@ const ResumeSchema = z.object({
 
 export const getResumeData = async (previousState: any, formData: FormData) => {
   const resumeData = Object.fromEntries(formData);
-  console.log("Resume Data", resumeData.experience);
+  
   const supabaseAdmin = await createAdminClient();
   const supabase = await createClient();
   const userSession = await supabase.auth.getUser();
@@ -161,13 +161,11 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
     anotherCountry: anotherCountry ? true : false,
   });
   const salary = sanitize(resumeData.salary as string);
-  // const experienceArray =
-  //   typeof resumeData.experience === "string"
-  //     ? JSON.parse(resumeData.experience)
-  //     : resumeData.experience;
+
   const experience = sanitizeExperience(
     resumeData.experience as unknown as ExperienceInterface[]
   );
+
   const admin = sanitize(resumeData.admin as string);
   const isHired = false;
   const avatar = generateAvatar();
@@ -208,7 +206,7 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
     avatar,
     tags: { tagNames: tags },
   });
-  console.log("Error", error, "data", data, "status", status);
+
   if (error || status !== 201) {
     return {
       errors: {
