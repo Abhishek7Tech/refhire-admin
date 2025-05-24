@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { RecruiteRequest } from "@/app/utils/types/types";
 import Error from "@/app/home/error";
 import Loading from "@/app/home/loading";
+import Heading from "../heading/heading";
 export function Recruiters() {
   const [recruiteRequests, setRecruiteRequests] = useState<RecruiteRequest[]>(
     []
@@ -53,6 +54,7 @@ export function Recruiters() {
   return (
     <section className="max-w-8xl z-0 mx-auto px-8">
       <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-10">
+        <Heading title="Recruiters" />
         {recruiteRequests.map((req, idx) => (
           <RecruiteCard idx={idx} key={req.id} recruiteData={req} />
         ))}

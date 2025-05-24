@@ -100,7 +100,7 @@ export async function getPlatformStats() {
   const session = await supabase.auth.getUser();
   const userId = await session.data.user?.id;
 
-  if (userId) {
+  if (!userId) {
     return {
       error: "Invaild user id.",
       status: 404,
