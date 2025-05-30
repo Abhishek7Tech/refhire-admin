@@ -56,7 +56,7 @@ export function CV() {
     );
   }
   if (error) {
-    return <Error error={{ message: error }} reset={() => setError(null)} />;
+    return <Error error={{ message: error }} reset={"/home/cv"} />;
   }
   return (
     <section className="max-w-8xl z-0 mx-auto px-8">

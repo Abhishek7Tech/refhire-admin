@@ -3,7 +3,7 @@ import { createClient } from "../../supabase/server";
 import { createAdminClient } from "../../supabase/admin";
 export const getAdminStats = async () => {
   const supabaseAdmin = await createAdminClient();
-  const supabase = await createClient();  
+  const supabase = await createClient();
   const userSesssion = await supabase.auth.getUser();
   const userId = await userSesssion.data.user?.id;
   if (!userId) {
@@ -38,10 +38,10 @@ export const getAdminStats = async () => {
 
 export const getRecruiteRequests = async () => {
   const supabase = await createAdminClient();
-  
+
   const { data, error, status } = await supabase
     .from("hiring")
-    .select("id, name, position, application_status, created_at")
+    .select("id, name, position, application_status, created_at, paid_referral")
     .order("created_at", { ascending: false })
     .limit(5);
 
@@ -112,7 +112,7 @@ export async function getPlatformStats() {
     .select("id, total_recruiters, total_hires, total_candidates")
     .single();
 
-    console.log("Data stats", data, error, status);
+  console.log("Data stats", data, error, status);
   if (error) {
     return {
       error: error.message,

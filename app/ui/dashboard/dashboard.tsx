@@ -41,7 +41,7 @@ function Dashboard() {
   }, []);
 
   if (error) {
-    return <Error error={{ message: error }} reset={() => setError(null)} />;
+    return <Error error={{ message: error }} reset={"/home/dashboard"} />;
   }
 
   if (loading) {

@@ -5,7 +5,14 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import LoadingSvg from "@/public/loading-page.gif";
 import { getRecruiteRequests } from "@/app/utils/actions/dashboard/actions";
-const REQUEST_TABLE = ["No.", "Status", "Role", "Progress", "Date Submitted"];
+const REQUEST_TABLE = [
+  "No.",
+  "Status",
+  "Role",
+  "Progress",
+  "Date Submitted",
+  "Referral",
+];
 
 function RequestTable() {
   const [requests, setRequests] = useState<
@@ -13,6 +20,7 @@ function RequestTable() {
         created_at: string;
         application_status: boolean;
         position: string;
+        paid_referral: boolean;
       }[]
     | undefined
   >(undefined);
@@ -129,6 +137,9 @@ function RequestTable() {
                       </td>
                       <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium ">
                         {formatDate}
+                      </td>
+                      <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium">
+                        {req.paid_referral ? "🟢" : "🔴"}
                       </td>
                     </motion.tr>
                   );
