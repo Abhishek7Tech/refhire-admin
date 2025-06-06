@@ -44,7 +44,6 @@ export function Recruiters() {
   }, [error]);
 
    if (loading) {
-      console.log("LOading");
       return <Loading />;
     }
     
