@@ -467,8 +467,8 @@ function Resume() {
               <legend className="text-slate-700 font-mukta font-semibold text-base">
                 Job Preference:
               </legend>
-              <div className="flex justify-start space-x-6">
-                <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
+              <div className="flex flex-wrap space-y-3 justify-start space-x-6">
+                <div className="flex space-x-2 w-fit h-fit items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
                     name="remote"
                     type="checkbox"
@@ -482,7 +482,7 @@ function Resume() {
                   </label>
                 </div>
 
-                <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
+                <div className="flex space-x-2 w-fit h-fit items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
                     name="hybrid"
                     type="checkbox"
@@ -496,7 +496,7 @@ function Resume() {
                   </label>
                 </div>
 
-                <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
+                <div className="flex space-x-2 w-fit h-fit items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
                     name="onSite"
                     type="checkbox"
@@ -525,8 +525,8 @@ function Resume() {
                 Open to Relocation:
               </legend>
 
-              <div className="flex justify-start space-x-6">
-                <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
+              <div className="flex flex-wrap space-y-3 justify-start space-x-6">
+                <div className="flex space-x-2 items-center py-1 px-2 h-fit bg-gray-50 rounded-md">
                   <Input
                     name="anotherState"
                     type="checkbox"
@@ -540,7 +540,7 @@ function Resume() {
                   </label>
                 </div>
 
-                <div className="flex space-x-2 items-center py-1 px-2 bg-gray-50 rounded-md">
+                <div className="flex space-x-2 items-center py-1 px-2 h-fit bg-gray-50 rounded-md">
                   <Input
                     name="anotherCountry"
                     type="checkbox"
@@ -600,7 +600,7 @@ function Resume() {
             {experience.map((ex) => (
               <div
                 key={ex.id}
-                className="border-2 border-dashed border-green-300 p-4 rounded-md mb-3"
+                className="border-2 border-dashed border-green-300 px-1.5 py-4 md:p-4 rounded-md mb-3"
               >
                 <Experience
                   current={current[ex.id - 1]?.present}
@@ -616,7 +616,7 @@ function Resume() {
                 />
                 {ex.work.map((work) => (
                   <div
-                    className="my-4 flex space-x-2 items-center "
+                    className="my-4 flex flex-wrap xs:flex-nowrap space-x-2 items-center "
                     key={work.id.toString()}
                     id={ex.id.toString()}
                   >
@@ -636,7 +636,7 @@ function Resume() {
                       type="button"
                       id={work.id.toString()}
                       onClick={(e) => increaseWorkHandler(e)}
-                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 my-2 xs:my-0 py-1.5 px-3"
                     >
                       &#43;
                     </motion.button>
@@ -646,7 +646,7 @@ function Resume() {
                       }}
                       type="button"
                       id={work.id.toString()}
-                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 py-1.5 px-3"
+                      className="text-slate-700 w-fit cursor-pointer rounded-sm bg-emerald-200 my-2 xs:my-0 py-1.5 px-3"
                       onClick={(e) => decreaseWorkHandler(e)}
                     >
                       &minus;

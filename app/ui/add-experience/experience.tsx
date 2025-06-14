@@ -45,8 +45,8 @@ function Experience({
         ></Input>
       </div>
 
-      <div className="flex justify-between space-x-4">
-        <div className="space-y-1 flex flex-col">
+      <div className="flex flex-wrap sm:flex-nowrap  space-y-3 sm:space-y-0 justify-between sm:space-x-4">
+        <div className="space-y-1 flex flex-col w-full">
           <label
             htmlFor="city"
             className="text-slate-700 font-mukta font-medium text-[15px]"
@@ -58,12 +58,12 @@ function Experience({
             id={id}
             type="text"
             onChange={(e) => cityHandler(e)}
-            className="w-min"
+            className="w-full sm:w-fit"
             placeholder="Optional"
             defaultValue={""}
           ></Input>
         </div>
-        <div className="space-y-1 flex flex-col">
+        <div className="space-y-1 flex flex-col w-full">
           <label
             htmlFor="end-date"
             className="text-slate-700 font-mukta font-medium text-[15px]"
@@ -75,13 +75,13 @@ function Experience({
             id={id}
             type="text"
             onChange={(e) => countryHandler(e)}
-            className="w-min"
+            className="w-full sm:w-fit"
             placeholder="Optional"
             defaultValue={""}
           ></Input>
         </div>
 
-        <div className="flex space-x-2 place-self-end items-center h-10 py-1 px-2 w-full bg-gray-50 rounded-md">
+        <div className="flex space-x-2 place-self-end items-center h-10 sm:py-1 px-2 w-fit sm:w-full bg-gray-50 rounded-md">
           <Input
             id={id}
             onChange={(e) => remoteLocHandler(e)}
@@ -98,8 +98,8 @@ function Experience({
         </div>
       </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="space-y-1 flex flex-col w-full">
+      <div className="flex flex-wrap sm:flex-nowrap space-y-3 sm:space-y-0 items-center sm:space-x-4">
+        <div className="space-y-1 flex flex-col w-full sm:w-fit">
           <label
             htmlFor="start-date"
             className="text-slate-700 font-mukta font-medium text-[15px]"
@@ -114,7 +114,7 @@ function Experience({
             defaultValue={""}
           ></Input>
         </div>
-        <div className="space-y-1 flex flex-col w-full">
+        <div className="space-y-1 flex flex-col w-full sm:w-fit">
           <label
             htmlFor="end-date"
             className="text-slate-700 font-mukta font-medium text-[15px]"
@@ -130,7 +130,7 @@ function Experience({
             defaultValue={""}
           ></Input>
         </div>
-        <div className="flex space-x-2 place-self-end items-center h-10 py-1 px-2 w-full bg-gray-50 rounded-md">
+        <div className="flex space-x-2 place-self-end items-center h-10 sm:py-1 py-0 px-2 w-fit bg-gray-50 rounded-md">
           <Input
             id={id}
             onChange={(e) => currentHandler(e)}
