@@ -116,13 +116,19 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden  items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full"
+          `h-fit p-1 flex-row md:hidden items-center bg-transparent ${
+            open ? "w-full" : "w-fit"
+          }`
         )}
         {...props}
       >
-        <div className="flex justify-end z-20 w-full">
+        <div
+          className={`flex justify-end rounded-full  z-20 w-full ${
+            open && "hidden"
+          }`}
+        >
           <IconMenu2
-            className="text-neutral-800 dark:text-neutral-200"
+            className="text-neutral-800"
             onClick={() => setOpen(!open)}
           />
         </div>
@@ -133,16 +139,16 @@ export const MobileSidebar = ({
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "-100%", opacity: 0 }}
               transition={{
-                duration: 0.3,
+                duration: 0.5,
                 ease: "easeInOut",
               }}
               className={cn(
-                "fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
+                "fixed h-full w-full inset-0 py-10 px-6 z-[100] flex flex-col justify-between",
                 className
               )}
             >
               <div
-                className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
+                className="absolute right-5 top-2 z-50 text-neutral-800"
                 onClick={() => setOpen(!open)}
               >
                 <IconX />

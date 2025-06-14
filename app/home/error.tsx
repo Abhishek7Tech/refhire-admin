@@ -19,7 +19,7 @@ export default function Error({
   ) => {
     e.preventDefault();
     setLoading(true);
-    await router.push(reset);
+    router.push(reset);
   };
   return (
     <section className="min-h-screen flex items-center">
@@ -29,7 +29,7 @@ export default function Error({
         </h2>
         <button
           disabled={loading}
-          type="button"
+          type="reset"
           className="p-[3px] mt-3 relative min-w-52 mx-auto cursor-pointer border-t-cyan-300 border-r-cyan-300 bg-emerald-200/100 hover:bg-emerald-300/40 backdrop-blur-lg shadow-md border-b-emerald-300 border-l-emerald-300 hover:border-emerald-300/40 rounded-lg"
           onClick={
             // Attempt to recover by trying to re-render the segment

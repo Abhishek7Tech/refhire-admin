@@ -50,14 +50,18 @@ export function AdminMenu() {
   return (
     <div
       className={cn(
-        " flex w-fit flex-col overflow-hidden rounded-md bg-white/25 border border-white/30 shadow-lg backdrop-blur-md md:flex-row",
-        "h-full z-10 absolute" // for your use case, use `h-screen` instead of `h-[60vh]`
+        " flex flex-col overflow-hidden  bg-white/25 border border-white/30 shadow-lg backdrop-blur-md md:flex-row",
+        `${
+          open
+            ? "h-full w-full sm:max-w-3xs rounded-md"
+            : "h-fit md:h-full w-min top-2 left-2 md:top-0 md:left-0 rounded-full md:rounded-md"
+        } z-10 absolute` // for your use case, use `h-screen` instead of `h-[60vh]`
       )}
     >
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-            <div className="mt-8 flex flex-col gap-2">
+            <div className="mt-2 md:mt-8 flex flex-col gap-1 md:gap-2">
               {menuItems.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}

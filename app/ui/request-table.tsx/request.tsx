@@ -56,23 +56,24 @@ function RequestTable() {
 
   if (error) {
     return (
-      <div className="bg-white/25 min-w-lg border border-white/30 shadow-lg rounded-2xl backdrop-blur-md p-4">
-        <h2 className="text-slate-700 font-mukta text-2xl font-medium">
+      <div className="bg-white/25 w-full sm:w-xl border border-white/30 shadow-lg rounded-2xl backdrop-blur-md p-1 xs:p-4 h-fit mx-auto">
+        <h2 className="text-slate-700 font-mukta text-lg xs:text-xl lg:text-2xl font-medium">
           Recent Requests
         </h2>
-        <p className="text-lg font-mukta font-medium text-red-600">{error}</p>
+        <p className="text-sm sm:text-base lg:text-lg font-mukta text-center font-medium text-slate-700">
+          {error}
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white/25 min-w-lg border border-white/30 shadow-lg rounded-2xl backdrop-blur-md p-4 w-fit">
-      <h2 className="text-slate-700 font-mukta text-2xl font-medium">
+    <div className="bg-white/25 mx-auto lg:max-w-2xl border border-white/30 shadow-lg rounded-2xl backdrop-blur-md p-1.5 xs:p-4 w-full sm:w-fit">
+      <h2 className="text-slate-700 font-mukta text-lg xs:text-xl md:text-2xl font-medium">
         Recent Requests
       </h2>
-
       {loading ? (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center w-full sm:w-xl">
           <Image
             className="mx-auto"
             src={LoadingSvg}
@@ -85,16 +86,16 @@ function RequestTable() {
         <div
           className={`my-2  ${
             requests?.length !== 0 && "border border-teal-400"
-          } shadow-lg rounded-xl overflow-hidden`}
+          } shadow-lg rounded-xl overflow-x-scroll [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] scroll-smooth`}
         >
           {requests && requests.length ? (
-            <motion.table className="">
+            <motion.table className="table-auto w-full">
               <motion.thead>
                 <motion.tr>
                   {REQUEST_TABLE.map((req, idx) => (
                     <motion.th
                       key={idx}
-                      className="text-slate-700 font-mukta text-lg border-b border-teal-400 px-2 py-1 leading-relaxed "
+                      className="text-slate-700 font-mukta text-sm sm:text-base lg:text-lg border-b border-teal-400 px-2 py-0.5 xs:py-1 md:leading-relaxed"
                     >
                       {req}
                     </motion.th>
@@ -123,22 +124,22 @@ function RequestTable() {
                         "border-b border-teal-400 rounded-2xl"
                       }`}
                     >
-                      <td className="text-slate-700 text-base font-mukta text-center px-2 font-medium">
+                      <td className="text-slate-700 text-sm sm:text-base font-mukta text-center px-2 font-medium">
                         {idx + 1}
                       </td>
-                      <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium">
+                      <td className="text-slate-700 text-sm sm:text-base font-mukta text-center px-2 font-medium">
                         {req.application_status ? "🟢" : "🔴"}
                       </td>
-                      <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium">
+                      <td className="text-slate-700 text-sm sm:text-base font-mukta text-center px-2 font-medium">
                         {req.position}
                       </td>
                       <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium ">
                         {req.application_status ? "Approved" : "Pending"}
                       </td>
-                      <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium ">
+                      <td className="text-slate-700 text-sm sm:text-base font-mukta text-center px-2 font-medium">
                         {formatDate}
                       </td>
-                      <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium">
+                      <td className="text-slate-700 text-sm sm:text-base font-mukta text-center px-2 font-medium">
                         {req.paid_referral ? "🟢" : "🔴"}
                       </td>
                     </motion.tr>
