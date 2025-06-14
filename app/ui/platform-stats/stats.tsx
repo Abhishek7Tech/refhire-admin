@@ -27,43 +27,35 @@ function PlatformStats() {
   }, []);
 
   return (
-    <div className="grid grid-cols-2 grid-flow-row gap-3">
-      <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">
-        <div className="overflow-hidden py-2">
-          <AnimatePresence mode="wait">
-            <motion.h1 className="text-slate-700 text-2xl font-mukta font-medium min-w-3xs text-start">
-              🟢 Active Users: {stats?.totalUsers || 0}
-            </motion.h1>
-          </AnimatePresence>
-        </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-2 mx-auto grid-flow-row gap-4 justify-items-center md:justify-items-start w-full md:w-fit h-min">
+      <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full xl:h-fit  p-2 md:p-4 rounded-2xl w-full md:w-fit lg:w-full">
+        <AnimatePresence mode="wait">
+          <motion.h1 className="text-slate-700 flex space-x-1.5 text-base xs:text-xl md:text-2xl font-mukta font-medium text-start">
+            <span>🟢</span> Active Users: {stats?.totalUsers || 0}
+          </motion.h1>
+        </AnimatePresence>
       </div>
 
-      <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">
-        <div className="overflow-hidden py-2">
-          <AnimatePresence mode="wait">
-            <motion.h1 className="text-slate-700 text-2xl font-mukta font-medium min-w-3xs text-start">
-              ©️ Active Candidates: {stats?.totalCandidates || 0}
-            </motion.h1>
-          </AnimatePresence>
-        </div>
+      <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full xl:h-fit p-2 md:p-4 rounded-2xl w-full md:w-fit lg:w-full">
+        <AnimatePresence mode="wait">
+          <motion.h1 className="text-slate-700 flex space-x-1.5 text-base xs:text-xl md:text-2xl font-mukta font-medium text-start">
+            <span>©️</span> Active Candidates: {stats?.totalCandidates || 0}
+          </motion.h1>
+        </AnimatePresence>
       </div>
-      <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">
-        <div className="overflow-hidden py-2">
-          <AnimatePresence mode="wait">
-            <motion.h1 className="text-slate-700 text-2xl font-mukta font-medium min-w-3xs text-start">
-              ®️ Active Recruiters: {stats?.totalRecruiters || 0}
-            </motion.h1>
-          </AnimatePresence>
-        </div>
+      <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full xl:h-fit p-2 md:p-4 rounded-2xl w-full md:w-fit lg:w-full">
+        <AnimatePresence mode="wait">
+          <motion.h1 className="text-slate-700 flex space-x-1.5 text-base xs:text-xl md:text-2xl font-mukta font-medium text-start">
+            <span>®️</span> Active Recruiters: {stats?.totalRecruiters || 0}
+          </motion.h1>
+        </AnimatePresence>
       </div>
-      <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl w-fit">
-        <div className="overflow-hidden py-2">
-          <AnimatePresence mode="wait">
-            <motion.h1 className="text-slate-700 text-2xl font-mukta font-medium min-w-3xs text-start">
-              ✅ Successful Hires: {stats?.hires || 0}
-            </motion.h1>
-          </AnimatePresence>
-        </div>
+      <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full xl:h-fit p-2 md:p-4 rounded-2xl w-full md:w-fit lg:w-full">
+        <AnimatePresence mode="wait">
+          <motion.h1 className="text-slate-700 flex space-x-1.5 text-base xs:text-xl md:text-2xl font-mukta font-medium text-start">
+            <span>✅</span> Successful Hires: {stats?.hires || 0}
+          </motion.h1>
+        </AnimatePresence>
       </div>
     </div>
   );

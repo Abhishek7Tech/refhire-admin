@@ -51,18 +51,20 @@ function ActivityTable() {
 
   if (error) {
     return (
-      <div className="bg-white/25 min-w-xl border border-white/30 shadow-lg rounded-2xl backdrop-blur-md p-4">
-        <h2 className="text-slate-700 font-mukta text-2xl font-medium">
+      <div className="bg-white/25 max-w-md border  border-white/30 shadow-lg rounded-2xl backdrop-blur-md p-4 w-full mx-auto">
+        <h2 className="text-slate-700 font-mukta text-lg xs:text-xl md:text-2xl font-medium">
           Recent Activity
         </h2>
-        <p className="text-lg font-mukta font-medium text-red-600">{error}</p>
+        <p className="text-sm sm:text-base lg:text-lg font-mukta text-center font-medium text-slate-700">
+          {error}
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white/25 min-w-xl border border-white/30 shadow-lg rounded-2xl backdrop-blur-md p-4 w-fit">
-      <h2 className="text-slate-700 font-mukta text-2xl font-medium">
+    <div className="bg-white/25 border mx-auto md:min-w-md border-white/30 shadow-lg rounded-2xl backdrop-blur-md p-1.5 xs:p-4 sm:w-fit h-fit">
+      <h2 className="text-slate-700 font-mukta text-lg xs:text-xl md:text-2xl font-medium">
         Recent Activity
       </h2>
 
@@ -80,16 +82,16 @@ function ActivityTable() {
         <div
           className={`my-2  ${
             requests?.length !== 0 && "border border-teal-400"
-          } shadow-lg rounded-xl overflow-hidden`}
+          } shadow-lg rounded-xl overflow-x-scroll [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] scroll-smooth`}
         >
           {requests && requests.length ? (
-            <motion.table className="">
+            <motion.table className="table-auto w-full">
               <motion.thead>
                 <motion.tr>
                   {REQUEST_TABLE.map((req, idx) => (
                     <motion.th
                       key={idx}
-                      className="text-slate-700 font-mukta text-lg border-b border-teal-400 px-2 py-1 leading-relaxed "
+                      className="text-slate-700 font-mukta text-sm sm:text-base lg:text-lg border-b border-teal-400 px-2 py-0.5 xs:py-1 md:leading-relaxed"
                     >
                       {req}
                     </motion.th>
@@ -118,20 +120,20 @@ function ActivityTable() {
                         "border-b border-teal-400 rounded-2xl"
                       }`}
                     >
-                      <td className="text-slate-700 text-base font-mukta text-center px-2 font-medium">
+                      <td className="text-slate-700 text-sm sm:text-base font-mukta text-center px-2 font-medium">
                         {idx + 1}
                       </td>
-                      <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium">
+                      <td className="text-slate-700 text-sm sm:text-base font-mukta text-center px-2 font-medium">
                         {formatDate}
                       </td>
 
-                      <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium ">
+                      <td className="text-slate-700 text-sm sm:text-base font-mukta text-center px-2 font-medium">
                         {req.sender}
                       </td>
-                      <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium ">
+                      <td className="text-slate-700 text-sm sm:text-base font-mukta text-center px-2 font-medium">
                         {req.receiver}
                       </td>
-                      <td className="text-slate-700 font-mukta text-base text-center px-2 font-medium ">
+                      <td className="text-slate-700 text-sm sm:text-base font-mukta text-center px-2 font-medium">
                         {req.receiver_email}
                       </td>
                     </motion.tr>
@@ -140,7 +142,7 @@ function ActivityTable() {
               </motion.tbody>
             </motion.table>
           ) : (
-            <p className="text-slate-700 font-mukta text-base text-center px-2 font-medium ">
+            <p className="text-slate-700 font-mukta text-sm sm:text-base lg:text-lg text-center px-2 font-medium ">
               No recent Activity.
             </p>
           )}

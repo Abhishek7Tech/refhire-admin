@@ -50,27 +50,28 @@ function Dashboard() {
   return (
     <section className="mt-12 mb-4 md:mt-8 p-1 md:pl-[72px] lg:pl-[80px] xs:p-4 w-full flex flex-col lg:mx-auto">
       <div className="grid grid-cols-1 sm:grid-cols-2 mx-auto lg:grid-cols-4  auto-rows-auto w-full md:w-fit gap-4">
-        <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full p-2 md:p-4 rounded-2xl w-full md:w-fit lg:w-full">
+        <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full p-2 md:p-4 rounded-2xl w-full  ">
           <h1 className="text-slate-700 flex space-x-1.5 font-mukta text-base xs:text-xl lg:text-2xl font-medium">
-            👋 Welcome, {adminData?.name.split(" ")[0] || "Admin"}
+            <span>👋</span> Welcome, {adminData?.name.split(" ")[0] || "Admin"}
           </h1>
         </div>
 
-        <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full p-2 md:p-4 rounded-2xl w-full md:w-fit lg:w-full">
+        <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full p-2 md:p-4 rounded-2xl w-full">
           <h1 className="text-slate-700 flex space-x-1.5 font-mukta text-base xs:text-xl lg:text-2xl font-medium">
-            💰 Earnings: ${adminData?.referral_earnings || 0}
+            <span>💰</span> Earnings: ${adminData?.referral_earnings || 0}
           </h1>
         </div>
 
-        <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full p-2 md:p-4 rounded-2xl w-full md:w-fit lg:w-full">
+        <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full p-2 md:p-4 rounded-2xl w-full">
           <h1 className="text-slate-700 flex space-x-1.5 font-mukta text-base xs:text-xl lg:text-2xl font-medium">
-            📑Resume Added: {adminData?.resume_count || 0}
+            <span>📑</span>Resume Added: {adminData?.resume_count || 0}
           </h1>
         </div>
 
-        <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full p-2 md:p-4 rounded-2xl w-full md:w-fit lg:w-full">
+        <div className="bg-white/25 border border-white/30 shadow-lg backdrop-blur-md h-full p-2 md:p-4 rounded-2xl w-full">
           <h1 className="text-slate-700 flex space-x-1.5 font-mukta text-base xs:text-xl lg:text-2xl font-medium">
-            ✅ Successfull Referrals: {adminData?.referral_count || 0}
+            <span>✅</span> Successfull Referrals:{" "}
+            {adminData?.referral_count || 0}
           </h1>
         </div>
       </div>
