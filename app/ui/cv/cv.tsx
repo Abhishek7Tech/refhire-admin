@@ -38,7 +38,7 @@ export function CV() {
         return;
       }
     })();
-  }, [error]);
+  }, []);
 
   if (loading) {
     return <Loading />;

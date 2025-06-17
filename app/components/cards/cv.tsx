@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
@@ -14,7 +14,12 @@ import {
   IconSend,
 } from "@tabler/icons-react";
 import SubmitButton from "../buttons/cv";
-import { CV, ExperienceInterface, Preference, Relocation } from "@/app/utils/types/types";
+import {
+  CV,
+  ExperienceInterface,
+  Preference,
+  Relocation,
+} from "@/app/utils/types/types";
 import { updateHiringStatus } from "@/app/home/cv/actions";
 import UpdateStatus from "../buttons/hiringStatus";
 const CV_AVATAR = process.env.NEXT_PUBLIC_RESUME_AVATAR_URL;
@@ -23,13 +28,9 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [active, setActive] = useState<boolean>(false);
   const [hiringStatus, setHiringStatus] = useState<boolean>(data.is_hired);
-  const [preference, setPreference] = useState<
-    Preference[] | []
-  >([]);
+  const [preference, setPreference] = useState<Preference[] | []>([]);
 
-  const [relocation, setRelocation] = useState<
-    Relocation[] | []
-  >([]);
+  const [relocation, setRelocation] = useState<Relocation[] | []>([]);
   const [experience, setExperience] = useState<ExperienceInterface[]>([]);
   const [hiringStatusPending, setHiringStatusPending] =
     useState<boolean>(false);
@@ -107,7 +108,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
       <AnimatePresence>
         {active ? (
           <motion.div
-            className={`grid bg-white/25 border border-white/30 shadow-lg max-w-4xl max-h-[70vh] rounded-2xl overflow-y-scroll place-items-start place-self-center absolute z-[100] opacity-100 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] scroll-smooth`}
+            className="grid bg-white/25 border border-white/30 shadow-lg rounded-2xl w-11/12 sm:w-4/5 lg:max-w-4xl max-h-[90vh] xs:max-h-[80vh] sm:max-h-[70vh] overflow-y-scroll place-items-start place-self-center self-center top-20 absolute z-[100] opacity-100 [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] scroll-smooth"
             initial={{
               opacity: 0,
             }}
@@ -122,7 +123,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
             }}
           >
             <div className="flex justify-between w-full px-3 py-4">
-              <h3 className="text-slate-700 font-mukta text-2xl w-full underline underline-offset-2 font-medium">
+              <h3 className="text-slate-700 font-mukta  text-lg xs:text-xl md:text-2xl w-full underline underline-offset-2 font-medium">
                 Experience
               </h3>
 
@@ -148,17 +149,17 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                   key={ex.role}
                   className="grid grid-cols-5 row-auto gap-4 py-2 px-3 w-full"
                 >
-                  <div className="col-span-5 col-end-5">
-                    <h4 className="capitalize text-lg font-semibold text-slate-700 font-mukta">
+                  <div className="col-span-full lg:col-span-5 lg:col-end-5">
+                    <h4 className="capitalize xs:text-base sm:text-lg font-semibold text-slate-700 font-mukta leading-1.5">
                       {ex.role}
                     </h4>
-                    <ol className="list-disc px-4 w-fit text-base text-slate-700 font-mukta">
+                    <ol className="list-disc px-4 w-fit text-[15px] sm:text-base text-slate-700 font-mukta mt-1.5">
                       {ex.work.map((work) => (
                         <li key={work.id}>{work.work}</li>
                       ))}
                     </ol>
                   </div>
-                  <div className="col-start-5 col-end-6 place-items-end w-full">
+                  <div className="hidden lg:inline col-start-5 col-end-6 place-items-end w-full">
                     <h4 className="font-medium text-base text-slate-700 font-mukta">
                       {ex.from}-{ex.to}
                     </h4>
@@ -202,9 +203,10 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                 alt="user avatar"
                 height={36}
                 width={36}
+                className="w-8 h-8 xs:w-9 xs:h-9"
               ></Image>
               <div className="flex flex-col gap-1">
-                <h3 className="text-slate-700 leading-2.5 font-medium font-mukta text-lg px-0.5">
+                <h3 className="text-slate-700 leading-2 xs:leading-2.5 font-medium font-mukta text-base xs:text-lg px-0.5">
                   {data.name}
                 </h3>
                 <div className="flex items-center gap-1">
@@ -216,33 +218,33 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
               </div>
             </div>
 
-            <div className="mt-4 flex flex-col gap-3">
+            <div className="mt-4 flex flex-col gap-2 xs:gap-3">
               <div className="flex items-center gap-2">
-                <IconBooks className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-                <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+                <IconBooks className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />{" "}
+                <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                   Experience:
                 </h4>
-                <span className="font-medium text-slate-700 font-mukta text-base">
+                <span className="font-medium text-slate-700 font-mukta text-[15px] xs:text-base">
                   {data.years_of_experience.toString()} years
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
-                <IconMapPin className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-                <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+                <IconMapPin className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />{" "}
+                <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                   Location:
                 </h4>
-                <span className="font-medium text-slate-700 font-mukta text-base">
+                <span className="font-medium text-slate-700 font-mukta text-[15px] xs:text-base">
                   {data.location}, {data.country}
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
-                <IconDevices2 className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-                <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+                <IconDevices2 className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />{" "}
+                <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                   Job Preference:
                 </h4>
-                <span className="font-medium text-slate-700 font-mukta text-base">
+                <span className="font-medium text-slate-700 font-mukta text-[15px] xs:text-base">
                   {preference[0]?.remote &&
                     `${preference[0]?.hybrid ? "Remote," : "Remote"}`}{" "}
                   {preference[0]?.hybrid &&
@@ -252,11 +254,11 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
               </div>
 
               <div className="flex items-center gap-2">
-                <IconSend className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-                <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+                <IconSend className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />{" "}
+                <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                   Relocation:
                 </h4>
-                <span className="font-medium text-slate-700 font-mukta text-base">
+                <span className="font-medium text-slate-700 font-mukta text-[15px] xs:text-base">
                   {!relocation[0]?.anotherState &&
                     !relocation[0]?.anotherCountry && <b>Remote Only</b>}
                   {relocation[0]?.anotherState &&
@@ -273,7 +275,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                   {relocation[0]?.anotherState &&
                     !relocation[0]?.anotherCountry && (
                       <>
-                        <span>Across</span> + <b>States</b>
+                        <span>Across</span>  <b>States</b>
                       </>
                     )}
 
@@ -287,21 +289,21 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
               </div>
 
               <div className="flex items-center gap-2">
-                <IconCoin className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-                <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+                <IconCoin className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />{" "}
+                <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                   Expected Salary:
                 </h4>
-                <span className="font-medium text-slate-700 font-mukta text-base">
+                <span className="font-medium text-slate-700 font-mukta text-[15px] xs:text-base">
                   {data.salary}
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
-                <IconAlarmSnooze className="h-5 w-5 shrink-0 text-slate-700" />
-                <h4 className="text-slate-700 font-mukta text-base font-semibold">
+                <IconAlarmSnooze className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />
+                <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                   Status:
                 </h4>
-                <span className="font-medium text-slate-700 font-mukta text-base">
+                <span className="font-medium text-slate-700 font-mukta text-[15px] xs:text-base">
                   {hiringStatus ? "🟢" : "🔴"}
                 </span>
               </div>
@@ -342,12 +344,12 @@ export const Card = ({
     <div
       id={id}
       className={cn(
-        "rounded-2xl h-full w-full p-2 overflow-hidden bg-white/35 border border-white/30 shadow-lg backdrop-blur-md  group-hover:border-green-300 relative z-20",
+        "rounded-2xl h-full w-full p-1 xs:p-2 overflow-hidden bg-white/35 border border-white/30 shadow-lg backdrop-blur-md  group-hover:border-green-300 relative z-20",
         className
       )}
     >
       <div className="relative z-50">
-        <div className="p-4">{children}</div>
+        <div className="px-2 py-3 xs:px-1.5 sm:px-2 lg:px-4 lg:py-4">{children}</div>
       </div>
     </div>
   );
@@ -377,7 +379,7 @@ export const CloseIcon = () => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-6 w-6 text-black"
+      className="h-5 w-5 md:h-6 md:w-6 text-black"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M18 6l-12 12" />
