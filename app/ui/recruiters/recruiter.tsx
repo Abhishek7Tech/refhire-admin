@@ -33,7 +33,6 @@ export function Recruiters() {
           setRecruiteRequests(data);
         }
         setLoading(false);
-
       } catch (error) {
         setLoading(false);
 
@@ -43,16 +42,16 @@ export function Recruiters() {
     })();
   }, [error]);
 
-   if (loading) {
-      return <Loading />;
-    }
-    
+  if (loading) {
+    return <Loading />;
+  }
+
   if (error) {
     return <Error error={{ message: error }} reset={"/home/recruiters"} />;
   }
   return (
-    <section className="max-w-8xl z-0 mx-auto px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-10">
+    <section className="md:pl-[72px] lg:mx-auto max-w-8xl z-0 mx-auto px-1.5 xs:px-3 sm:px-8">
+      <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-12 xs:py-10">
         <Heading title="Recruiters" />
         {recruiteRequests.map((req, idx) => (
           <RecruiteCard idx={idx} key={req.id} recruiteData={req} />

@@ -128,7 +128,7 @@ export const RecruiteCard = ({
     }
     setPending(false);
   };
-  
+
   return (
     <div>
       <div
@@ -139,7 +139,7 @@ export const RecruiteCard = ({
         onMouseLeave={() => setHoveredIndex(null)}
       >
         <AnimatePresence>
-            {hoveredIndex === idx && (
+          {hoveredIndex === idx && (
             <motion.span
               className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-white/[0.3] block  rounded-3xl"
               layoutId="hoverBackground"
@@ -162,9 +162,10 @@ export const RecruiteCard = ({
               alt="user avatar"
               height={36}
               width={36}
+              className="w-8 h-8 xs:w-9 xs:h-9"
             />
             <div className="flex flex-col gap-1">
-              <h3 className="text-slate-700 leading-2.5 font-medium font-mukta text-lg">
+              <h3 className="text-slate-700 leading-2 xs:leading-2.5 font-medium font-mukta text-base xs:text-lg px-0.5">
                 {recruiteData.name}
               </h3>
               <Link
@@ -177,10 +178,10 @@ export const RecruiteCard = ({
             </div>
           </div>
 
-          <div className="mt-4 flex flex-col gap-3">
+          <div className="mt-4 flex flex-col gap-2 xs:gap-3">
             <div className="flex items-center gap-2">
-              <IconBriefcase className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-              <h4 className="text-slate-700 font-mukta text-base leading-2.5 font-semibold">
+              <IconBriefcase className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />{" "}
+              <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                 Hiring:{" "}
               </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
@@ -188,10 +189,10 @@ export const RecruiteCard = ({
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <IconBrandX className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-              <span className="text-slate-700 font-mukta text-base font-semibold">
+              <IconBrandX className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />{" "}
+              <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                 Twitter:
-              </span>
+              </h4>
               <Link
                 target="_blank"
                 href={recruiteData?.twitter_recruiter}
@@ -202,8 +203,8 @@ export const RecruiteCard = ({
             </div>
 
             <div className="flex items-center gap-2">
-              <IconMapPin className="h-5 w-5 shrink-0 text-slate-700" />
-              <h4 className="text-slate-700 font-mukta text-base font-semibold">
+              <IconMapPin className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />
+              <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                 Location:
               </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
@@ -212,8 +213,8 @@ export const RecruiteCard = ({
             </div>
 
             <div className="flex items-center gap-2">
-              <IconCoin className="h-5 w-5 shrink-0 text-slate-700" />
-              <h4 className="text-slate-700 font-mukta text-base font-semibold">
+              <IconCoin className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />
+              <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                 Referral Amount:
               </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
@@ -222,8 +223,8 @@ export const RecruiteCard = ({
             </div>
 
             <div className="flex items-center gap-2">
-              <IconLink className="h-5 w-5 shrink-0 text-slate-700" />
-              <h4 className="text-slate-700 font-mukta text-base font-semibold">
+              <IconLink className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />
+              <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                 Hiring Link:
               </h4>
               <Link
@@ -236,8 +237,8 @@ export const RecruiteCard = ({
             </div>
 
             <div className="flex items-center gap-2">
-              <IconBuildings className="h-5 w-5 shrink-0 text-slate-700" />
-              <h4 className="text-slate-700 font-mukta text-base font-semibold">
+              <IconBuildings className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />
+              <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                 HQ:
               </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
@@ -247,15 +248,15 @@ export const RecruiteCard = ({
             </div>
 
             <div className="flex items-center gap-2">
-              <IconAlarmSnooze className="h-5 w-5 shrink-0 text-slate-700" />
-              <h4 className="text-slate-700 font-mukta text-base font-semibold">
+              <IconAlarmSnooze className="hidden xs:inline xs:h-5 xs:w-5 shrink-0 text-slate-700" />
+              <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base  xs:leading-2.5 font-semibold">
                 Status:
               </h4>
               <span className="font-medium text-slate-700 font-mukta text-base">
                 {applicationStatus ? "🟢" : "🔴"}
               </span>
             </div>
-            <h4 className="text-slate-700 font-mukta text-lg font-semibold underline underline-offset-2">
+            <h4 className="text-slate-700 font-mukta text-base xs:text-lg font-semibold underline underline-offset-2">
               Select category
             </h4>
             <div className="mt-2 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
@@ -265,7 +266,7 @@ export const RecruiteCard = ({
                 return (
                   <div key={category.id} className="flex flex-col gap-2">
                     <div className="flex justify-between items-center">
-                      <h4 className="text-slate-700 font-mukta text-base font-medium">
+                      <h4 className="text-slate-700 font-mukta text-[15px] xs:text-base font-medium">
                         {category.name}
                       </h4>
                       {category.showSubCategories ? (
@@ -353,12 +354,14 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "rounded-2xl h-min w-full p-2 overflow-hidden bg-white/35 border border-white/30 shadow-lg backdrop-blur-md  group-hover:border-green-300 relative z-20",
+        "rounded-2xl h-full w-full p-1 xs:p-2 overflow-hidden bg-white/35 border border-white/30 shadow-lg backdrop-blur-md  group-hover:border-green-300 relative z-20",
         className
       )}
     >
       <div className="relative z-50">
-        <div className="p-4">{children}</div>
+        <div className="px-2 py-3 xs:px-1.5 sm:px-2 lg:px-4 lg:py-4">
+          {children}
+        </div>
       </div>
     </div>
   );
