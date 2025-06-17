@@ -46,9 +46,9 @@ export function CV() {
 
   if (!loading && cvData.length === 0) {
     return (
-      <section className="max-w-8xl z-0 mx-auto px-8 h-[90vh] flex items-center justify-center">
+      <section className="mx-auto z-0 flex flex-col items-center justify-center min-h-screen min-w-auto xs:min-w-sm max-w-xl p-2 sm:p-4">
         <div className="bg-white/25 place-self-center self-center align-middle border border-white/30 shadow-lg backdrop-blur-md px-4 py-2 rounded-2xl w-fit">
-          <h1 className="text-slate-700 font-mukta text-2xl font-medium">
+          <h1 className="text-slate-700 text-lg sm:text-xl text-center sm:text-start">
             No CVs found. 😔
           </h1>
         </div>
@@ -59,7 +59,7 @@ export function CV() {
     return <Error error={{ message: error }} reset={"/home/cv"} />;
   }
   return (
-    <section className="max-w-8xl z-0 mx-auto px-8">
+    <section className="md:pl-[72px] lg:mx-auto max-w-8xl z-0 mx-auto px-8">
       <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 py-10">
         <Heading title={"Resumes"} />
 

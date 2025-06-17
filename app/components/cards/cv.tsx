@@ -2,17 +2,14 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import Mikasa from "@/public/mikasa.png";
 import Image from "next/image";
 import { cn } from "@/app/utils/utils";
 import {
   IconAlarmSnooze,
   IconBooks,
-  IconBriefcase,
   IconCoin,
   IconDeviceLaptop,
   IconDevices2,
-  IconDevicesPc,
   IconMapPin,
   IconSend,
 } from "@tabler/icons-react";
@@ -37,7 +34,6 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   const [hiringStatusPending, setHiringStatusPending] =
     useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [disFromTop, setDisFromTop] = useState(0);
 
   // }
   useEffect(() => {
@@ -88,19 +84,6 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   ) => {
     e.preventDefault();
     setActive(true);
-    const id = e.currentTarget.id;
-    const cardId = document.getElementById(id);
-    const cardDistanceFromTop = cardId?.getBoundingClientRect().top;
-    if (!cardDistanceFromTop) {
-      return;
-    }
-    console.log("Dis from top", cardDistanceFromTop);
-    if (Math.abs(cardDistanceFromTop) < 100) {
-      setDisFromTop(80);
-      return;
-    }
-
-    setDisFromTop(Math.abs(cardDistanceFromTop));
   };
 
   const hideExperienceHandler = (
@@ -130,7 +113,6 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
             }}
             animate={{
               opacity: 1,
-              top: disFromTop
             }}
             exit={{
               opacity: 0,

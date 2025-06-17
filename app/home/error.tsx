@@ -14,15 +14,12 @@ export default function Error({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-  const handleReset = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
+  const handleReset = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setLoading(true);
     router.push(reset);
   };
   return (
-    <section className="min-h-screen flex items-center">
+    <section className="min-h-screen flex items-center z-0">
       <div className="mx-auto z-100 flex flex-col min-w-sm max-w-xl bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-4 rounded-2xl h-fit">
         <h2 className="text-slate-700 font-medium text-lg text-center">
           {error?.message + " ☹️" || "Something went wrong." + " ☹️"}
