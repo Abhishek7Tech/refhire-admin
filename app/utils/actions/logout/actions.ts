@@ -2,6 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "../../supabase/server";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export const signOut = async () => {
   const supabase = await createClient();
@@ -16,7 +17,7 @@ export const signOut = async () => {
   }
 
   const { error } = await supabase.auth.signOut();
-  console.log("ERROR", error);
+  (await cookies()).delete("user_email");
   if (error) {
     return {
       status: 500,
