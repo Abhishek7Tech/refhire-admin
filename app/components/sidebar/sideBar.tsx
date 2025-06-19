@@ -178,10 +178,7 @@ export const SidebarLink = ({
   ) => {
     e.preventDefault();
 
-    const res = await signOut();
-    if (res?.status) {
-      throw new Error(res.message);
-    }
+    await signOut();
   };
 
   if (link.label === "Logout") {

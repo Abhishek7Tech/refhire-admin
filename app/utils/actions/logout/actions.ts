@@ -19,10 +19,7 @@ export const signOut = async () => {
   const { error } = await supabase.auth.signOut();
   (await cookies()).delete("user_email");
   if (error) {
-    return {
-      status: 500,
-      message: "Something went wrong.",
-    };
+    throw new Error("Something went wrong.");
   }
 
   revalidatePath("/");
