@@ -4,7 +4,6 @@ import { Input } from "@/app/components/input/input";
 import { cn } from "@/app/utils/utils";
 import { getSignInData } from "@/app/utils/actions/signIn/actions";
 import { useActionState } from "react";
-import { IconBrandGoogle } from "@tabler/icons-react";
 
 const initialFormState = {
   message: "",

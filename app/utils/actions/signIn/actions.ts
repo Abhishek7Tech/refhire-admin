@@ -4,6 +4,7 @@ import { createClient } from "../../supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { sanitize } from "../../form-validation/validation";
+import { cookies } from "next/headers";
 
 const SignInSchema = z.object({
   email: z
@@ -60,6 +61,7 @@ export const getSignInData = async (previousState: any, formData: FormData) => {
       },
     };
   }
+  (await cookies()).set("user_email", email);
 
   revalidatePath("/");
   redirect("/verify");

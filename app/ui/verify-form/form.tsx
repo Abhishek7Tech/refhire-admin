@@ -2,7 +2,6 @@
 
 import SubmitButton from "@/app/components/buttons/verify";
 import { Input } from "@/app/components/input/input";
-import { UserContext } from "@/app/contexts/userContext";
 import { cn } from "@/app/utils/utils";
 import { getVerifyData, resendOtp } from "@/app/verify/actions";
 import { useActionState, useCallback, useContext, useState } from "react";
@@ -22,24 +21,17 @@ function Verify() {
 
   const [pending, setPending] = useState<boolean>(false);
 
-  const userContext = useContext(UserContext);
-
-  if (!userContext) {
-    return;
-  }
-
   const resendOtpHanlder = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       setPending(true);
       setResendError(undefined);
-      if (!userContext?.email) return;
-      console.log("Email", userContext.email);
-      const res = await resendOtp(userContext.email);
+      
+      const res = await resendOtp();
       setResendError(res?.errors.otp);
       setPending(false);
     },
-    [userContext.email]
+    []
   );
   return (
     <section className="flex align-middle justify-center p-1.5 sm:p-2 w-full">
@@ -48,12 +40,6 @@ function Verify() {
           Verify your email
         </h2>
         <form className="my-2" action={setInputState}>
-          <input
-            type="hidden"
-            name="email"
-            readOnly
-            value={userContext.email}
-          />
           <div className="mb-4 flex flex-col space-y-3">
             <LabelInputContainer
               className={inputState.errors?.otp ? "" : "mb-4"}

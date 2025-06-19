@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Mukta } from "next/font/google";
 import "./globals.css";
-import UserProvider from "./contexts/userContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,13 +56,12 @@ export default function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head> 
-      <UserProvider>
+    
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${mukta.className} antialiased`}
         >
           {children}
         </body>
-      </UserProvider>
     </html>
   );
 }
