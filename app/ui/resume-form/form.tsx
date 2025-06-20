@@ -333,7 +333,7 @@ function Resume() {
   return (
     // <section className="mx-auto w-11/12 xs:w-4/5 sm:max-w-md bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-1.5 sm:p-4 rounded-2xl my-12">
 
-    <section className=" mx-auto w-11/12 md:w-full max-w-max bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-1.5 p-4 rounded-2xl my-12">
+    <section className=" mx-auto w-11/12 md:w-full max-w-max bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-1.5 sm:p-4 rounded-2xl my-12">
       <h2 className="text-2xl font-mukta font-medium text-slate-700">
         Add a Resume.
       </h2>

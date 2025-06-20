@@ -1,5 +1,5 @@
+import TestimonialForm from "@/app/ui/testimonial-form/form";
+
 export default function Page() {
-    return (
-        <p className="text-black text-xl">Add testimonials.</p>
-    )
+  return <TestimonialForm />;
 }
