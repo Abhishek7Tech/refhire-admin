@@ -62,7 +62,29 @@ export const getTestimonialsData = async (
   const company = sanitize(testimonialData.company as string);
   const review = sanitize(testimonialData.review as string);
 
-  console.log("Testimonial Data", name, twitter, role, company, review);
+  const { status, error } = await supabase.rpc("add_reviews", {
+    p_name: name,
+    p_twitter: twitter,
+    p_role: role,
+    p_company: company,
+    p_review: review,
+  });
+  if (error) {
+    return {
+      errors: {
+        review: "Failed to submit testimonial. Please try again later.",
+      },
+    };
+  }
+
+  if (status !== 204) {
+    return {
+      errors: {
+        review: "Something went wrong. Please try again later.",
+      },
+    };
+  }
+
   return {
     message: "Testimonial submitted.",
   };

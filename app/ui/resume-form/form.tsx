@@ -808,8 +808,8 @@ function Resume() {
             </p>
           )}
 
-          <SubmitButton />
           <div className="mt-4 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+          <SubmitButton />
         </div>
       </form>
     </section>

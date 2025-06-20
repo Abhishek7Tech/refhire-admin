@@ -130,8 +130,13 @@ function TestimonialForm() {
             ></TextArea>
           </LabelInputContainer>
           {inputState.errors?.review && (
-            <p className="text-red-600 text-start text-sm max-w-sm mb-2 md:mb-3 mt-1 font-medium font-mukta">
+            <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-2 md:mb-3 mt-1 font-medium font-mukta">
               {inputState.errors.review}
+            </p>
+          )}
+          {inputState.message && (
+            <p className="text-green-600 px-3 text-center text-sm mb-4 mt-1 font-medium">
+              {inputState.message}
             </p>
           )}
         </div>
