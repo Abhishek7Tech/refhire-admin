@@ -13,6 +13,7 @@ import {
   IconUserFilled,
   IconUserPlus,
   IconFileCv,
+  IconMessagePlus,
 } from "@tabler/icons-react";
 import { useState } from "react";
 
@@ -22,6 +23,11 @@ export function AdminMenu() {
       label: "Add Resume",
       href: "/home/resume",
       icon: <IconUserPlus className="h-5 w-5 shrink-0 text-slate-700 " />,
+    },
+    {
+      label: "Add Review",
+      href: "/home/review",
+      icon: <IconMessagePlus className="h-5 w-5 shrink-0 text-slate-700 " />,
     },
     {
       label: "Resumes",
