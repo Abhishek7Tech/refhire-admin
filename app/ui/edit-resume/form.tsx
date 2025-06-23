@@ -2,7 +2,7 @@
 
 import { Input } from "@/app/components/input/input";
 import { cn } from "@/app/utils/utils";
-import Experience from "../add-experience/experience";
+import Experience from "../edit-experience/experience";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { formatMonth } from "@/app/utils/format-date/date";
@@ -21,6 +21,9 @@ import {
   TagsInterface,
 } from "@/app/utils/types/types";
 import { UUID } from "crypto";
+import Loading from "@/app/home/loading";
+import Error from "@/app/home/error";
+
 
 const initialFormState = {
   name: "",
@@ -83,6 +86,8 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [categoriesTags, setCategoriesTags] =
     useState<TagsInterface[]>(Categories);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (inputState.message || inputState.errors) {
@@ -106,7 +111,13 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
   }, [inputState.message]);
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const res = await getResumeData(resumeId);
+      if (res.error) {
+        setError(res.error);
+        setLoading(false);
+        return;
+      }
       if (res.data) {
         setResumeData(res.data);
         const updateCurrent = Array.from({
@@ -125,8 +136,9 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
         setSelectedCategory(res.data.tags.tagNames);
         setPreferences(res.data.preference.preferences);
         setRelocation(res.data.relocation.relocateTo);
+        setLoading(false);
       }
-      console.log("Resume Data", res);
+      console.log("Resume Data", res.data?.preference.preferences[0].remote);
     })();
   }, [resumeId]);
   const currentHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -374,6 +386,13 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
     setRemoteLocation(updateRemoteLocation);
   };
 
+  if (error) {
+    return <Error error={{ message: error }} reset={"/home/cv"} />;
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
   return (
     // <section className="mx-auto w-11/12 xs:w-4/5 sm:max-w-md bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-1.5 sm:p-4 rounded-2xl my-12">
 
@@ -688,6 +707,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
                     id={ex.id.toString()}
                   >
                     <Input
+                      defaultValue={work.work}
                       onChange={(e) => workInputHandler(e)}
                       id={work.id.toString()}
                       placeholder="Developed dynamic dashboards using Next.js."

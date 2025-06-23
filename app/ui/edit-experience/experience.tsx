@@ -1,8 +1,10 @@
 "use client";
 import { Input } from "@/app/components/input/input";
+import { convertMonthYearToInputFormat } from "@/app/utils/format-date/date";
 import { ExperienceInterface } from "@/app/utils/types/types";
 import { useEffect, useState } from "react";
 function Experience({
+  defaultExperience,
   id,
   experienceHandler,
   fromDateHandler,
@@ -14,6 +16,7 @@ function Experience({
   current,
   remoteLoc,
 }: {
+  defaultExperience: ExperienceInterface;
   id: string;
   current: boolean;
   remoteLoc: boolean;
@@ -43,6 +46,7 @@ function Experience({
           type="text"
           onChange={(e) => experienceHandler(e)}
           placeholder="Frontend Engineer"
+          defaultValue={defaultExperience.role}
         ></Input>
       </div>
 
@@ -61,7 +65,7 @@ function Experience({
             onChange={(e) => cityHandler(e)}
             className="w-full sm:w-fit"
             placeholder="Optional"
-            defaultValue={""}
+            defaultValue={defaultExperience.city}
           ></Input>
         </div>
         <div className="space-y-1 flex flex-col w-full">
@@ -78,7 +82,7 @@ function Experience({
             onChange={(e) => countryHandler(e)}
             className="w-full sm:w-fit"
             placeholder="Optional"
-            defaultValue={""}
+            defaultValue={defaultExperience.country}
           ></Input>
         </div>
 
@@ -89,6 +93,9 @@ function Experience({
             type="checkbox"
             value={"Remote"}
             className="w-4 h-4 rounded-sm cursor-pointer"
+            defaultChecked={
+              defaultExperience.remote === "Remote" ? true : false
+            }
           ></Input>
           <label
             htmlFor="current"
@@ -112,7 +119,11 @@ function Experience({
             type="month"
             onChange={(e) => fromDateHandler(e)}
             className="w-min"
-            defaultValue={""}
+            defaultValue={
+              defaultExperience.from
+                ? convertMonthYearToInputFormat(defaultExperience.from)
+                : ""
+            }
           ></Input>
         </div>
         <div className="space-y-1 flex flex-col w-full sm:w-fit">
@@ -128,7 +139,11 @@ function Experience({
             type="month"
             onChange={(e) => toDateHandler(e)}
             className="w-min"
-            defaultValue={""}
+            defaultValue={
+              defaultExperience.to !== "present"
+                ? convertMonthYearToInputFormat(defaultExperience.to)
+                : ""
+            }
           ></Input>
         </div>
         <div className="flex space-x-2 place-self-end items-center h-10 sm:py-1 py-0 px-2 w-fit bg-gray-50 rounded-md">
@@ -138,6 +153,7 @@ function Experience({
             type="checkbox"
             value={"present"}
             className="w-4 h-4 rounded-sm cursor-pointer"
+            defaultChecked={defaultExperience.to === "present" ? true : false}
           ></Input>
           <label
             htmlFor="current"
