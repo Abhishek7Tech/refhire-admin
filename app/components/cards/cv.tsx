@@ -11,6 +11,7 @@ import {
   IconDeviceLaptop,
   IconDevices2,
   IconMapPin,
+  IconPencil,
   IconSend,
 } from "@tabler/icons-react";
 import SubmitButton from "../buttons/cv";
@@ -92,6 +93,15 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   ) => {
     e.preventDefault();
     setActive(false);
+  };
+
+  const editResumeHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const resumeId = e.currentTarget.id;
+    console.log("Resume Id", resumeId);
+    
   };
   return (
     <>
@@ -197,25 +207,42 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
             )}
           </AnimatePresence>
           <Card id={idx.toString()}>
-            <div className="flex gap-3 items-center  cursor-pointer">
-              <Image
-                src={`${CV_AVATAR}/${data.avatar}`}
-                alt="user avatar"
-                height={36}
-                width={36}
-                className="w-8 h-8 xs:w-9 xs:h-9"
-              ></Image>
-              <div className="flex flex-col gap-1">
-                <h3 className="text-slate-700 leading-2 xs:leading-2.5 font-medium font-mukta text-base xs:text-lg px-0.5">
-                  {data.name}
-                </h3>
-                <div className="flex items-center gap-1">
-                  <IconDeviceLaptop className="h-5 w-5 shrink-0 text-slate-700" />{" "}
-                  <span className="text-slate-700 text-sm font-semibold">
-                    {data.profession}
-                  </span>
+            <div className="flex justify-between items-start">
+              <div className="flex gap-3 items-center cursor-pointer">
+                <Image
+                  src={`${CV_AVATAR}/${data.avatar}`}
+                  alt="user avatar"
+                  height={36}
+                  width={36}
+                  className="w-8 h-8 xs:w-9 xs:h-9"
+                ></Image>
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-slate-700 leading-2 xs:leading-2.5 font-medium font-mukta text-base xs:text-lg px-0.5">
+                    {data.name}
+                  </h3>
+                  <div className="flex items-center gap-1">
+                    <IconDeviceLaptop className="h-5 w-5 shrink-0 text-slate-700" />{" "}
+                    <span className="text-slate-700 text-sm font-semibold">
+                      {data.profession}
+                    </span>
+                  </div>
                 </div>
               </div>
+              <motion.button
+                initial={{
+                  scaleY: 1,
+                }}
+                whileHover={{
+                  scaleY: 1.1,
+                }}
+                 
+                id={data.resume_id}
+                onClick={(e) => editResumeHandler(e)}
+                type="button"
+                className="cursor-pointer"
+              >
+                <IconPencil className="h-5 w-5 shrink-0 text-slate-700" />
+              </motion.button>
             </div>
 
             <div className="mt-4 flex flex-col gap-2 xs:gap-3">
@@ -275,7 +302,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                   {relocation[0]?.anotherState &&
                     !relocation[0]?.anotherCountry && (
                       <>
-                        <span>Across</span>  <b>States</b>
+                        <span>Across</span> <b>States</b>
                       </>
                     )}
 
@@ -349,7 +376,9 @@ export const Card = ({
       )}
     >
       <div className="relative z-50">
-        <div className="px-2 py-3 xs:px-1.5 sm:px-2 lg:px-4 lg:py-4">{children}</div>
+        <div className="px-2 py-3 xs:px-1.5 sm:px-2 lg:px-4 lg:py-4">
+          {children}
+        </div>
       </div>
     </div>
   );
