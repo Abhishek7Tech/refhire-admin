@@ -78,3 +78,18 @@ export interface AdminInterface {
   referral_earnings: number;
   referral_count: number;
 }
+
+export interface EditResumeInterface {
+  admin: string;
+  country: string;
+  email: string;
+  experience: ExperienceInterface[];
+  location: string;
+  name: string;
+  relocation: { relocateTo: Relocation[] };
+  preference: { preferences: Preference[] };
+  profession: string;
+  salary: string;
+  years_of_experience: number;
+  tags: string[];
+}

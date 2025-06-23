@@ -13,7 +13,13 @@ import {
 } from "@/app/home/edit/[slug]/actions";
 import { Categories } from "@/app/utils/categories/categories";
 import { IconCircleArrowDown, IconCircleArrowUp } from "@tabler/icons-react";
-import { ExperienceInterface, TagsInterface } from "@/app/utils/types/types";
+import {
+  EditResumeInterface,
+  ExperienceInterface,
+  Preference,
+  Relocation,
+  TagsInterface,
+} from "@/app/utils/types/types";
 import { UUID } from "crypto";
 
 const initialFormState = {
@@ -37,6 +43,9 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
     updateResumeData,
     initialFormState
   );
+  const [resumeData, setResumeData] = useState<undefined | EditResumeInterface>(
+    undefined
+  );
   const [current, setCurrent] = useState<{ id: number; present: boolean }[]>([
     {
       id: 1,
@@ -44,6 +53,12 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
     },
   ]);
 
+  const [preferences, setPreferences] = useState<undefined | Preference[]>(
+    undefined
+  );
+  const [relocation, setRelocation] = useState<undefined | Relocation[]>(
+    undefined
+  );
   const [remoteLocation, setRemoteLocation] = useState<
     { id: number; remoteLocation: boolean }[]
   >([
@@ -73,7 +88,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
     if (inputState.message || inputState.errors) {
       setCurrent([{ id: 1, present: false }]);
       setRemoteLocation([{ id: 1, remoteLocation: false }]);
-      setSelectedCategory([]);
+      [];
       setExperience([
         {
           id: 1,
@@ -92,6 +107,25 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
   useEffect(() => {
     (async () => {
       const res = await getResumeData(resumeId);
+      if (res.data) {
+        setResumeData(res.data);
+        const updateCurrent = Array.from({
+          length: res.data.experience.length,
+        }).map((_, idx) => ({ id: idx + 1, present: false }));
+
+        const updateRemoteLocation = res.data.preference.preferences.map(
+          (preference: Preference, idx: number) => ({
+            id: idx + 1,
+            remoteLocation: preference.remote ? true : false,
+          })
+        );
+        setCurrent(updateCurrent);
+        setRemoteLocation(updateRemoteLocation);
+        setExperience(res.data.experience);
+        setSelectedCategory(res.data.tags.tagNames);
+        setPreferences(res.data.preference.preferences);
+        setRelocation(res.data.relocation.relocateTo);
+      }
       console.log("Resume Data", res);
     })();
   }, [resumeId]);
@@ -296,7 +330,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
       const updateSelectedCategory = selectedCategory.filter(
         (category) => category !== subcategory
       );
-      setSelectedCategory(updateSelectedCategory);
+      updateSelectedCategory;
       return;
     }
     setSelectedCategory((prev) => [...prev, subcategory]);
@@ -359,7 +393,13 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
             >
               Name
             </label>
-            <Input name="name" placeholder="Tyler" type="text" required></Input>
+            <Input
+              defaultValue={resumeData?.name}
+              name="name"
+              placeholder="Tyler"
+              type="text"
+              required
+            ></Input>
           </LabelInputContainer>
           {inputState.errors?.name && (
             <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
@@ -377,6 +417,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
               Email
             </label>
             <Input
+              defaultValue={resumeData?.email}
               name="email"
               placeholder="tyler@google.com"
               type="email"
@@ -398,6 +439,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
               Profession
             </label>
             <Input
+              defaultValue={resumeData?.profession}
               name="profession"
               placeholder="Frontend Engineer"
               type="text"
@@ -419,7 +461,13 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
             >
               Years of Experience
             </label>
-            <Input name="yoe" placeholder="3" type="number" required></Input>
+            <Input
+              defaultValue={resumeData?.years_of_experience}
+              name="yoe"
+              placeholder="3"
+              type="number"
+              required
+            ></Input>
           </LabelInputContainer>
           {inputState.errors?.yoe && (
             <p className="text-red-600 px-3 text-start text-sm max-w-sm mb-4 mt-1 font-medium">
@@ -437,6 +485,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
               Country of Residence
             </label>
             <Input
+              defaultValue={resumeData?.country}
               name="country"
               placeholder="U.S.A"
               type="text"
@@ -459,6 +508,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
               Location
             </label>
             <Input
+              defaultValue={resumeData?.location}
               name="location"
               placeholder="San Francisco, California"
               type="text"
@@ -480,6 +530,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
               <div className="flex flex-wrap space-y-3 justify-start space-x-6">
                 <div className="flex space-x-2 w-fit h-fit items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
+                    defaultChecked={preferences && preferences[0].remote}
                     name="remote"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
@@ -494,6 +545,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
 
                 <div className="flex space-x-2 w-fit h-fit items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
+                    defaultChecked={preferences && preferences[0].hybrid}
                     name="hybrid"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
@@ -508,6 +560,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
 
                 <div className="flex space-x-2 w-fit h-fit items-center py-1 px-2 bg-gray-50 rounded-md">
                   <Input
+                    defaultChecked={preferences && preferences[0].onsite}
                     name="onSite"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
@@ -538,6 +591,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
               <div className="flex flex-wrap space-y-3 justify-start space-x-6">
                 <div className="flex space-x-2 items-center py-1 px-2 h-fit bg-gray-50 rounded-md">
                   <Input
+                    defaultChecked={relocation && relocation[0].anotherState}
                     name="anotherState"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
@@ -552,6 +606,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
 
                 <div className="flex space-x-2 items-center py-1 px-2 h-fit bg-gray-50 rounded-md">
                   <Input
+                    defaultChecked={relocation && relocation[0].anotherCountry}
                     name="anotherCountry"
                     type="checkbox"
                     className="w-4 h-4 rounded-sm cursor-pointer"
@@ -586,6 +641,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
               </small>
             </label>
             <Input
+              defaultValue={resumeData?.salary}
               name="salary"
               placeholder="$60,000"
               type="text"
@@ -613,6 +669,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
                 className="border-2 border-dashed border-green-300 px-1.5 py-4 md:p-4 rounded-md mb-3"
               >
                 <Experience
+                  defaultExperience={ex}
                   current={current[ex.id - 1]?.present}
                   remoteLoc={remoteLocation[ex.id - 1]?.remoteLocation}
                   currentHandler={currentHandler}
@@ -801,6 +858,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
               Submitted by
             </label>
             <Input
+              defaultValue={resumeData?.admin}
               name="admin"
               placeholder="Abhishek"
               type="text"

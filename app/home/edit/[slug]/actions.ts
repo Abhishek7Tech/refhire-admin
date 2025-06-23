@@ -265,6 +265,7 @@ export const getResumeData = async (resumeId: UUID) => {
       },
     };
   }
+  console.log("Data", data, "Status", status);
   return {
     data: data,
     status: status,
