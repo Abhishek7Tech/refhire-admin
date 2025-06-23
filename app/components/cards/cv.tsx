@@ -23,6 +23,7 @@ import {
 } from "@/app/utils/types/types";
 import { updateHiringStatus } from "@/app/home/cv/actions";
 import UpdateStatus from "../buttons/hiringStatus";
+import { useRouter } from "next/navigation";
 const CV_AVATAR = process.env.NEXT_PUBLIC_RESUME_AVATAR_URL;
 
 export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
@@ -33,9 +34,11 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
 
   const [relocation, setRelocation] = useState<Relocation[] | []>([]);
   const [experience, setExperience] = useState<ExperienceInterface[]>([]);
+  const [editPending, setEditPending] = useState<boolean>(false);
   const [hiringStatusPending, setHiringStatusPending] =
     useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   // }
   useEffect(() => {
@@ -98,10 +101,10 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   const editResumeHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    e.preventDefault();
+    setEditPending(true);
     const resumeId = e.currentTarget.id;
     console.log("Resume Id", resumeId);
-    
+    router.push(`/home/edit/${resumeId}`);
   };
   return (
     <>
@@ -235,7 +238,7 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                 whileHover={{
                   scaleY: 1.1,
                 }}
-                 
+                disabled={editPending}
                 id={data.resume_id}
                 onClick={(e) => editResumeHandler(e)}
                 type="button"
