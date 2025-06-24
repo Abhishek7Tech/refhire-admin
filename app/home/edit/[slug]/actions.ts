@@ -13,6 +13,8 @@ import {
 } from "@/app/utils/form-validation/validation";
 import { UUID } from "crypto";
 import { stat } from "fs";
+import { console } from "inspector";
+import { cookies } from "next/headers";
 const ResumeSchema = z.object({
   name: z
     .string()
@@ -84,7 +86,6 @@ export const updateResumeData = async (
   formData: FormData
 ) => {
   const resumeData = Object.fromEntries(formData);
-
   const supabaseAdmin = await createAdminClient();
   const supabase = await createClient();
   const userSession = await supabase.auth.getUser();
@@ -98,17 +99,14 @@ export const updateResumeData = async (
   }
 
   if (typeof resumeData.experience === "string") {
-    console.log("Inside", typeof resumeData.experience === "string");
     resumeData.experience = JSON.parse(resumeData.experience);
   }
 
   if (typeof resumeData.tags === "string") {
     resumeData.tags = JSON.parse(resumeData.tags);
-    console.log("Tags", resumeData.tags);
   }
 
   const validateResumeData = ResumeSchema.safeParse(resumeData);
-  console.log("Validating");
   if (!resumeData?.onSite && !resumeData?.hybrid && !resumeData.remote) {
     return {
       errors: {
@@ -116,7 +114,6 @@ export const updateResumeData = async (
       },
     };
   }
-  console.log("Validating-2");
 
   if (!validateResumeData.success) {
     const formErrors = validateResumeData.error.flatten().fieldErrors;
@@ -138,7 +135,6 @@ export const updateResumeData = async (
       },
     };
   }
-  console.log("Validation Success");
 
   const name = sanitize(resumeData.name as string);
   const email = sanitize(resumeData.email as string);
@@ -175,13 +171,16 @@ export const updateResumeData = async (
   const isHired = false;
   const avatar = generateAvatar();
   const tags = sanitizeTags(resumeData.tags as unknown as string[]);
+  const resumeId = (await cookies()).get("resume_id")?.value;
 
-  const res = await supabase.rpc("email_exsist", { p_email: email as string });
+  const res = await supabase.rpc("resume_exsist", {
+    p_resume_id: resumeId as UUID,
+  });
 
   if (res.error) {
     return {
       errors: {
-        email: "Failed to check email.",
+        email: "Failed to get Resume.",
       },
     };
   }
@@ -194,28 +193,30 @@ export const updateResumeData = async (
     };
   }
 
-  const { data, error, status } = await supabaseAdmin.from("resume").update({
-    name,
-    email,
-    profession,
-    country,
-    years_of_experience: yoe,
-    location,
-    preference: { preferences: preference },
-    relocation: { relocateTo: relocation },
-    salary,
-    experience: experience,
-    admin,
-    admin_id: userId,
-    is_hired: isHired,
-    avatar,
-    tags: { tagNames: tags },
-  });
-
-  if (error || status !== 201) {
+  const { data, error, status } = await supabaseAdmin
+    .from("resume")
+    .update({
+      name,
+      email,
+      profession,
+      country,
+      years_of_experience: yoe,
+      location,
+      preference: { preferences: preference },
+      relocation: { relocateTo: relocation },
+      salary,
+      experience: experience,
+      admin,
+      admin_id: userId,
+      is_hired: isHired,
+      avatar,
+      tags: { tagNames: tags },
+    })
+    .eq("resume_id", resumeId);
+  if (error || status !== 204) {
     return {
       errors: {
-        admin: "Failed to submit resume.",
+        admin: "Failed to update resume.",
       },
     };
   }
@@ -226,7 +227,6 @@ export const updateResumeData = async (
 };
 
 export const getResumeData = async (resumeId: UUID) => {
-  console.log("ResumeId", resumeId);
   const supabaseAdmin = await createAdminClient();
   const supabase = await createClient();
   const userSession = await supabase.auth.getUser();
@@ -242,7 +242,7 @@ export const getResumeData = async (resumeId: UUID) => {
   const { data, error, status } = await supabaseAdmin
     .from("resume")
     .select(
-      "admin, country, email, experience, location, name, preference, profession, relocation, salary, tags, years_of_experience"
+      "admin, country, email, experience, location, name, preference, profession, relocation, salary, tags, years_of_experience, resume_id"
     )
     .eq("resume_id", resumeId)
     .eq("admin_id", userId)
@@ -266,6 +266,7 @@ export const getResumeData = async (resumeId: UUID) => {
     };
   }
   console.log("Data", data, "Status", status);
+  (await cookies()).set("resume_id", data.resume_id);
   return {
     data: data,
     status: status,

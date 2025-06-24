@@ -1,3 +1,5 @@
+import { UUID } from "crypto";
+
 export interface Preference {
   remote: boolean;
   hybrid: boolean;
@@ -92,4 +94,5 @@ export interface EditResumeInterface {
   salary: string;
   years_of_experience: number;
   tags: string[];
+  resume_id: UUID;
 }

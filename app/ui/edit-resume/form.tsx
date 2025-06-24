@@ -6,7 +6,7 @@ import Experience from "../edit-experience/experience";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { formatMonth } from "@/app/utils/format-date/date";
-import SubmitButton from "@/app/components/buttons/resume";
+import SubmitButton from "@/app/components/buttons/edit";
 import {
   getResumeData,
   updateResumeData,
@@ -106,6 +106,7 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
         },
       ]);
       setCategoriesTags(Categories);
+      setResumeData(undefined);
     }
   }, [inputState.message]);
   useEffect(() => {
