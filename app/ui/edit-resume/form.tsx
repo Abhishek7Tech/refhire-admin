@@ -24,7 +24,6 @@ import { UUID } from "crypto";
 import Loading from "@/app/home/loading";
 import Error from "@/app/home/error";
 
-
 const initialFormState = {
   name: "",
   email: "",
@@ -124,12 +123,13 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
           length: res.data.experience.length,
         }).map((_, idx) => ({ id: idx + 1, present: false }));
 
-        const updateRemoteLocation = res.data.preference.preferences.map(
-          (preference: Preference, idx: number) => ({
+        const updateRemoteLocation = res.data.experience.map(
+          (ex: ExperienceInterface, idx: number) => ({
             id: idx + 1,
-            remoteLocation: preference.remote ? true : false,
+            remoteLocation: ex.remote === "Remote" ? true : false,
           })
         );
+
         setCurrent(updateCurrent);
         setRemoteLocation(updateRemoteLocation);
         setExperience(res.data.experience);
