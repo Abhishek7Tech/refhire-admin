@@ -22,7 +22,6 @@ export function Recruiters() {
     (async () => {
       try {
         const res = await getRecruiteRequests();
-        console.log("Requests:", res);
         if (res.error) {
           setError(res.error);
           setLoading(false);

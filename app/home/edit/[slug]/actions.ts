@@ -117,7 +117,6 @@ export const updateResumeData = async (
 
   if (!validateResumeData.success) {
     const formErrors = validateResumeData.error.flatten().fieldErrors;
-    console.log("Errors", formErrors);
     return {
       errors: {
         name: formErrors?.name,
@@ -256,8 +255,6 @@ export const getResumeData = async (resumeId: UUID) => {
     };
   }
 
-  console.log("Data", data, "Status", status);
-
   if (!data || status !== 200) {
     return {
       errors: {
@@ -265,7 +262,6 @@ export const getResumeData = async (resumeId: UUID) => {
       },
     };
   }
-  console.log("Data", data, "Status", status);
   (await cookies()).set("resume_id", data.resume_id);
   return {
     data: data,

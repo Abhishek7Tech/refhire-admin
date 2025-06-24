@@ -139,13 +139,11 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
         setRelocation(res.data.relocation.relocateTo);
         setLoading(false);
       }
-      console.log("Resume Data", res.data?.preference.preferences[0].remote);
     })();
   }, [resumeId]);
   const currentHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     const value = e.currentTarget.value;
-    console.log("Value", value);
     const inputId = e.currentTarget.id;
     if (!inputId) {
       return;
@@ -185,7 +183,6 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    console.log("EX", experience.length);
     const id = experience.length + 1;
     const addExperience = {
       id,
@@ -312,9 +309,6 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
         ? { ...ex, work: [...ex.work, { id: ex.work.length + 1, work: "" }] }
         : ex
     );
-
-    console.log("Work-increase", updateWork);
-
     setExperience(updateWork);
   };
 
@@ -395,7 +389,6 @@ function EditResume({ resumeId }: { resumeId: UUID }) {
     return <Loading />;
   }
   return (
-    // <section className="mx-auto w-11/12 xs:w-4/5 sm:max-w-md bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-1.5 sm:p-4 rounded-2xl my-12">
 
     <section className=" mx-auto w-11/12 md:w-full max-w-max bg-white/25 border border-white/30 shadow-lg backdrop-blur-md p-1.5 sm:p-4 rounded-2xl my-12">
       <h2 className="text-2xl font-mukta font-medium text-slate-700">

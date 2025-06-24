@@ -27,7 +27,6 @@ export function CV() {
         }
 
         const data = res.data as CVInterface[] | [];
-        console.log("DATA", data);
         if (data.length) {
           setCvData(data);
         }

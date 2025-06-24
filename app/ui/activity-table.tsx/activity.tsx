@@ -27,7 +27,6 @@ function ActivityTable() {
         setError(null);
         const res = await getUsersActivity();
         if (res.error) {
-          console.log("Error", res.error);
           setLoading(false);
           setError(res.error);
           return;
@@ -37,7 +36,6 @@ function ActivityTable() {
           setError("Something went wrong.");
           return;
         }
-        console.log("Data", res);
         if (res.data) {
           setRequests(res.data);
         }

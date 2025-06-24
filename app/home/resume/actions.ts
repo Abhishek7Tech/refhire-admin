@@ -93,17 +93,14 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
   }
 
   if (typeof resumeData.experience === "string") {
-    console.log("Inside", typeof resumeData.experience === "string");
     resumeData.experience = JSON.parse(resumeData.experience);
   }
 
   if (typeof resumeData.tags === "string") {
     resumeData.tags = JSON.parse(resumeData.tags);
-    console.log("Tags", resumeData.tags);
   }
 
   const validateResumeData = ResumeSchema.safeParse(resumeData);
-  console.log("Validating");
   if (!resumeData?.onSite && !resumeData?.hybrid && !resumeData.remote) {
     return {
       errors: {
@@ -111,11 +108,9 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
       },
     };
   }
-  console.log("Validating-2");
 
   if (!validateResumeData.success) {
     const formErrors = validateResumeData.error.flatten().fieldErrors;
-    console.log("Errors", formErrors);
     return {
       errors: {
         name: formErrors?.name,
@@ -133,7 +128,6 @@ export const getResumeData = async (previousState: any, formData: FormData) => {
       },
     };
   }
-  console.log("Validation Success");
 
   const name = sanitize(resumeData.name as string);
   const email = sanitize(resumeData.email as string);

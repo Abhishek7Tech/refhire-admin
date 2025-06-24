@@ -9,7 +9,6 @@ export default async function allowToSignIn(request: NextRequest) {
   if(userEmail) {
     const { data, status, error } = await supabase.
     rpc("validate_admin", { p_email: userEmail });
-    console.log("userEmail", data, status, error);
     if (userEmail && data && status === 200) {
       return NextResponse.redirect(new URL("/home", request.url));
     }

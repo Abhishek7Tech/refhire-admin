@@ -44,8 +44,6 @@ export const updateHiringStatus = async (formId: string) => {
     .update({ is_hired: true })
     .eq("resume_id", formId)
     .select("id, is_hired");
-  console.log("Data:", data, status);
-  console.log("Error:", error);
 
   if (error) {
     return {

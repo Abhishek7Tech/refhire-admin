@@ -6,9 +6,6 @@ import LoadingSvg from "../../../public/loading.gif";
 function SubmitButton() {
   const { data, pending } = useFormStatus();
 
-  useEffect(() => {
-    console.log("PENDING...", pending);
-  }, [pending]);
   return (
     <button
       type="submit"

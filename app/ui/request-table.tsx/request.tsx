@@ -33,7 +33,6 @@ function RequestTable() {
         setError(null);
         const res = await getRecruiteRequests();
         if (res.error) {
-          console.log("Error", res.error);
           setLoading(false);
           setError(res.error);
           return;

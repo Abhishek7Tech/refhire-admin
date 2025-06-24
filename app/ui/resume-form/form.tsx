@@ -88,7 +88,6 @@ function Resume() {
   const currentHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     const value = e.currentTarget.value;
-    console.log("Value", value);
     const inputId = e.currentTarget.id;
     if (!inputId) {
       return;
@@ -128,7 +127,6 @@ function Resume() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    console.log("EX", experience.length);
     const id = experience.length + 1;
     const addExperience = {
       id,
@@ -255,9 +253,6 @@ function Resume() {
         ? { ...ex, work: [...ex.work, { id: ex.work.length + 1, work: "" }] }
         : ex
     );
-
-    console.log("Work-increase", updateWork);
-
     setExperience(updateWork);
   };
 

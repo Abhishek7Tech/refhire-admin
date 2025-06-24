@@ -73,7 +73,6 @@ export const getUsersActivity = async () => {
     .select("created_at, sender, receiver, receiver_email, id")
     .order("created_at", { ascending: false })
     .limit(5);
-  console.log("Data", data, error, status);
   if (error) {
     return {
       status: status,
@@ -112,7 +111,6 @@ export async function getPlatformStats() {
     .select("id, total_recruiters, total_hires, total_candidates")
     .single();
 
-  console.log("Data stats", data, error, status);
   if (error) {
     return {
       error: error.message,

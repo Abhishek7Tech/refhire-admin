@@ -103,7 +103,6 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
   ) => {
     setEditPending(true);
     const resumeId = e.currentTarget.id;
-    console.log("Resume Id", resumeId);
     router.push(`/home/edit/${resumeId}`);
   };
   return (

@@ -26,7 +26,6 @@ export const getRecruiteRequests = async () => {
       "id, amount, application_status, avatar, hiring_ad, office_location_city, office_location_country, work_mode, organization_url, twitter_recruiter, position, organization, name, tags"
     )
     .eq("admin_id", userId);
-  console.log("Data:", data, status);
   if (error) {
     return {
       error: error.message,

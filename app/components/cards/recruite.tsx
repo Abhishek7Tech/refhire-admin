@@ -56,7 +56,6 @@ export const RecruiteCard = ({
 
   useEffect(() => {
     if (recruiteData.tags.tagNames) {
-      console.log("Tags:", recruiteData.tags.tagNames);
       setSelectedCategory(recruiteData.tags.tagNames);
     }
 
@@ -119,7 +118,6 @@ export const RecruiteCard = ({
         setError(res.error);
         return;
       }
-      console.log("RES", res);
       if (res && res.status === 200 && res.data?.length) {
         setApplicationStatus(res.data[0].application_status);
       }

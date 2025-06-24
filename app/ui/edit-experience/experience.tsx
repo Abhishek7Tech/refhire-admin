@@ -28,7 +28,6 @@ function Experience({
   currentHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
   remoteLocHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
-console.log("defaultExperience", defaultExperience, remoteLoc);
   return (
     <div className="flex flex-col space-x-2 w-full space-y-3">
       <div className="space-y-1 flex flex-col">
