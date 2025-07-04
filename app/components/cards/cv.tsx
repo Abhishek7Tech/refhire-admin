@@ -165,19 +165,29 @@ export const ResumeCard = ({ idx, data }: { idx: number; data: CV }) => {
                     <h4 className="capitalize xs:text-base sm:text-lg font-semibold text-slate-700 font-mukta leading-1.5">
                       {ex.role}
                     </h4>
+                    <div className="lg:hidden">
+                      <span className="text-sm sm:text-base font-medium text-slate-700 font-mukta">
+                        {ex.from}-{ex.to},
+                      </span>
+                      <span className="text-sm sm:text[15px] font-medium text-slate-700 font-mukta">
+                        {ex.remote
+                          ? ` ${ex.remote}`
+                          : ` ${ex.city} ${ex.city && ","} ${ex.country}`}{" "}
+                      </span>
+                    </div>
                     <ol className="list-disc px-4 w-fit text-[15px] sm:text-base text-slate-700 font-mukta mt-1.5">
                       {ex.work.map((work) => (
                         <li key={work.id}>{work.work}</li>
                       ))}
                     </ol>
                   </div>
-                  <div className="hidden lg:inline col-start-5 col-end-6 place-items-end w-full">
+                  <div className="hidden lg:block col-start-5 col-end-6 place-items-end w-full">
                     <h4 className="font-medium text-base text-slate-700 font-mukta">
                       {ex.from}-{ex.to}
                     </h4>
-                    <span className="font-medium text-sm text-slate-700">
+                    <h5 className="font-medium text-sm text-slate-700 text-right font-mukta">
                       {ex.remote ? `${ex.remote}` : `${ex.city}, ${ex.country}`}{" "}
-                    </span>
+                    </h5>
                   </div>
                 </div>
               ))}
